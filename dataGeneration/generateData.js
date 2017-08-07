@@ -79,9 +79,15 @@ function getDataEntry(year){
   if(!entry){
     entry = yearToDataEntry[year] = {
       year: +year,
-      ORI: [{ Total: 0}],
-      ASY: [{ Total: 0}]
+      ORI: [{ Total: 0, Increases: 0, Decreases: 0}],
+      ASY: [{ Total: 0, Increases: 0, Decreases: 0}]
     };
+
+    // Fill in zero for missing data.
+    list.forEach(function (d) {
+      entry.ORI[0][d.country_code] = 0;
+      entry.ASY[0][d.country_code] = 0;
+    });
   }
   return entry;
 }
@@ -105,7 +111,7 @@ d3.nest()
     var year = d.key;
     d.values.forEach(function (value) {
       ori(year)[value.key] = value.value;
-      ori(year).Total = value.value;
+      ori(year).Total += value.value;
     });
   });
 
@@ -119,7 +125,7 @@ d3.nest()
     var year = d.key;
     d.values.forEach(function (value) {
       asy(year)[value.key] = value.value;
-      asy(year).Total = value.value;
+      asy(year).Total += value.value;
     });
   });
 
