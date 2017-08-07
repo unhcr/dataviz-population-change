@@ -73,32 +73,14 @@ var augmentedData = csvData
 console.log('Unable to find codes for the following places:');
 console.log(Object.keys(unknownNames));
 
-function sumValues(values) {
-  return d3.sum(values, function(d) {
-    return d.Value;
-  })
-}
-
-var nestedByORI = d3.nest()
-  .key(function (d) { return d.Year; })
-  .key(function (d) { return d.ORI; })
-  .rollup(sumValues)
-  .entries(augmentedData);
-
-var nestedByASY = d3.nest()
-  .key(function (d) { return d.Year; })
-  .key(function (d) { return d.ORI; })
-  .rollup(sumValues)
-  .entries(augmentedData);
-
 var yearToDataEntry = {};
 function getDataEntry(year){
   var entry = yearToDataEntry[year];
   if(!entry){
     entry = yearToDataEntry[year] = {
       year: +year,
-      ORI: [{}],
-      ASY: [{}]
+      ORI: [{ Total: 0}],
+      ASY: [{ Total: 0}]
     };
   }
   return entry;
@@ -107,19 +89,39 @@ function getDataEntry(year){
 function ori(year){ return getDataEntry(year).ORI[0]; }
 function asy(year){ return getDataEntry(year).ASY[0]; }
 
-nestedByORI.forEach(function (d){
-  var year = d.key;
-  d.values.forEach(function (value) {
-    ori(year)[value.key] = value.value;
-  });
-});
+function sumValues(values) {
+  return d3.sum(values, function(d) {
+    return d.Value;
+  })
+}
 
-nestedByASY.forEach(function (d){
-  var year = d.key;
-  d.values.forEach(function (value) {
-    asy(year)[value.key] = value.value;
+// Compute the sums for each (Year, ORI) combination
+d3.nest()
+  .key(function (d) { return d.Year; })
+  .key(function (d) { return d.ORI; })
+  .rollup(sumValues)
+  .entries(augmentedData)
+  .forEach(function (d){
+    var year = d.key;
+    d.values.forEach(function (value) {
+      ori(year)[value.key] = value.value;
+      ori(year).Total = value.value;
+    });
   });
-});
+
+// Compute the sums for each (Year, ASY) combination
+d3.nest()
+  .key(function (d) { return d.Year; })
+  .key(function (d) { return d.ASY; })
+  .rollup(sumValues)
+  .entries(augmentedData)
+  .forEach(function (d){
+    var year = d.key;
+    d.values.forEach(function (value) {
+      asy(year)[value.key] = value.value;
+      asy(year).Total = value.value;
+    });
+  });
 
 var data = Object.keys(yearToDataEntry)
   .map(getDataEntry);
