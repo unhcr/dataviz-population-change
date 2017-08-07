@@ -68,7 +68,10 @@ var augmentedData = csvData
     //console.log(d['Population type']);
     return d;
   })
-  .filter(function (d) { return d.hasCodes; });
+  .filter(function (d) {
+    var refugees = d['Population type'] === 'Refugees (incl. refugee-like situations)';
+    return refugees && d.hasCodes;
+  });
 
 console.log('Unable to find codes for the following places:');
 console.log(Object.keys(unknownNames));
