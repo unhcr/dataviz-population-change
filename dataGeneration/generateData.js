@@ -80,6 +80,7 @@ d3.nest()
 
 var years = Object.keys(yearToDataEntry);
 var minYear = d3.min(years);
+var maxYear = d3.max(years);
 
 years.forEach(function (year){
   if(year !== minYear){
@@ -98,6 +99,17 @@ years.forEach(function (year){
     asy1.Decreases = d3.sum(asyDecreases);
   }
 });
+
+console.log('var minYear = ' + minYear + ';')
+console.log('var maxYear = ' + minYear + ';')
+console.log([
+  'var totalYears = ' + (maxYear - minYear),
+  '; // ' + minYear + ' - ' + maxYear + ';'
+].join(''));
+console.log('var selectedYear = ' + maxYear + ';');
+console.log('var MaxTotal = ' + d3.max(years.map(function (year){
+  return d3.max([ asy(year).Total, ori(year).Total ]);
+})) + ';');
 
 var outputData = years.map(getDataEntry);
 var outputJS = 'var dataset = ' + JSON.stringify(outputData);
