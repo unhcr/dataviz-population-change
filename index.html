@@ -753,7 +753,7 @@ var path = d3.geo.path()
 
 // CREATE SVG
 var canvas = d3.select("#map").append("svg")
-    .attr("width", width)
+    .attr("width", width + 6) // Add 6px to show latest year label.
     .attr("height", height)
     .style("position","absolute")
     .style("top", "3px")
