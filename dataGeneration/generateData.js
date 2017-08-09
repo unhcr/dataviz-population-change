@@ -100,13 +100,10 @@ years.forEach(function (year){
   }
 });
 
-console.log('var minYear = ' + minYear + ';')
-console.log('var maxYear = ' + minYear + ';')
-console.log([
-  'var totalYears = ' + (maxYear - minYear),
-  '; // ' + minYear + ' - ' + maxYear + ';'
-].join(''));
-console.log('var selectedYear = ' + maxYear + ';');
+console.log('var minYear = ' + minYear + ';');
+console.log('var maxYear = ' + maxYear + ';');
+console.log('var totalYears = maxYear - minYear;');
+console.log('var selectedYear = maxYear;');
 console.log('var MaxTotal = ' + d3.max(years.map(function (year){
   return d3.max([ asy(year).Total, ori(year).Total ]);
 })) + ';');
