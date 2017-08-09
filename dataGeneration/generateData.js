@@ -78,9 +78,27 @@ d3.nest()
     });
   });
 
-var data = Object.keys(yearToDataEntry)
-  .map(getDataEntry);
+var years = Object.keys(yearToDataEntry);
+var minYear = d3.min(years);
 
-var outputJS = 'var dataset = ' + JSON.stringify(data);
+years.forEach(function (year){
+  if(year !== minYear){
+    var asy0 = asy(year - 1);
+    var asy1 = asy(year);
+    var asyChanges = allCountryCodes.map(function (country_code){
+      return asy1[country_code] - asy0[country_code];
+    });
+    var asyIncreases = asyChanges.filter(function (difference) {
+      return difference > 0;
+    });
+    var asyDecreases = asyChanges.filter(function (difference) {
+      return difference < 0;
+    });
+    asy1.Increases = d3.sum(asyIncreases);
+    asy1.Decreases = d3.sum(asyDecreases);
+  }
+});
 
+var outputData = years.map(getDataEntry);
+var outputJS = 'var dataset = ' + JSON.stringify(outputData);
 fs.writeFileSync(outputFile, outputJS);
