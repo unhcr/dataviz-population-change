@@ -228,7 +228,7 @@
               <td>
                   <div class="figure_box" style="width: 100px;">
                     <div class="prev" id="yearDown" onclick="yearDown();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                    <div class="figure_text text" id="yearBox">2012</div>
+                    <div class="figure_text text" id="yearBox">2016</div>
                     <div class="next" id="yearUp" onclick="yearUp();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                   </div>
               </td>
@@ -728,9 +728,13 @@ var colorChangeORI = d3.scale.threshold()
     .range(colorbrewer.RdYlGn[9]);
 
 // OTHER VARIABLES
-var totalYears = 52; // 1960 - 2012
-var selectedYear = 2012;
+
+var minYear = 1951;
+var maxYear = 2016;
+var totalYears = maxYear - minYear;
+var selectedYear = maxYear;
 var MaxTotal = 17838074;
+
 var graphSelectedBar = 0;
 var countrySelected = 0;
 var totalOrGraph = 0; // 0 = total, 1 = change graphs
@@ -1015,18 +1019,18 @@ var timer;
       clearTimeout(timer);
       timer = null
     }  
-    if(selectedYear!=2012){
-    d3.selectAll(".y"+2012)
+    if(selectedYear!=maxYear){
+    d3.selectAll(".y"+maxYear)
                 .attr("fill", "#222222")
                 .style("font-size", "6px")
                 .style("font-weight", "normal");
 
-                canvas.selectAll(".graphTotalOverlay_2012").attr("fill", "rgba(20,20,30,0.04)");
-                canvas.selectAll(".graphChangeOverlay_2012").attr("filter", "null");
-                canvas.selectAll(".graphChangeOverlay_2012").attr("fill", "rgba(20,20,30,0.04)");
+                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
 } else {
-                  canvas.selectAll(".graphChangeOverlay_2012").attr("filter", "null");
-                canvas.selectAll(".graphChangeOverlay_2012").attr("fill", "rgba(20,20,30,0.04)");
+                  canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
 }
 
               })
@@ -1041,7 +1045,7 @@ timer = setTimeout(function() {resetYear();}, 500);
 
               d3.select(this).attr("filter", "null");
               d3.select(this).attr("fill", "rgba(0,0,0,0.04)");
-              if(selectedYear!=2012){
+              if(selectedYear!=maxYear){
               yearOut(selectedYear); }}
               })
           .on("click", function(d){
@@ -1179,10 +1183,10 @@ timer = setTimeout(function() {resetYear();}, 500);
           .on("mouseover", function(d){
                  if(graphSelectedBar==0){
 
-                canvas.selectAll(".graphTotalOverlay_2012").attr("filter", "null");
-                canvas.selectAll(".graphTotalOverlay_2012").attr("fill", "rgba(20,20,30,0.04)");
-                canvas.selectAll(".graphChangeOverlay_2012").attr("filter", "null");
-                canvas.selectAll(".graphChangeOverlay_2012").attr("fill", "rgba(20,20,30,0.04)");
+                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
 
                 selectedYear = d.year;
             sliderChange(selectedYear);
@@ -1191,13 +1195,13 @@ timer = setTimeout(function() {resetYear();}, 500);
               d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
               yearOver(selectedYear);  
 
-                  if(selectedYear!=2012){
-    d3.selectAll(".y"+2012)
+                  if(selectedYear!=maxYear){
+    d3.selectAll(".y"+maxYear)
                 .attr("fill", "#222222")
                 .style("font-size", "6px")
                 .style("font-weight", "normal");
-                             canvas.selectAll(".graphTotalOverlay_2012").attr("filter", "null");
-                canvas.selectAll(".graphTotalOverlay_2012").attr("fill", "rgba(20,20,30,0.04)");
+                             canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
 }   
               }  
 
@@ -1299,11 +1303,11 @@ graphTotal.selectAll("text")
     .text(function(d,i){ return d.year});
 
 
-selectedYear = 2012;
+selectedYear = maxYear;
 sliderTotal(selectedYear);
 yearOver(selectedYear); 
-  canvas.selectAll(".graphTotalOverlay_2012").attr("filter", "url(#innershadow)");
-  canvas.selectAll(".graphTotalOverlay_2012").attr("fill", "rgba(20,20,30,0.15)");
+  canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "url(#innershadow)");
+  canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
 
 $('#type').val("ASY");
 changeType();
@@ -1333,7 +1337,7 @@ d3.selectAll(".y"+selectedYear).attr("fill", "#858585").style("font-size", "8px"
 
 // MOUSE OVER COUNTRY
 function mapMouseOver(d){
-  var year = selectedYear-1960;
+  var year = selectedYear-minYear;
   var type = $('#type').val();
   var countryCode = d.id;
   var countryName = d.properties.CNTRY_NAME;
@@ -1480,7 +1484,7 @@ countrySelected = countryCode;
 }
 
 function yearUp(){
-if(selectedYear<2012){
+if(selectedYear<maxYear){
   if(totalOrGraph==1){var t = ".graphChangeOverlay_";}else{var t = ".graphTotalOverlay_";};
   canvas.selectAll(t+selectedYear).attr("filter", "null");
   canvas.selectAll(t+selectedYear).attr("fill", "rgba(20,20,30,0.04)");
@@ -1497,7 +1501,7 @@ changeType();
 
 function yearDown(){
 
-  if(selectedYear>1960){
+  if(selectedYear>minYear){
       if(totalOrGraph==1){var t = ".graphChangeOverlay_";}else{var t = ".graphTotalOverlay_";};
   canvas.selectAll(t+selectedYear).attr("filter", "null");
   canvas.selectAll(t+selectedYear).attr("fill", "rgba(20,20,30,0.04)");
@@ -1512,24 +1516,24 @@ function yearDown(){
 }
 
               function resetYear() {
-                selectedYear = 2012;
-                yearOver(2012);
+                selectedYear = maxYear;
+                yearOver(maxYear);
                  if(totalOrGraph==1)
                   {
-                canvas.selectAll(".graphChangeOverlay_2012").attr("filter", "url(#innershadow)");
-                canvas.selectAll(".graphChangeOverlay_2012").attr("fill", "rgba(20,20,30,0.15)");
-                       sliderChange(2012);
+                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "url(#innershadow)");
+                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
+                       sliderChange(maxYear);
                  }else{
 
-                canvas.selectAll(".graphTotalOverlay_2012").attr("filter", "url(#innershadow)");
-                canvas.selectAll(".graphTotalOverlay_2012").attr("fill", "rgba(20,20,30,0.15)");
-                       sliderTotal(2012);
+                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "url(#innershadow)");
+                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
+                       sliderTotal(maxYear);
               }
               }
 
 // SLIDER TOTAL FUNCTION
 function sliderTotal(year){
-  var year = selectedYear-1960;
+  var year = selectedYear-minYear;
   var type = $('#type').val();
 
 sliderAll(selectedYear);
@@ -1575,16 +1579,15 @@ var result1 = dataset[year][type][0][countryCode];
     }
 }
 
-  canvas.append("text").text("2012");
+  canvas.append("text").text(maxYear);
 
 function sliderActiveYear(year){
-  var activeYear = year + 1960;
-
+  var activeYear = year + minYear;
 }
 
 // SLIDER CHANGE FUNCTION
 function sliderChange(year){
-  var year = selectedYear-1960;
+  var year = selectedYear-minYear;
   var type = $('#type').val();
 sliderAll(selectedYear);
 sliderActiveYear(year);
@@ -1626,15 +1629,15 @@ if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
 
 // SLIDER ALL FUNCTION
 function sliderAll(year){
-  var year = selectedYear-1960;
+  var year = selectedYear-minYear;
   var type = $('#type').val();
   if(countrySelected!=0){var q = countrySelected} else {var q = "Total";};
 
 var totalValue = numberWithCommas(dataset[year][type][0][q]);
 if(totalValue == 0){totalValue = "n/a"};
 
-if(selectedYear==2012){$("#yearUp").css("opacity", "0.2");}else{$("#yearUp").css("opacity", "1");};
-if(selectedYear==1960){$("#yearDown").css("opacity", "0.2");}else{$("#yearDown").css("opacity", "1");};
+if(selectedYear==maxYear){$("#yearUp").css("opacity", "0.2");}else{$("#yearUp").css("opacity", "1");};
+if(selectedYear==minYear){$("#yearDown").css("opacity", "0.2");}else{$("#yearDown").css("opacity", "1");};
 
 if(q=="Total"){
 if(year>0){
@@ -1650,8 +1653,8 @@ if(increases == 0){increases = "n/a"}
 decreases = numberWithCommas(Math.abs(decreases));
 if(decreases == 0){decreases = "n/a"}
 
-if(selectedYear>1960){$('#increaseValue').text(increases);}else{$('#increaseValue').text("n/a");}
-if(selectedYear>1960){$('#decreaseValue').text(decreases);}else{$('#decreaseValue').text("n/a");}
+if(selectedYear>minYear){$('#increaseValue').text(increases);}else{$('#increaseValue').text("n/a");}
+if(selectedYear>minYear){$('#decreaseValue').text(decreases);}else{$('#decreaseValue').text("n/a");}
 
 }
 
@@ -1667,11 +1670,11 @@ if(year>0){
 var changeValue = dataset[year][type][0][q]-dataset[year-1][type][0][q];
 
 if (changeValue < 0){
-if(selectedYear>1960){$('#decreaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#increaseValue').text("n/a");}else{$('#decreaseValue').text("n/a");$('#increaseValue').text("n/a");}
+if(selectedYear>minYear){$('#decreaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#increaseValue').text("n/a");}else{$('#decreaseValue').text("n/a");$('#increaseValue').text("n/a");}
 }
 
 if (changeValue > 0){
-if(selectedYear>1960){$('#increaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#decreaseValue').text("n/a");}else{$('#increaseValue').text("n/a");$('#decreaseValue').text("n/a");}
+if(selectedYear>minYear){$('#increaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#decreaseValue').text("n/a");}else{$('#increaseValue').text("n/a");$('#decreaseValue').text("n/a");}
 }
 
 }
@@ -1685,7 +1688,7 @@ $('#totalValue').text(totalValue);
 $('#yearBox').text(selectedYear);
 
 
- var year = selectedYear-1960;
+ var year = selectedYear-minYear;
   var type = $('#type').val();
   var countryCode = countrySelected;
   var countryName = countrySelectedName;
@@ -1901,7 +1904,7 @@ circles
                         line = paper.path(str_line);
                         line.attr({stroke:border_color,'stroke-width':0,'fill':selected_color});
                         line.startYear=1900;
-                        line.endYear=2012;
+                        line.endYear=maxYear;
                         line.id="bg";
                         svg_borders[country].push(line);
                        // world_bg[country].toBack();
