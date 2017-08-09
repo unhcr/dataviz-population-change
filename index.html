@@ -832,6 +832,16 @@ filter.append('feComposite')
 // ADD MAP GEOMETRY
 d3.json("js/worldtopo.json", function(error, map) {
 
+  // The following change applies 2012 boundaries
+  // up until the maximum year present in the data.
+  // This should be fine, as no major boundaries have changed
+  // between 2012 and 2017.
+  map.objects.world.geometries.forEach(function (geometry){
+      if(geometry.properties.COWEYEAR === 2012){
+          geometry.properties.COWEYEAR = maxYear;
+      }
+  });
+
   // MAP SVG GROUP
   var mapsvg = canvas.append("g")
       .attr("class","map");
