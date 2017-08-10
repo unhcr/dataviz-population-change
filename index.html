@@ -15,6 +15,7 @@
     <link href="js/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="js/jquery-ui-1.10.2/themes/base/jquery-ui.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,900" rel="stylesheet">
     <link rel="stylesheet/less" type="text/css" href="css/style.less" />
 
     <!-- Start of Facebook Meta Tags  -->
@@ -259,8 +260,8 @@
 <div class="changeGraphTitle">Population Change</div>
 
 <img src="img/changeGraphAxis.png" style="padding-left: 10px; padding-top: 13px;"/>
-<span class="axisLabel" style="position: absolute; top: 46px; left: 12px; font-family: Arial; font-size: 9px;">Increase</span>
-<span class="axisLabel" style="position: absolute; top: 76px; left: 10px; font-family: Arial; font-size: 9px;">Decrease</span
+<span class="axisLabel" style="position: absolute; top: 46px; left: 12px; font-size: 9px;">Increase</span>
+<span class="axisLabel" style="position: absolute; top: 76px; left: 10px; font-size: 9px;">Decrease</span
   </div>
 
   <div class="text changeGraphSubTitle" style="font-size: 10px">Compared to previous year.</div>
@@ -1309,7 +1310,6 @@ graphTotal.selectAll("text")
     .attr("text-anchor", "middle") // text-align: right
     .style("font-size", "6px")
     .attr("fill", "#222222")
-    .style("font-family", "Arial")
     .text(function(d,i){ return d.year});
 
 
