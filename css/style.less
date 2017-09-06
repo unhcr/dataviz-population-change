@@ -2,24 +2,13 @@
 @t2:grey;
 
 /* sub-titles, descriptive text, grey */
-@t3:lightgrey;
+@t3:#000;
 
 /* titles */
 @tFigure: rgb(164, 169, 172);
 @axisLabels: grey;
 @divRadius: 21px;
 @divColor: rgba(0, 0, 0, 0.236);
-
-body {
-  padding-top: 50px; /* 60px to make the container go all the way to the bottom of the topbar */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-family: 'Lato', sans-serif;
-}
 
 #country_name_popup {
   color: black;
@@ -53,63 +42,27 @@ body {
 
 /* top row container */
 #topRow {
-  position: absolute;
-  top: 10px;
-  left: 0px;
   text-align: right;
-  float: right;
-  width: 100%;
-  z-index: 999999;
   height: 80px;
   padding-bottom: 50px;
 }
 
-/* total populaiton box */
-#totalPopBox {
-  position: absolute;
-  top: 40px;
-  left: 10px;
-}
-
-/* main year selector box box */
-#yearSelectorBox {
-  position: absolute;
-  top: 40px;
-  right: 5px;
-}
-
-/* population change boxes */
-#popIncreasesBox {
-  position: absolute;
-  top: 40px;
-  left: 250px;
-}
-
-/* population change boxes */
-#popDecreasesBox {
-  position: absolute;
-  top: 40px;
-  left: 580px;
-}
 .label_main1 {
   display: inline;
   color: @t3;
-  padding-right: 10px;
   font-size: 12px;
   font-weight: bold;  /* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .label_main2 {
   display: inline;
   color: @t3;
-  padding-right: 10px;
   font-size: 11px;
   line-height: 0.5;
   display: block;
   padding-top: 7px;
   font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
+
 .yearSelected {
   fill: red;
 }
@@ -170,12 +123,10 @@ body {
 .switchActive {
   color: @t3;
   font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .switchInactive {
   color: @t2;
   font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .active {
   color: @t1;
@@ -229,9 +180,6 @@ body {
   -moz-border-radius: 15px;/* Safari v3.0+ and by Chrome v0.2+ */
   -webkit-border-radius: 15px;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
   border-radius: 15px;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.18), inset 2px 2px 2px rgba(237, 237, 237, 0.1);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.18), inset 2px 2px 2px rgba(237, 237, 237, 0.1);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.18), inset 2px 2px 2px rgba(237, 237, 237, 0.1);
 }
 .ui-slider .ui-slider-handle {
   width: 30px;
@@ -338,7 +286,6 @@ body {
   letter-spacing: 0pt;
   line-height: 190%;
   color: @t2;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .figure_box {
   background-color: rgb(43, 46, 49);
@@ -348,9 +295,7 @@ body {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;/* Firefox v3.5+ */
-  -moz-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.09), inset 0px 0px 1px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 3px 0px rgba(0, 0, 0, 0.36);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.09), inset 0px 0px 1px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 3px 0px rgba(0, 0, 0, 0.36);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.09), inset 0px 0px 1px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 3px 0px rgba(0, 0, 0, 0.36);
+  margin-left: 10px;
 }
 .figure_text {
   padding-top: 0px;
@@ -394,9 +339,6 @@ body {
   -moz-border-radius: @divRadius;/* Safari v3.0+ and by Chrome v0.2+ */
   -webkit-border-radius: @divRadius;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
   border-radius: @divRadius;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);
   padding-top: 3px;
   position: relative;
   top: -12px;
@@ -416,7 +358,6 @@ body {
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .totalGraphTitle {
   background-color: rgba(255, 255, 255, 0.1);
@@ -433,7 +374,6 @@ body {
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
   position: relative;
 }
 .tip {
@@ -458,9 +398,6 @@ body {
   -moz-border-radius: @divRadius;/* Safari v3.0+ and by Chrome v0.2+ */
   -webkit-border-radius: @divRadius;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
   border-radius: @divRadius;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);
   padding-top: 3px;
 }
 .changeGraphTitle {
@@ -478,7 +415,6 @@ body {
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .mapDiv {
   background-color: @divColor;
@@ -489,9 +425,6 @@ body {
   -moz-border-radius: @divRadius;/* Safari v3.0+ and by Chrome v0.2+ */
   -webkit-border-radius: @divRadius;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
   border-radius: @divRadius;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);
   padding-top: 3px;
 }
 .mapTitle {
@@ -509,7 +442,6 @@ body {
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .changeGraphSubTitle {
   position: absolute;
