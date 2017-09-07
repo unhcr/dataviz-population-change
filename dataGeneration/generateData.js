@@ -84,6 +84,7 @@ var maxYear = d3.max(years);
 
 years.forEach(function (year){
   if(year !== minYear){
+    // Compute differences for ASY
     var asy0 = asy(year - 1);
     var asy1 = asy(year);
     var asyChanges = allCountryCodes.map(function (country_code){
@@ -97,6 +98,21 @@ years.forEach(function (year){
     });
     asy1.Increases = d3.sum(asyIncreases);
     asy1.Decreases = d3.sum(asyDecreases);
+
+    // Compute differences for ORI
+    var ori0 = ori(year - 1);
+    var ori1 = ori(year);
+    var oriChanges = allCountryCodes.map(function (country_code){
+      return ori1[country_code] - ori0[country_code];
+    });
+    var oriIncreases = oriChanges.filter(function (difference) {
+      return difference > 0;
+    });
+    var oriDecreases = oriChanges.filter(function (difference) {
+      return difference < 0;
+    });
+    ori1.Increases = d3.sum(oriIncreases);
+    ori1.Decreases = d3.sum(oriDecreases);
   }
 });
 
