@@ -24,7 +24,7 @@ var normalColor = "lightgrey";
 var disabledColor = "lightgrey";
 var selectedCountryColor = "white";
 var asylumColor = "#338EC9";
-var originColor = "#FFAD00";
+var originColor = "#EF4A60";
 var graphUpColor = "#F26E80";
 var graphDownColor = "#3DC5B1";
 var graphUpStrokeColor = "#F26E80";
@@ -35,18 +35,18 @@ var type="ASY";
 
 // COLOR BREWER - TOTAL ASYLUM
 var colorTotalASY = d3.scale.threshold()
-.domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 2500000, 7000000])
-.range(colorbrewer.Blues[9]);
+.domain([0, 25000, 100000, 500000, 1000000, 2500000, 7000000])
+.range(['#CCE3F2','#99C7E4','#66AAD7','#338EC9','#0072BC','#00568D']);
 
 // COLOR BREWER - TOTAL ORIGIN
 var colorTotalORI = d3.scale.threshold()
-.domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 2500000, 7000000])
-.range(colorbrewer.YlOrRd[9]);
+.domain([0, 25000, 100000, 500000, 1000000, 2500000, 7000000])
+.range(['#FCDBDF','#F9B7BF','#F592A0','#F26E80','#EF4A60','#B33848']);
 
 // COLOR BREWER - CHANGE ASYLUM
 var colorChangeASY = d3.scale.threshold()
-.domain([-2000000, -500000, -100000, -1000, 0, 1000, 100000, 500000, 7000000])
-.range(colorbrewer.RdYlGn[9]);
+.domain([-2000000, -500000, -100000, -1000, -1, 0, 1, 1000, 100000, 500000, 7000000])
+.range(['#EF4A60','#B33848','#F26E80','#F592A0','#F592A0','#F592A0','grey','#BFECE5','#7FD9CB','#40C6B2','#00B398']);
 
 // COLOR BREWER - CHANGE ORIGIN
 var colorChangeORI = d3.scale.threshold()
@@ -686,8 +686,8 @@ function mapMouseClick(d){
               if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
               if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
             })
-            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
-              else{return "#91CF60";}}); 
+            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
+              else{return "#3DC5B1";}}); 
             countrySelected = countryCode;
 
             changeChart.selectAll(".graphChangeDecreases rect")
@@ -705,8 +705,8 @@ function mapMouseClick(d){
               if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
               if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
             })
-            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
-              else{return "#91CF60";}
+            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
+              else{return "#3DC5B1";}
             }); 
 
             countrySelected = countryCode;
@@ -768,8 +768,10 @@ function sliderTotal(year){
             var result1 = dataset[year][type][0][countryCode];
 
             if(countryCode!=countrySelected){
-              if(result1==0){return "lightgrey" }else { return colorTotalASY(result1)};
-            } else { return selectedCountryColor;}
+              if((result1==0)||(!result1)){return "lightgrey" }else { return colorTotalASY(result1)};
+            } else { 
+              return selectedCountryColor;
+            }
 
           });
         }
@@ -809,37 +811,39 @@ function sliderChange(year){
 
   canvas.selectAll(".country")    
   .style("display","block")                                  
-        .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
-        .style("display", "none");  
+  .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
+  .style("display", "none");  
 
-        $('#totalASYkey').css('display',"none");
-        $('#totalORIkey').css('display',"none");
-        $('#changekey').css('display',"block");
+  $('#totalASYkey').css('display',"none");
+  $('#totalORIkey').css('display',"none");
+  $('#changekey').css('display',"block");
 
-        if(type=="ASY"){
-          var state = d3.selectAll('.country')
-          .style('fill', function(d,i){
-            var countryCode = d.id;
-            var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
-            if(countryCode!=countrySelected){
-              if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
-
-            } else { return selectedCountryColor;}
-          });
-        }
-
-        if(type=="ORI"){
-          var state = d3.selectAll('.country')
-          .style('fill', function(d){
-            var countryCode = d.id;
-            var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
-            if(countryCode!=countrySelected){
-             if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
-           }
-           else { return selectedCountryColor;}
-         });
-        }
+  if(type=="ASY"){
+    var state = d3.selectAll('.country')
+    .style('fill', function(d,i){
+      var countryCode = d.id;
+      var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
+      if(countryCode!=countrySelected){
+        if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
+      } else { 
+        return selectedCountryColor;
       }
+    });
+  }
+
+  if(type=="ORI"){
+    var state = d3.selectAll('.country')
+    .style('fill', function(d){
+      var countryCode = d.id;
+      var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
+      if(countryCode!=countrySelected){
+       if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
+      } else { 
+        return selectedCountryColor;
+      }
+   });
+  }
+}
 
 // SLIDER ALL FUNCTION
 function sliderAll(year){
@@ -1023,8 +1027,8 @@ function changeType(handler){
         if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
         if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
       })
-      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
-        else{return "#91CF60";}}); 
+      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
+        else{return "#3DC5B1";}}); 
       countrySelected = countryCode;
 
       changeChart.selectAll(".graphChangeDecreases rect")
@@ -1042,8 +1046,8 @@ function changeType(handler){
         if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
         if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
       })
-      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
-        else{return "#91CF60";}
+      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
+        else{return "#3DC5B1";}
       }); 
 
     } else {
