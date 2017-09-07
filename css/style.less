@@ -10,6 +10,12 @@
 @divRadius: 21px;
 @divColor: rgba(0, 0, 0, 0.236);
 
+h4 { 
+  margin: 0px !important;
+  display: inline;
+  padding-right: 5px !important;
+}
+
 #country_name_popup {
   color: black;
   border-radius: 5px;
@@ -40,10 +46,6 @@
   text-align: left;
 }
 
-.container {
-  border: 1px dotted lightgrey;
-}
-
 /* top row container */
 #topRow {
   text-align: right;
@@ -53,7 +55,7 @@
 
 .label_main1 {
   display: inline;
-  color: @t3;
+  color: #000;
   font-size: 12px;
   font-weight: bold;  /* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
 }
@@ -91,19 +93,18 @@
 
 /* middle row container */
 .middleRow {
-  text-align: right;
-  float: right;
   width: 100%;
   z-index: 999999;
+  height: 38px;
 }
 
 /* country of origin/asylum toggle button */
 #switchContainer {
-  position: relative;
-  left: 10px;
-  top: 5px;
   z-index: 99909;
+  display: inline-block;
+  padding-top: 4px;
 }
+
 .switchASY {
   display: inline;
   background: url(../img/switch.png);
@@ -134,12 +135,19 @@
   color: @t1;
 }
 
+.maplegend {
+  font-size: 9px; 
+  line-height: 1.3;
+  position: relative;
+  top: 10px;
+}
+
+
+
 /* select country box */
 #countrySelector {
-  position: absolute;
-  right: 0px;
-  top: 2px;
   z-index: 99909;
+  float: right;
 }
 .country {
   fill: lightgrey;
@@ -148,11 +156,14 @@
 }
 .country:hover {
 }
+
 #map {
+  position: relative;
+  height: 400px;
 }
 
 #map_tooltip {
-  position: relative;
+  position: absolute;
   display: none;
   top: 0px;
   left: 0px;
@@ -168,18 +179,16 @@
   padding-bottom: 5px;
 }
 #map_info {
-  color: @t1;
+  color: #100303;
   position: absolute;
-  height: 160px;
-  width: 230px;
-  top: 375px;
+  height: 147px;
+  /* width: 230px; */
+  bottom: 5px;
   left: 10px;
   padding: 3px;
   font-size: 9px;
-  background-color: rgba(0, 0, 0, 0.10);  /* Firefox v1.0+ */
-  -moz-border-radius: 15px;/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-border-radius: 15px;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
-  border-radius: 15px;/* Firefox v3.5+ */
+  padding-left: 7px;
+  background-color: #f6f6f6;
 }
 .ui-slider .ui-slider-handle {
   width: 30px;
@@ -201,10 +210,31 @@
 }
 .axisLabel {
   color: @axisLabels;
+  position: absolute; left: 12px; font-size: 9px; z-index: 9
 }
+
+.changeGraphDiv .axisLabel {
+  left: 3px;
+}
+
+
+.axisLabel.dec {
+ top: 58px;
+}
+
+.axisLabel.inc {
+  top: 27px;
+}
+
 .axisTitle {
   color: @t3;
 }
+
+.mapInfoLabel {
+  color: @axisLabels;
+  font-size: 9px; z-index: 9
+}
+
 .yTotalLabel {
   font-size: 10px;
   font-weight: normal;
@@ -238,7 +268,9 @@
   display: block;
   width: 16px;
   height: 18px;
-  background: url(../img/change_smaller.png) 0px 0px;
+  background: url(../img/change_smaller_new.png) 0px -2px;
+  background-size: 20px 40px;
+
 }
 .changeDown {
   position: relative;
@@ -248,7 +280,8 @@
   display: block;
   width: 16px;
   height: 18px;
-  background: url(../img/change_smaller.png) 0px 17px
+  background: url(../img/change_smaller_new.png) -1px 25px;
+  background-size: 20px 40px;
 }
 .changeNone {
   position: relative;
@@ -261,16 +294,18 @@
 }
 .changeSmallUp {
   display: inline;
-  background: url(../img/change_smaller.png);
-  background-position: -1px 0px;
+  background: url(../img/change_smaller_new.png);
+  background-position: 0px -2px;
+  background-size: 20px 40px;
   width: 16px;
   height: 16px;
 }
 .changeSmallDown {
   display: inline;
-  background: url(../img/change_smaller.png);
-  background-position: -1px 10px;
+  background: url(../img/change_smaller_new.png);
+  background-position: 0px 17px;
   width: 16px;
+  background-size: 20px 40px;
   height: 16px;
 }
 .changeSmallNone {
@@ -288,7 +323,7 @@
   color: @t2;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
 }
 .figure_box {
-  background-color: rgb(43, 46, 49);
+  background-color: #f2f2f2;
   width: 140px;
   height: 33px;
   text-align: center;
@@ -306,29 +341,31 @@
   background-color: green;
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
-  background-position: 22px -13px;
+  background: url(../img/nextprev_new.png);
+  background-size: 20px 40px; 
+  background-position: 22px -21px;
   cursor: pointer;
 }
 .prev {
   background-color: green;
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
-  background-position: 1px -13px;
+  background: url(../img/nextprev_new.png);
+  background-position: -4px -2px;
+    background-size: 20px 40px; 
   cursor: pointer;
 }
 .nextCountry {
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
+  background: url(../img/nextprev_new.png);
   background-position: 11px -2px;
   cursor: pointer;
 }
 .prevCountry {
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
+  background: url(../img/nextprev_new.png);
   background-position: 1px -2px;
   cursor: pointer;
 }
@@ -343,8 +380,6 @@
   -moz-border-radius: 10px;/* Safari v3.0+ and by Chrome v0.2+ */
   -webkit-border-radius: 10px;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
   border-radius: 10px;
-  margin-left: 2px;
-  padding-left: 25px;
   padding-top: 0px;
   font-size: 13px;
   font-weight: bold;
@@ -383,12 +418,9 @@
   opacity: 0.2;
 }
 .changeGraphDiv {
-  background-color: @divColor;
+  position: relative;
   height: 115px;
   margin-top: 10px;
-  -moz-border-radius: @divRadius;/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-border-radius: @divRadius;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
-  border-radius: @divRadius;/* Firefox v3.5+ */
   padding-top: 3px;
 }
 .changeGraphTitle {
@@ -433,9 +465,6 @@
 }
 
 .footer {
-  position: absolute;
-  top: 548px;
-  left: 0px;
   padding-bottom: 10px;
   padding-top: 8px;
   font-size: 10px;

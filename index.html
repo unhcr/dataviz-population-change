@@ -75,6 +75,20 @@
 
       <div id="container" class="ui container">
 
+<br/>
+<div class="ui grid unhcr-header unhcr-header-style3">
+  <img class="unhcr-header-logo" src="images/unhcr-logo-horizontal.svg">
+  <div class="unhcr-header-title">
+    <h1>Dataviz</h1>
+    <h2>Population Change</h2>  
+    <h3>Evolution of refugee populations overtime showing increases and decreases from year to year</h3>
+  </div>
+  <div class="unhcr-header-social">
+    <a href="#" target="_blank" title="Share on Facebook"><i class="facebook square icon"></i></a>
+    <a href="#" target="_blank" title="Share on Twitter"><i class="twitter square icon"></i></a> 
+  </div>
+</div>
+
         <div id="topRow" class="ui grid">
           
           
@@ -88,7 +102,7 @@
                 </td>
                 <td>
                   <div class="figure_box">
-                    <div class="figure_text text" id="totalValue" style="font-size: 22px; padding-top: 1px; line-height: 160%; color: rgb(204,209,212)">1,000,000</div>
+                    <div class="figure_text text" id="totalValue" style="font-size: 22px; padding-top: 1px; line-height: 160%; color: #0072BC;">1,000,000</div>
                   </div>
                 </td>
               </tr>
@@ -108,7 +122,7 @@
               </td>
               <td>
                 <div class="figure_box">
-                  <div class="figure_text text" id="increaseValue" style="padding-left: 10px">1,000,000</div>
+                  <div class="figure_text text" id="increaseValue" style="padding-left: 10px; color: #EF4A60">1,000,000</div>
                   <div style="position: relative; top: -22px; left: 8px;" class="changeUp">
                   </div>
                 </div>
@@ -129,7 +143,7 @@
             </td>
             <td>
               <div class="figure_box">
-                <div class="figure_text text" id="decreaseValue" style="padding-left: 10px">1,000,000</div>
+                <div class="figure_text text" id="decreaseValue" style="padding-left: 10px; color: #00B398">1,000,000</div>
                 <div style="position: relative; top: -30px; left: 8px;" class="changeDown">
                 </div>
               </div>
@@ -149,7 +163,7 @@
             <td>
               <div class="figure_box" style="width: 100px;">
                 <div class="prev" id="yearDown" onclick="yearDown();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <div class="figure_text text" id="yearBox">2016</div>
+                <div class="figure_text text" id="yearBox" style="color: #000">2016</div>
                 <div class="next" id="yearUp" onclick="yearUp();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               </div>
             </td>
@@ -159,24 +173,21 @@
 
     </div>
 
-    <div id="map">
-
     <h4 class="ui blue header">Total Population</h4>
     <div class="text changeGraphSubTitle" style="font-size: 10px;">Click on the graphs to select a year.</div>
     <div class="totalGraphDiv"></div>
 
-    
+    <br/>
     <h4 class="ui blue header">Population Change</h4>
     <div class="text changeGraphSubTitle" style="font-size: 10px">Compared to previous year.</div>
     <div class="changeGraphDiv">
-      <img src="img/changeGraphAxis.png" style="padding-left: 10px; padding-top: 13px;"/>
-      <span class="axisLabel" style="position: absolute; top: 46px; left: 12px; font-size: 9px;">Increase</span>
-      <span class="axisLabel" style="position: absolute; top: 76px; left: 10px; font-size: 9px;">Decrease</span>
+      <div class="changeSmallUp" style="position: relative; top: 13px; left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+      <span class="axisLabel inc">Increase</span>
+      <span class="axisLabel dec">Decrease</span>
+      <div class="changeSmallDown" style="position: absolute; top: 77px; left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
     </div>
 
-
     <div class="middleRow">
-
       <div id="switchContainer">
         <table>
           <tr>
@@ -187,9 +198,13 @@
             </td>
 
             <td style="padding-left: 0px;">
-              <div id="switch" class="switchASY" onclick="switchChange();" style="display: inline;">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </div>
+
+
+              <div class="ui toggle checkbox">
+  <input type="checkbox" name="public" id="switch" class="switchASY" onclick="switchChange();">
+  <label></label>
+</div>
+
             </td>
 
             <td style="padding-left: 10px;">
@@ -200,13 +215,11 @@
           </tr>
         </table>
       </div>
-
       <div id="countrySelector">
-
-        <table style="float: right">
+        <table>
           <tr>
-            <td style="padding-left: 50px;">
-              <div class="label_main1" style="display: inline; padding-right: 10px; font-size: 12px">
+            <td>
+              <div class="label_main1" style="display: inline; font-size: 12px">
                 Selected Country
               </div>
             </td>
@@ -214,9 +227,7 @@
             <td align="right" style="float: right">
               <div class="figure_box" style="width: 280px;">
                 <table width="100%"><tr>
-
-                  <td width="100%" class="figure_text text" id="countryBox">World</td>
-
+                  <td width="100%" class="figure_text text" id="countryBox" style="color: #424242">World</td>
                 </tr></table>
               </div>
             </td>
@@ -224,347 +235,345 @@
           </tr>
         </table>
       </div>
+    </div>
+
+    <!-- MAP SECTION -->
+    <h4 class="ui blue header">World Map</h4>
+    <div class="text changeGraphSubTitle" style="font-size: 10px;">Click on a country to select and filter graphs.</div>
+
+    <div id="map">
+
+      <div id="map_tooltip"></div>
+
+      <!-- legend -->
+      <div id="totalORIkey" class="maplegend">
+        <table cellpadding="0" cellspacing="2" style="border: none">
+
+          <tr>
+            <td colspan="2" class="axisTitle" style="padding-left: 0px; font-weight: bold;"> Refugees by Origin</td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 5px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #ffeda0;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1 - 10,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #fed976;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">10,001 - 50,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #feb24c;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">50,001 - 100,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #fd8d3c;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 250,000 </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #fc4e2a;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">250,001 - 500,000 </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #e31a1c;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">500,001 - 1,000,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #bd0026;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1,000,001 - 2,500,000 </td>
+          </tr>
+
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid grey; background-color: #800026;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">2,500,000 + </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #d3d3d3;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; border: 0px solid black ">Data unavailable </td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="totalASYkey" class="maplegend" style="display: none;">
+        <table cellpadding="0" cellspacing="2" style="border: none" class="axisLabel" >
+
+          <tr>
+            <td colspan="2" class="axisTitle" style="padding-left: 0px; font-weight: bold;"> Refugees by Asylum</td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 5px ">&nbsp; </td>
+          </tr>
+
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #deebf7;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1 - 10,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #c6dbef;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">10,001 - 50,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #9ecae1;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">50,001 - 100,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #6baed6;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 250,000 </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #4292c6;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">250,001 - 500,000 </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #2171b5;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">500,001 - 1,000,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #08519c;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1,000,001 - 2,500,000 </td>
+          </tr>
+
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #08306b;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">2,500,000 + </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #d3d3d3;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; border: 0px solid black ">Data unavailable </td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="changekey" class="maplegend">
+        <table cellpadding="0" cellspacing="2" style="border: none" class="axisLabel">
+
+          <tr>
+            <td width="20px" class="changeSmallUp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class="axisTitle" style="padding-left: 7px; font-weight: bold;"> Increase</td>
+          </tr>
+
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #f46d43;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">500,000 + </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #fdae61;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 500,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #fee08b;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1,001 - 100,000 </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #ffffbf;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1 - 1,000 </td>
+          </tr>
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #d3d3d3;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; border: 0px solid black ">Data unavailable (0)</td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #d9ef8b;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1- 1,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #a6d96a;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">1,001 - 100,000 </td>
+          </tr>
+
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #66bd63;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 500,000 </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td style="border: 1px solid lightgrey; background-color: #1a9850;" width="20px"></td>
+            <td nowrap="nowrap" style="padding-left: 8px; ">500,000 + </td>
+          </tr>
+
+          <tr>
+            <td style="border: none" width="20px"></td>
+            <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
+          </tr>
+
+          <tr>
+            <td width="20px" class="changeSmallDown">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class="axisTitle" style="padding-left: 7px; font-weight: bold;"> Decrease</td>
+          </tr>
+
+        </table>
+      </div>
+      <!-- / legend -->      
+
+      <div id="map_info">
+        <div class="map_info">
+          <div id="Country" class="map_info_title">Country</div>
+          <div id="mapinfo_text">
+            <div id="refASYTitle" class="axisTitle" style="font-size: 11px; font-weight: bold;">Refugees in Angola</div>
+            <span id="refASYTotal" style="font-size: 14px; font-weight: bold;">122,220</span>
+            <span style="font-size: 10px; font-weight: normal;" class="mapInfoLabel"> refugees in-country</span><br/>
+            <div id="refASYChangeIcon" class="changeSmallUp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <span id="refASYChange" style="font-size: 12px; font-weight: norma;">1,202,600</span>
+            <span id="refASYChangeYear" style="font-size: 10px; font-weight: normal;" class="mapInfoLabel">  increase since 1989</span>
+            <div id="refORITitle" class="axisTitle" style="font-size: 11px; font-weight: bold;">Refugees from Angola</div>
+            <span id="refORITotal" class="" style="font-size: 14px; font-weight: bold;">122,220</span>
+            <span class="mapInfoLabel" style="font-size: 10px; font-weight: normal;"> refugees worldwide</span><br/>
+            <div id="refORIChangeIcon" class="changeSmallUp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <span id="refORIChange" style="font-size: 12px; font-weight: normal;">1,202,600</span>
+            <span id="refORIChangeYear" class="mapInfoLabel" style="font-size: 10px; font-weight: normal;">  increase since 1989</span>
+          </div>
+        </div><!-- /.map_info -->
+      </div><!-- /#map_info -->
 
     </div>
 
-    <div class="mapDiv">
-      <div class="tip">&nbsp;</div>
-      <div class="mapTitle">World Map</div>
-    </div>
-
-    <div class="text changeGraphSubTitle" style="font-size: 10px; left: 117px; top: 161px">Click on a country to select and filter graphs.</div>
-
-    <div id="map_tooltip">
-
-    </div>
-
-    <div id="totalORIkey" style="position:absolute; top: 205px; left: 13px; color: grey; font-size: 9px; line-height: 1.3">
-      <table cellpadding="0" cellspacing="2" style="border: none">
-
-        <tr>
-          <td colspan="2" class="axisTitle" style="padding-left: 0px; font-weight: bold;"> Refugees by Origin</td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 5px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #ffeda0;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1 - 10,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #fed976;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">10,001 - 50,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #feb24c;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">50,001 - 100,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #fd8d3c;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 250,000 </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #fc4e2a;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">250,001 - 500,000 </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #e31a1c;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">500,001 - 1,000,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #bd0026;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1,000,001 - 2,500,000 </td>
-        </tr>
-
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid grey; background-color: #800026;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">2,500,000 + </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #d3d3d3;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; border: 0px solid black ">Data unavailable </td>
-        </tr>
-      </table>
-    </div>
-
-    <div id="totalASYkey" style="display: none; position:absolute; top: 205px; left: 13px; color: grey; font-size: 9px; line-height: 1.3">
-      <table cellpadding="0" cellspacing="2" style="border: none" class="axisLabel" >
-
-        <tr>
-          <td colspan="2" class="axisTitle" style="padding-left: 0px; font-weight: bold;"> Refugees by Asylum</td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 5px ">&nbsp; </td>
-        </tr>
-
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #deebf7;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1 - 10,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #c6dbef;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">10,001 - 50,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #9ecae1;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">50,001 - 100,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #6baed6;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 250,000 </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #4292c6;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">250,001 - 500,000 </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #2171b5;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">500,001 - 1,000,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #08519c;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1,000,001 - 2,500,000 </td>
-        </tr>
-
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #08306b;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">2,500,000 + </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #d3d3d3;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; border: 0px solid black ">Data unavailable </td>
-        </tr>
-      </table>
-    </div>
-
-
-    <div id="changekey" class="axisLabel" style="position:absolute; top: 195px; left: 13px; font-size: 9px; line-height: 1.3">
-      <table cellpadding="0" cellspacing="2" style="border: none">
-
-        <tr>
-          <td width="20px" class="changeSmallUp" style="background-position: 3px 0px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td class="axisTitle" style="padding-left: 7px; font-weight: bold;"> Increase</td>
-        </tr>
-
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #f46d43;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">500,000 + </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #fdae61;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 500,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #fee08b;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1,001 - 100,000 </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #ffffbf;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1 - 1,000 </td>
-        </tr>
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #d3d3d3;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; border: 0px solid black ">Data unavailable (0)</td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #d9ef8b;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1- 1,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #a6d96a;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">1,001 - 100,000 </td>
-        </tr>
-
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #66bd63;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">100,001 - 500,000 </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td style="border: 1px solid lightgrey; background-color: #1a9850;" width="20px"></td>
-          <td nowrap="nowrap" style="padding-left: 8px; ">500,000 + </td>
-        </tr>
-
-        <tr>
-          <td style="border: none" width="20px"></td>
-          <td nowrap="nowrap" style="font-size: 3px ">&nbsp; </td>
-        </tr>
-
-        <tr>
-          <td width="20px" class="changeSmallDown" style="background-position: 3px 10px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td class="axisTitle" style="padding-left: 7px; font-weight: bold;"> Decrease</td>
-        </tr>
-
-      </table>
-    </div>
-
-    <div id="map_info">
-      <div class="map_info">
-        <div class="tip">&nbsp;</div>
-        <div id="Country" class="map_info_title">Country</div>
-        <div id="mapinfo_text" style="padding: 8px">
-          <div id="refASYTitle" class="axisTitle" style="font-size: 11px; font-weight: bold;">Refugees in Angola</div>
-          <span id="refASYTotal" style="font-size: 14px; font-weight: bold;">122,220</span>
-          <span style="font-size: 10px; font-weight: normal;" class="axisLabel"> refugees in-country</span><br/>
-          <div id="refASYChangeIcon" class="changeSmallUp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-          <span id="refASYChange" style="font-size: 12px; font-weight: norma;">1,202,600</span>
-          <span id="refASYChangeYear" style="font-size: 10px; font-weight: normal;" class="axisLabel">  increase since 1989</span>
-          <div id="refORITitle" class="axisTitle" style="font-size: 11px; font-weight: bold;">Refugees from Angola</div>
-          <span id="refORITotal" class="" style="font-size: 14px; font-weight: bold;">122,220</span>
-          <span class="axisLabel" style="font-size: 10px; font-weight: normal;"> refugees worldwide</span><br/>
-          <div id="refORIChangeIcon" class="changeSmallUp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-          <span id="refORIChange" style="font-size: 12px; font-weight: normal;">1,202,600</span>
-          <span id="refORIChangeYear" class="axisLabel" style="font-size: 10px; font-weight: normal;">  increase since 1989</span>
-        </div>
-      </div><!-- /.map_info -->
-    </div><!-- /#map_info -->
-
-    <div class="text footer">
+    <div class="text footer"><br/>
       Developed by the UNHCR Field Information and Coordination Support Section (FICSS) 
       <a href="mailto:stats@unhcr.org?subject=data.unhcr.org/dataviz">Email FICSS</a> -- 
       <span class="disclaimer1">DISCLAIMER -- The borders and country names on this map do not imply official endorsement by the United Nations. Data may be unavailable for some locations during certain time periods.</span>
