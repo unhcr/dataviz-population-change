@@ -539,6 +539,12 @@ if(timer) {
 
 function yearOver(selectedYear){
 
+    d3.selectAll(".yearLabels")
+  .attr("y", 107)
+  .attr("fill", "#9B9B9B")
+  .style("font-size", "7px")
+  .style("font-weight", "normal")
+
   d3.selectAll(".y"+selectedYear)
   .attr("y", 108)
   .attr("fill", "#000")
@@ -808,7 +814,6 @@ function sliderChange(year){
   sliderAll(selectedYear);
   sliderActiveYear(year);
 
-
   canvas.selectAll(".country")    
   .style("display","block")                                  
   .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
@@ -897,14 +902,9 @@ function sliderAll(year){
 
   }
 
-
   $('#totalValue').text(totalValue);
 
-
-
-
   $('#yearBox').text(selectedYear);
-
 
   var year = selectedYear-minYear;
   var type = $('#type').val();
