@@ -617,7 +617,6 @@ function mapMouseOver(d){
 // MOUSE OUT COUNTRY
 function mapMouseOut(d){
   countryHovered = 0;
-
   $('#map_tooltip').css("display","none");
 }
 
@@ -1085,8 +1084,8 @@ function changeType(handler){
 
 // COUNTRY MAP TOOLTIP FUNCTION
 $("#map").mousemove(function(e) {
-  var x_offset = -220;
-  var y_offset = -310;
+  var x_offset = -20;
+  var y_offset = -510;
   $('#map_tooltip').css('left', e.pageX + x_offset).css('top', e.pageY + y_offset);
 });
 
