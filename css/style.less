@@ -2,7 +2,7 @@
 @t2:grey;
 
 /* sub-titles, descriptive text, grey */
-@t3:lightgrey;
+@t3:#000;
 
 /* titles */
 @tFigure: rgb(164, 169, 172);
@@ -10,15 +10,10 @@
 @divRadius: 21px;
 @divColor: rgba(0, 0, 0, 0.236);
 
-body {
-  padding-top: 50px; /* 60px to make the container go all the way to the bottom of the topbar */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-family: 'Lato', sans-serif;
+h4 { 
+  margin: 0px !important;
+  display: inline;
+  padding-right: 5px !important;
 }
 
 #country_name_popup {
@@ -53,63 +48,27 @@ body {
 
 /* top row container */
 #topRow {
-  position: absolute;
-  top: 10px;
-  left: 0px;
   text-align: right;
-  float: right;
-  width: 100%;
-  z-index: 999999;
   height: 80px;
   padding-bottom: 50px;
 }
 
-/* total populaiton box */
-#totalPopBox {
-  position: absolute;
-  top: 40px;
-  left: 10px;
-}
-
-/* main year selector box box */
-#yearSelectorBox {
-  position: absolute;
-  top: 40px;
-  right: 5px;
-}
-
-/* population change boxes */
-#popIncreasesBox {
-  position: absolute;
-  top: 40px;
-  left: 250px;
-}
-
-/* population change boxes */
-#popDecreasesBox {
-  position: absolute;
-  top: 40px;
-  left: 580px;
-}
 .label_main1 {
   display: inline;
-  color: @t3;
-  padding-right: 10px;
+  color: #000;
   font-size: 12px;
   font-weight: bold;  /* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .label_main2 {
   display: inline;
   color: @t3;
-  padding-right: 10px;
   font-size: 11px;
   line-height: 0.5;
   display: block;
   padding-top: 7px;
   font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
+
 .yearSelected {
   fill: red;
 }
@@ -134,21 +93,18 @@ body {
 
 /* middle row container */
 .middleRow {
-  position: absolute;
-  top: 120px;
-  text-align: right;
-  float: right;
   width: 100%;
   z-index: 999999;
+  height: 38px;
 }
 
 /* country of origin/asylum toggle button */
 #switchContainer {
-  position: relative;
-  left: 10px;
-  top: 5px;
   z-index: 99909;
+  display: inline-block;
+  padding-top: 4px;
 }
+
 .switchASY {
   display: inline;
   background: url(../img/switch.png);
@@ -170,23 +126,28 @@ body {
 .switchActive {
   color: @t3;
   font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .switchInactive {
   color: @t2;
   font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .active {
   color: @t1;
 }
 
+.maplegend {
+  font-size: 9px; 
+  line-height: 1.3;
+  position: relative;
+  top: 10px;
+}
+
+
+
 /* select country box */
 #countrySelector {
-  position: absolute;
-  right: 0px;
-  top: 2px;
   z-index: 99909;
+  float: right;
 }
 .country {
   fill: lightgrey;
@@ -195,13 +156,14 @@ body {
 }
 .country:hover {
 }
+
 #map {
-  position: absolute;
-  border: transparent 1px #000;
-  top: 100px;
-}
-#map_tooltip {
   position: relative;
+  height: 400px;
+}
+
+#map_tooltip {
+  position: absolute;
   display: none;
   top: 0px;
   left: 0px;
@@ -217,21 +179,16 @@ body {
   padding-bottom: 5px;
 }
 #map_info {
-  color: @t1;
+  color: #100303;
   position: absolute;
-  height: 160px;
-  width: 230px;
-  top: 375px;
+  height: 147px;
+  /* width: 230px; */
+  bottom: 5px;
   left: 10px;
   padding: 3px;
   font-size: 9px;
-  background-color: rgba(0, 0, 0, 0.10);  /* Firefox v1.0+ */
-  -moz-border-radius: 15px;/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-border-radius: 15px;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
-  border-radius: 15px;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.18), inset 2px 2px 2px rgba(237, 237, 237, 0.1);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.18), inset 2px 2px 2px rgba(237, 237, 237, 0.1);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.18), inset 2px 2px 2px rgba(237, 237, 237, 0.1);
+  padding-left: 7px;
+  background-color: #f6f6f6;
 }
 .ui-slider .ui-slider-handle {
   width: 30px;
@@ -253,10 +210,31 @@ body {
 }
 .axisLabel {
   color: @axisLabels;
+  position: absolute; left: 12px; font-size: 9px; z-index: 9
 }
+
+.changeGraphDiv .axisLabel {
+  left: 3px;
+}
+
+
+.axisLabel.dec {
+ top: 58px;
+}
+
+.axisLabel.inc {
+  top: 27px;
+}
+
 .axisTitle {
   color: @t3;
 }
+
+.mapInfoLabel {
+  color: @axisLabels;
+  font-size: 9px; z-index: 9
+}
+
 .yTotalLabel {
   font-size: 10px;
   font-weight: normal;
@@ -290,7 +268,9 @@ body {
   display: block;
   width: 16px;
   height: 18px;
-  background: url(../img/change_smaller.png) 0px 0px;
+  background: url(../img/change_smaller_new.png) 0px -2px;
+  background-size: 20px 40px;
+
 }
 .changeDown {
   position: relative;
@@ -300,7 +280,8 @@ body {
   display: block;
   width: 16px;
   height: 18px;
-  background: url(../img/change_smaller.png) 0px 17px
+  background: url(../img/change_smaller_new.png) -1px 25px;
+  background-size: 20px 40px;
 }
 .changeNone {
   position: relative;
@@ -313,16 +294,18 @@ body {
 }
 .changeSmallUp {
   display: inline;
-  background: url(../img/change_smaller.png);
-  background-position: -1px 0px;
+  background: url(../img/change_smaller_new.png);
+  background-position: 0px -2px;
+  background-size: 20px 40px;
   width: 16px;
   height: 16px;
 }
 .changeSmallDown {
   display: inline;
-  background: url(../img/change_smaller.png);
-  background-position: -1px 10px;
+  background: url(../img/change_smaller_new.png);
+  background-position: 0px 17px;
   width: 16px;
+  background-size: 20px 40px;
   height: 16px;
 }
 .changeSmallNone {
@@ -338,19 +321,16 @@ body {
   letter-spacing: 0pt;
   line-height: 190%;
   color: @t2;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .figure_box {
-  background-color: rgb(43, 46, 49);
+  background-color: #f2f2f2;
   width: 140px;
   height: 33px;
   text-align: center;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;/* Firefox v3.5+ */
-  -moz-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.09), inset 0px 0px 1px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 3px 0px rgba(0, 0, 0, 0.36);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.09), inset 0px 0px 1px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 3px 0px rgba(0, 0, 0, 0.36);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.09), inset 0px 0px 1px 0px rgba(0, 0, 0, 0.05), inset 0px 1px 3px 0px rgba(0, 0, 0, 0.36);
+  margin-left: 10px;
 }
 .figure_text {
   padding-top: 0px;
@@ -361,45 +341,37 @@ body {
   background-color: green;
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
-  background-position: 22px -13px;
+  background: url(../img/nextprev_new.png);
+  background-size: 20px 40px; 
+  background-position: 22px -21px;
   cursor: pointer;
 }
 .prev {
   background-color: green;
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
-  background-position: 1px -13px;
+  background: url(../img/nextprev_new.png);
+  background-position: -4px -2px;
+    background-size: 20px 40px; 
   cursor: pointer;
 }
 .nextCountry {
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
+  background: url(../img/nextprev_new.png);
   background-position: 11px -2px;
   cursor: pointer;
 }
 .prevCountry {
   width: 10px;
   display: inline;
-  background: url(../img/nextprev.png);
+  background: url(../img/nextprev_new.png);
   background-position: 1px -2px;
   cursor: pointer;
 }
 .totalGraphDiv {
-  background-color: @divColor;
   width: 1100px;
   height: 110px;/* Firefox v1.0+ */
-  -moz-border-radius: @divRadius;/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-border-radius: @divRadius;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
-  border-radius: @divRadius;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);
-  padding-top: 3px;
-  position: relative;
-  top: -12px;
 }
 .map_info_title {
   background-color: rgba(255, 255, 255, 0.1);
@@ -408,15 +380,12 @@ body {
   -moz-border-radius: 10px;/* Safari v3.0+ and by Chrome v0.2+ */
   -webkit-border-radius: 10px;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
   border-radius: 10px;
-  margin-left: 2px;
-  padding-left: 25px;
   padding-top: 0px;
   font-size: 13px;
   font-weight: bold;
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .totalGraphTitle {
   background-color: rgba(255, 255, 255, 0.1);
@@ -433,7 +402,6 @@ body {
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
   position: relative;
 }
 .tip {
@@ -450,17 +418,9 @@ body {
   opacity: 0.2;
 }
 .changeGraphDiv {
-  background-color: @divColor;
-  width: 1100px;
+  position: relative;
   height: 115px;
-  position: absolute;
-  top: 118px;/* Firefox v1.0+ */
-  -moz-border-radius: @divRadius;/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-border-radius: @divRadius;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
-  border-radius: @divRadius;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);
+  margin-top: 10px;
   padding-top: 3px;
 }
 .changeGraphTitle {
@@ -478,20 +438,13 @@ body {
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
 .mapDiv {
   background-color: @divColor;
-  width: 1100px;
   height: 390px;
-  position: absolute;
-  top: 157px;/* Firefox v1.0+ */
   -moz-border-radius: @divRadius;/* Safari v3.0+ and by Chrome v0.2+ */
   -webkit-border-radius: @divRadius;/* Firefox v4.0+ , Safari v5.0+ , Chrome v4.0+ , Opera v10.5+  and by IE v9.0+ */
   border-radius: @divRadius;/* Firefox v3.5+ */
-  -moz-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Safari v3.0+ and by Chrome v0.2+ */
-  -webkit-box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  box-shadow: inset -2px -2px 2px rgba(237, 237, 237, 0.2), inset 5px 5px 4px rgba(0, 0, 0, 0.18);
   padding-top: 3px;
 }
 .mapTitle {
@@ -509,17 +462,9 @@ body {
   letter-spacing: 0pt;
   color: @t3;
   text-align: left;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.71);
 }
-.changeGraphSubTitle {
-  position: absolute;
-  top: 5px;
-  left: 180px;
-}
+
 .footer {
-  position: absolute;
-  top: 548px;
-  left: 0px;
   padding-bottom: 10px;
   padding-top: 8px;
   font-size: 10px;
