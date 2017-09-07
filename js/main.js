@@ -3,7 +3,7 @@
 
 // CANVAS SIZE
 var width = 1078,
-    height = 699;
+height = 699;
 
 // GRAPH SIZE
 var graphHeight = 80;
@@ -35,23 +35,23 @@ var type="ASY";
 
 // COLOR BREWER - TOTAL ASYLUM
 var colorTotalASY = d3.scale.threshold()
-    .domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 2500000, 7000000])
-    .range(colorbrewer.Blues[9]);
+.domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 2500000, 7000000])
+.range(colorbrewer.Blues[9]);
 
 // COLOR BREWER - TOTAL ORIGIN
 var colorTotalORI = d3.scale.threshold()
-    .domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 2500000, 7000000])
-    .range(colorbrewer.YlOrRd[9]);
+.domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 2500000, 7000000])
+.range(colorbrewer.YlOrRd[9]);
 
 // COLOR BREWER - CHANGE ASYLUM
 var colorChangeASY = d3.scale.threshold()
-    .domain([-2000000, -500000, -100000, -1000, 0, 1000, 100000, 500000, 7000000])
-    .range(colorbrewer.RdYlGn[9]);
+.domain([-2000000, -500000, -100000, -1000, 0, 1000, 100000, 500000, 7000000])
+.range(colorbrewer.RdYlGn[9]);
 
 // COLOR BREWER - CHANGE ORIGIN
 var colorChangeORI = d3.scale.threshold()
-    .domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 3000000, 7000000])
-    .range(colorbrewer.RdYlGn[9]);
+.domain([0, 10000, 50000, 100000, 250000, 500000, 1000000, 3000000, 7000000])
+.range(colorbrewer.RdYlGn[9]);
 
 // OTHER VARIABLES
 
@@ -70,90 +70,96 @@ var countrySelectedName;
 // PROJECTION AND SCALE            
 
 var projection = d3.geo.equirectangular()
-    .center([0, 0])
-    .scale(mapScale)
-    .translate([width/2 + mapOffsetX, height/2 + mapOffsetY]);
+.center([0, 0])
+.scale(mapScale)
+.translate([width/2 + mapOffsetX, height/2 + mapOffsetY]);
 
 var path = d3.geo.path()
-    .projection(projection);
+.projection(projection);
 
 // CREATE SVG
 var canvas = d3.select("#map").append("svg")
     .attr("width", width + 6) // Add 6px to show latest year label.
     .attr("height", height)
-    .style("position","absolute")
-    .style("top", "3px")
-    .style("left", "10px");
      //   .call(d3.behavior.zoom()
     //.on("zoom", redraw))
      //   .append("g");
 
+var totalChart = d3.select('.totalGraphDiv').append("svg")
+    .attr("width", width + 6) // Add 6px to show latest year label.
+    .attr("height", 110)
+
+var changeChart = d3.select('.changeGraphDiv').append("svg")
+    .attr("width", width + 6) // Add 6px to show latest year label.
+    .attr("height", 110)
+    .style('position', 'absolute');
+
 // ZOOM FUNCTION
 function redraw() {
-    canvas.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  canvas.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
 
 // SVG FILTERS
 var defs = canvas.append("defs");
 // FILTER 0 (none) -- clear filter
 var filter = defs.append("filter")
-    .attr("id", "none");
+.attr("id", "none");
 // FILTER 1 (innershadow)
 var filter = defs.append("filter")
-    .attr("id", "innershadow")
-    .attr("height", "130%");
+.attr("id", "innershadow")
+.attr("height", "130%");
 filter.append("feGaussianBlur")
-    .attr("in", "SourceAlpha")
-    .attr("stdDeviation", 4)
-    .attr("result", "blur");
+.attr("in", "SourceAlpha")
+.attr("stdDeviation", 4)
+.attr("result", "blur");
 filter.append("feOffset")
-    .attr("in", "blur")
-    .attr("dx", 0)
-    .attr("dy", 0)
-    .attr("result", "shadowDiff");
+.attr("in", "blur")
+.attr("dx", 0)
+.attr("dy", 0)
+.attr("result", "shadowDiff");
 filter.append('feComposite')
-    .attr('result','shadowDiff')
-    .attr('in2','SourceAlpha')
-    .attr('operator','arithmetic')
-    .attr('k2',-1)
-    .attr('k3',1);
+.attr('result','shadowDiff')
+.attr('in2','SourceAlpha')
+.attr('operator','arithmetic')
+.attr('k2',-1)
+.attr('k3',1);
 filter.append('feFlood')
-    .attr('flood-color','black')
-    .attr('flood-opacity','0.9');
+.attr('flood-color','black')
+.attr('flood-opacity','0.9');
 filter.append('feComposite')
-    .attr('in2','shadowDiff')
-    .attr('operator','in');
+.attr('in2','shadowDiff')
+.attr('operator','in');
 filter.append('feComposite')
-    .attr('in2','SourceGraphic')
-    .attr('operator','over');
+.attr('in2','SourceGraphic')
+.attr('operator','over');
 // FILTER 2 (innershadow2) -- optional, not in use -- is more transparent
 var filter = defs.append("filter")
-    .attr("id", "innershadow2")
-    .attr("height", "130%");
+.attr("id", "innershadow2")
+.attr("height", "130%");
 filter.append("feGaussianBlur")
-    .attr("in", "SourceAlpha")
-    .attr("stdDeviation", 4)
-    .attr("result", "blur");
+.attr("in", "SourceAlpha")
+.attr("stdDeviation", 4)
+.attr("result", "blur");
 filter.append("feOffset")
-    .attr("in", "blur")
-    .attr("dx", 0)
-    .attr("dy", 0)
-    .attr("result", "shadowDiff");
+.attr("in", "blur")
+.attr("dx", 0)
+.attr("dy", 0)
+.attr("result", "shadowDiff");
 filter.append('feComposite')
-    .attr('result','shadowDiff')
-    .attr('in2','SourceAlpha')
-    .attr('operator','arithmetic')
-    .attr('k2',-1)
-    .attr('k3',1);
+.attr('result','shadowDiff')
+.attr('in2','SourceAlpha')
+.attr('operator','arithmetic')
+.attr('k2',-1)
+.attr('k3',1);
 filter.append('feFlood')
-    .attr('flood-color','darkblue')
-    .attr('flood-opacity','0.9');
+.attr('flood-color','darkblue')
+.attr('flood-opacity','0.9');
 filter.append('feComposite')
-    .attr('in2','shadowDiff')
-    .attr('operator','in');
+.attr('in2','shadowDiff')
+.attr('operator','in');
 filter.append('feComposite')
-    .attr('in2','SourceGraphic')
-    .attr('operator','over');
+.attr('in2','SourceGraphic')
+.attr('operator','over');
 
 // ADD MAP GEOMETRY
 d3.json("js/worldtopo.json", function(error, map) {
@@ -163,458 +169,458 @@ d3.json("js/worldtopo.json", function(error, map) {
   // This should be fine, as no major boundaries have changed
   // between 2012 and 2017.
   map.objects.world.geometries.forEach(function (geometry){
-      if(geometry.properties.COWEYEAR === 2012){
-          geometry.properties.COWEYEAR = maxYear;
-      }
+    if(geometry.properties.COWEYEAR === 2012){
+      geometry.properties.COWEYEAR = maxYear;
+    }
   });
 
   // MAP SVG GROUP
   var mapsvg = canvas.append("g")
-      .attr("class","map");
+  .attr("class","map");
 
     // MAP BACKGROUND LAYER -- clickable to capture mouse off events
-      mapsvg
-          .append("rect")
-          .attr("class","mapbglayer")
-          .attr("width",width-yAxisPadding)
-          .attr('height', 470)
-          .attr("y", 320)
-          .attr("x", yAxisPadding)
-          .attr("fill", "rgba(0,0,0,0.0)")
-          .on("click",function(d,i){
-countrySelectedName = "";
-$('#countryBox').text("World");
+    mapsvg
+    .append("rect")
+    .attr("class","mapbglayer")
+    .attr("width",width-yAxisPadding)
+    .attr('height', 470)
+    .attr("y", 320)
+    .attr("x", yAxisPadding)
+    .attr("fill", "rgba(0,0,0,0.0)")
+    .on("click",function(d,i){
+      countrySelectedName = "";
+      $('#countryBox').text("World");
 
-var yAxis = d3.svg.axis()
-                  .scale(scaleYTotalAxis)
-                  .orient("left")
-                  .ticks(4)
-                  .tickFormat(function (d) {
-                    var label;
-                    if(d==0){label = 0}
+      var yAxis = d3.svg.axis()
+      .scale(scaleYTotalAxis)
+      .orient("left")
+      .ticks(4)
+      .tickFormat(function (d) {
+        var label;
+        if(d==0){label = 0}
 
-                     if ((d / 100) >= 1) {
-                        label = d;
-                      }
-                      if ((d / 1000) >= 1) {
-                        label = d / 1000 + "k";
-                      }
-                      if ((d / 1000000) >= 1) {
-                        label = d / 1000000 + "m";
-                      }                 
-                  return label;});
+         if ((d / 100) >= 1) {
+          label = d;
+        }
+        if ((d / 1000) >= 1) {
+          label = d / 1000 + "k";
+        }
+        if ((d / 1000000) >= 1) {
+          label = d / 1000000 + "m";
+        }                 
+        return label;});
 
             //Create Y axis
-            canvas.selectAll(".totalYAxis")
-                .transition().duration(1000).call(yAxis);
+            totalChart.selectAll(".totalYAxis")
+            .transition().duration(1000).call(yAxis);
 
-var type = $('#type').val();
-var countryCode = "Total";
-var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
-var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
-  var scaleYTotalCountry = d3.scale.linear()
-              .domain([0,max])
-              .range([0,graphHeight-10]);
+            var type = $('#type').val();
+            var countryCode = "Total";
+            var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
+            var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
+            var scaleYTotalCountry = d3.scale.linear()
+            .domain([0,max])
+            .range([0,graphHeight-10]);
 
-  var scaleYChangeCountry = d3.scale.linear()
-              .domain([0,maxChange])
-              .range([0,graphHeight/2-10]);
+            var scaleYChangeCountry = d3.scale.linear()
+            .domain([0,maxChange])
+            .range([0,graphHeight/2-10]);
 
 
-   canvas.selectAll(".graphTotal rect")
-          .data(dataset)
-         .transition()
-         .duration(700)
-          .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
-          .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])+10})
+            totalChart.selectAll(".graphTotal rect")
+            .data(dataset)
+            .transition()
+            .duration(700)
+            .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
+            .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])+10})
 
-            canvas.selectAll(".graphChangeIncreases rect")
-          .data(dataset)
-         .transition()
-         .duration(700)
-                 .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Increases));  })
-          .attr("y", function(d,i){
+            changeChart.selectAll(".graphChangeIncreases rect")
+            .data(dataset)
+            .transition()
+            .duration(700)
+            .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Increases));  })
+            .attr("y", function(d,i){
               return 183-scaleYChange(Math.abs(d[type][0].Increases));;
-          })
- .attr("fill", function(d,i){return graphUpColor;});
+            })
+            .attr("fill", function(d,i){return graphUpColor;});
 
-            canvas.selectAll(".graphChangeDecreases rect")
-          .data(dataset)
-         .transition()
-         .duration(700)
-                 .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
-          .attr("y", function(d,i){
+            changeChart.selectAll(".graphChangeDecreases rect")
+            .data(dataset)
+            .transition()
+            .duration(700)
+            .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
+            .attr("y", function(d,i){
               return 185;
-          })
- .attr("fill", function(d,i){return graphDownColor;});
+            })
+            .attr("fill", function(d,i){return graphDownColor;});
 
 
-countrySelected = 0;
-changeType();
-         });
+            countrySelected = 0;
+            changeType();
+          });
 
   //BACKGROUND MAP
-    mapsvg.append("g")
-      .attr("class","background")
-      .append("path")
-      .datum(topojson.object(map, map.objects.world))
-      .attr("d", path)
-      .style("fill",disabledColor)
-      .style("z-index", "1");
+  mapsvg.append("g")
+  .attr("class","background")
+  .append("path")
+  .datum(topojson.object(map, map.objects.world))
+  .attr("d", path)
+  .style("fill",disabledColor)
+  .style("z-index", "1");
 
   // ACTIVE COUNTRY MAP
-    mapsvg.append("g").attr("class","countrymap")
-      .selectAll(".country")
-        .data(topojson.object(map, map.objects.world).geometries)
-        .enter().append("path")
-        .attr("class", function(d) { return "country " + d.id; })
-        .attr("d", path)
+  mapsvg.append("g").attr("class","countrymap")
+  .selectAll(".country")
+  .data(topojson.object(map, map.objects.world).geometries)
+  .enter().append("path")
+  .attr("class", function(d) { return "country " + d.id; })
+  .attr("d", path)
        // .attr("filter", "url(#innershadow2)")
-        .style("z-index", "10")
-          .on("click", function(d){
-             d3.select(this).transition().style("fill", selectedCountryColor);
-            mapMouseClick(d);
-            changeType();
-          })
-          .on("mouseover", function(d){
-              mapMouseOver(d);
-              d3.select(this).attr("filter", "url(#innershadow)");
-              })
-          .on("mouseout", function(d){
-              mapMouseOut(d);
-              d3.select(this).attr("filter", "");
-              });
+       .style("z-index", "10")
+       .on("click", function(d){
+         d3.select(this).transition().style("fill", selectedCountryColor);
+         mapMouseClick(d);
+         changeType();
+       })
+       .on("mouseover", function(d){
+        mapMouseOver(d);
+        d3.select(this).attr("filter", "url(#innershadow)");
+      })
+       .on("mouseout", function(d){
+        mapMouseOut(d);
+        d3.select(this).attr("filter", "");
+      });
 
-    var barWidth = (width-yAxisPadding)/dataset.length;
-    var scaleYTotal = d3.scale.linear()
-              .domain([0,20000000])
-              .range([0,graphHeight-10]);
+       var barWidth = (width-yAxisPadding)/dataset.length;
+       var scaleYTotal = d3.scale.linear()
+       .domain([0,20000000])
+       .range([0,graphHeight-10]);
 
-    var scaleYTotalAxis = d3.scale.linear()
-              .domain([0,20000000])
-              .range([graphHeight-10, 0]);
+       var scaleYTotalAxis = d3.scale.linear()
+       .domain([0,20000000])
+       .range([graphHeight-10, 0]);
 
-    var scaleYChange = d3.scale.linear()
-              .domain([0,2663045])
-              .range([0,graphHeight/2-10]);
+       var scaleYChange = d3.scale.linear()
+       .domain([0,2663045])
+       .range([0,graphHeight/2-10]);
 
-    var scaleYChangeAxis = d3.scale.linear()
-              .domain([-2664045,2664045])
-              .range([graphHeight-20, 0]);
+       var scaleYChangeAxis = d3.scale.linear()
+       .domain([-2664045,2664045])
+       .range([graphHeight-20, 0]);
 
 
 
 
     // TOTAL BAR GRAPH SVG GROUP
-    var graphTotal = canvas.append("g")
-        .attr("class","graphTotal");
+    var graphTotal = totalChart.append("g")
+    .attr("class","graphTotal");
 
 
     // ADD TOTAL GRAPH BARS
     graphTotal
-          .selectAll("rect")
-          .attr('class','totalBars')
-          .data(dataset)
-          .enter()
-          .append("rect")
-          .attr("width",barWidth-3)
-          .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotal(d[type][0].Total)})
-          .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotal(d[type][0].Total)+totalGraphYOffset+19})
-          .attr("x", function(d,i){return yAxisPadding+(i)*barWidth+2;})
-          .attr("fill", asylumColor)
-                    .style("stroke",function(){return "rgba(124,255,255,0.5)";})
-.style("stroke-width", 1);
+    .selectAll("rect")
+    .attr('class','totalBars')
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("width",barWidth-3)
+    .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotal(d[type][0].Total)})
+    .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotal(d[type][0].Total)+totalGraphYOffset+19})
+    .attr("x", function(d,i){return yAxisPadding+(i)*barWidth+2;})
+    .attr("fill", asylumColor)
+    .style("stroke",function(){return "rgba(124,255,255,0.5)";})
+    .style("stroke-width", 1);
 
      // TOTAL BAR GRAPH OVERLAY - slide function
-    var graphTotalOverlay = canvas.append("g")
-        .attr("class","graphOverlay");
-var timer;
+     var graphTotalOverlay = totalChart.append("g")
+     .attr("class","graphOverlay");
+     var timer;
 
-    graphTotalOverlay
-          .selectAll("rect")
-          .data(dataset)
-          .enter()
-          .append("rect")
-          .attr("width",barWidth)
-          .attr("class",function(d){return "graphTotalOverlay_"+d.year})
-          .attr('height', graphHeight+0)
-          .attr("y", totalGraphYOffset+22)
-          .attr("x", function(d,i){return yAxisPadding+(i)*barWidth;})
-          .attr("fill", "rgba(0,0,0,0.04)")
-          .style("z-index", 50)
-          .on("mouseover", function(d){
-            if(graphSelectedBar==0){
-              totalOrGraph = 0;
-            selectedYear = d.year;
-            sliderTotal(selectedYear);
-              d3.select(this).attr("filter", "url(#innershadow)");
-              d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
-              yearOver(selectedYear); }
+     graphTotalOverlay
+     .selectAll("rect")
+     .data(dataset)
+     .enter()
+     .append("rect")
+     .attr("width",barWidth)
+     .attr("class",function(d){return "graphTotalOverlay_"+d.year})
+     .attr('height', graphHeight+0)
+     .attr("y", totalGraphYOffset+22)
+     .attr("x", function(d,i){return yAxisPadding+(i)*barWidth;})
+     .attr("fill", "rgba(0,0,0,0.04)")
+     .style("z-index", 50)
+     .on("mouseover", function(d){
+      if(graphSelectedBar==0){
+        totalOrGraph = 0;
+        selectedYear = d.year;
+        sliderTotal(selectedYear);
+        d3.select(this).attr("filter", "url(#innershadow)");
+        d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
+        yearOver(selectedYear); }
 
-            if(timer) {
-      clearTimeout(timer);
-      timer = null
-    }  
-    if(selectedYear!=maxYear){
-    d3.selectAll(".y"+maxYear)
-                .attr("fill", "#222222")
-                .style("font-size", "6px")
-                .style("font-weight", "normal");
+        if(timer) {
+          clearTimeout(timer);
+          timer = null
+        }  
+        if(selectedYear!=maxYear){
+          d3.selectAll(".y"+maxYear)
+          .attr("fill", "#222222")
+          .style("font-size", "6px")
+          .style("font-weight", "normal");
 
-                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
-                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-} else {
-                  canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
-                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-}
+          canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+          canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+          canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+        } else {
+          canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+          canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+        }
 
-              })
+      })
 
-          .on("mouseout", function(d){
-             if(graphSelectedBar==0){ 
-              selectedYear = d.year;
+     .on("mouseout", function(d){
+       if(graphSelectedBar==0){ 
+        selectedYear = d.year;
 
-if(timer) {clearTimeout(timer); timer = null;};
-timer = setTimeout(function() {resetYear();}, 500);
+        if(timer) {clearTimeout(timer); timer = null;};
+        timer = setTimeout(function() {resetYear();}, 500);
 
 
-              d3.select(this).attr("filter", "null");
-              d3.select(this).attr("fill", "rgba(0,0,0,0.04)");
-              if(selectedYear!=maxYear){
-              yearOut(selectedYear); }}
-              })
-          .on("click", function(d){
-                if(graphSelectedBar==0){
-                    graphSelectedBar=1
-                    d3.select(this).attr("fill", "rgba(0,0,0,0.2)");
-                    selectedYear = d.year;
-                    sliderTotal(selectedYear);
-                    totalOrGraph = 0;
-                }else{
+        d3.select(this).attr("filter", "null");
+        d3.select(this).attr("fill", "rgba(0,0,0,0.04)");
+        if(selectedYear!=maxYear){
+          yearOut(selectedYear); }}
+        })
+     .on("click", function(d){
+      if(graphSelectedBar==0){
+        graphSelectedBar=1
+        d3.select(this).attr("fill", "rgba(0,0,0,0.2)");
+        selectedYear = d.year;
+        sliderTotal(selectedYear);
+        totalOrGraph = 0;
+      }else{
 
-                    graphSelectedBar=0;
+        graphSelectedBar=0;
 
-                    graphTotalOverlay
-                      .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
+        graphTotalOverlay
+        .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
 
-                    graphChangeOverlay
-                      .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
+        graphChangeOverlay
+        .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
 
-                    d3.select(this).attr("filter", "url(#innershadow)");
-                    d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
-       
-                    d3.selectAll(".y"+selectedYear).attr("fill", "#858585").style("font-size", "8px");
-                  
-                    d3.selectAll(".yearLabels")
-                      .attr("fill", "#222222")
-                      .style("font-size", "6px")
-                      .style("font-weight", "normal");
+        d3.select(this).attr("filter", "url(#innershadow)");
+        d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
 
-                    selectedYear = d.year;
-                    sliderTotal(selectedYear);
-                    yearOver(selectedYear); 
-                }
-          });
-        
+        d3.selectAll(".y"+selectedYear).attr("fill", "#858585").style("font-size", "8px");
+
+        d3.selectAll(".yearLabels")
+        .attr("fill", "#222222")
+        .style("font-size", "6px")
+        .style("font-weight", "normal");
+
+        selectedYear = d.year;
+        sliderTotal(selectedYear);
+        yearOver(selectedYear); 
+      }
+    });
+
 
 
      // TOTAL BAR GRAPH Y AXIS
 
      //Define Y axis
-            var yAxis = d3.svg.axis()
-                  .scale(scaleYTotalAxis)
-                  .orient("left")
-                  .ticks(4)
-                  .tickFormat(function (d) {
-                    var label;
-                    if(d==0){label = 0}
+     var yAxis = d3.svg.axis()
+     .scale(scaleYTotalAxis)
+     .orient("left")
+     .ticks(4)
+     .tickFormat(function (d) {
+      var label;
+      if(d==0){label = 0}
 
-                     if ((d / 100) >= 1) {
-                        label = d;
-                      }
-                      if ((d / 1000) >= 1) {
-                        label = d / 1000 + " K";
-                      }
-                      if ((d / 1000000) >= 1) {
-                        label = d / 1000000 + "m";
-                      }       
-                  return label;});
+       if ((d / 100) >= 1) {
+        label = d;
+      }
+      if ((d / 1000) >= 1) {
+        label = d / 1000 + " K";
+      }
+      if ((d / 1000000) >= 1) {
+        label = d / 1000000 + "m";
+      }       
+      return label;});
 
             //Create Y axis
-            canvas.append("g")
-                .attr("class", "totalYAxis")
-                .attr("transform", "translate(" + yAxisPadding + ",20)")
-                .call(yAxis);
+            totalChart.append("g")
+            .attr("class", "totalYAxis")
+            .attr("transform", "translate(" + yAxisPadding + ",20)")
+            .call(yAxis);
 
 
               // CHANGE BAR GRAPH SVG GROUP
-    var graphChangeDecreases = canvas.append("g")
-        .attr("class","graphChangeDecreases");
+              var graphChangeDecreases = changeChart.append("g")
+              .attr("class","graphChangeDecreases");
 
     // ADD CHANGE GRAPH BARS
     graphChangeDecreases
-          .selectAll("rect")
-          .data(dataset)
-          .enter()
-          .append("rect")
-          .attr("width",barWidth-3)
-          .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
-          .attr("y", function(d,i){
-              return 185;
-          })
-          .attr("x", function(d,i){return yAxisPadding+(i)*barWidth+2;})
-          .attr("fill", function(d,i){return graphDownColor;}) 
-          .style("stroke",function(){return graphDownStrokeColor;})
-.style("stroke-width", 1);
+    .selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("width",barWidth-3)
+    .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
+    .attr("y", function(d,i){
+      return 52;
+    })
+    .attr("x", function(d,i){return 0+(i)*barWidth+2;})
+    .attr("fill", function(d,i){return graphDownColor;}) 
+    .style("stroke",function(){return graphDownStrokeColor;})
+    .style("stroke-width", 1);
 
               // CHANGE BAR GRAPH SVG GROUP
-    var graphChangeIncreases = canvas.append("g")
-        .attr("class","graphChangeIncreases");
+              var graphChangeIncreases = changeChart.append("g")
+              .attr("class","graphChangeIncreases");
 
     // ADD CHANGE GRAPH BARS
     graphChangeIncreases
-          .selectAll("rect")
-          .data(dataset)
-          .enter()
-          .append("rect")
-          .attr("width",barWidth-3)
-          .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Increases));  })
-          .attr("y", function(d,i){
-              return 183-scaleYChange(Math.abs(d[type][0].Increases));;
-          })
-          .attr("x", function(d,i){return yAxisPadding+(i)*barWidth+2;})
-          .attr("fill", function(d,i){return graphUpColor;}) 
-          .style("stroke",function(){return graphUpStrokeColor;})
-.style("stroke-width", 1);
+    .selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("width",barWidth-3)
+    .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Increases));  })
+    .attr("y", function(d,i){
+      return 50-scaleYChange(Math.abs(d[type][0].Increases));;
+    })
+    .attr("x", function(d,i){return 0+(i)*barWidth+2;})
+    .attr("fill", function(d,i){return graphUpColor;}) 
+    .style("stroke",function(){return graphUpStrokeColor;})
+    .style("stroke-width", 1);
 
 
      // CHANGE BAR GRAPH OVERLAY - slide function
-    var graphChangeOverlay = canvas.append("g")
-        .attr("class","graphOverlay");
+     var graphChangeOverlay = changeChart.append("g")
+     .attr("class","graphOverlay");
 
-// CHANGE BAR GRAPH - MIDDLE AXIS
-          graphChangeOverlay
-          .append("line")
-          .attr("x1",0+5)
-          .attr("x2",width-5)
-          .attr("y1", 210+changeGraphYOffset+7)
-          .attr("y2", 210+changeGraphYOffset+7)
-          .attr("stroke-width", 2)
-          .attr("stroke", "rgba(0,0,0,0.1)");
+      // CHANGE BAR GRAPH - MIDDLE AXIS
+      graphChangeOverlay
+      .append("line")
+      .attr("x1", 0)
+      .attr("x2",width-15)
+      .attr("y1", 50)
+      .attr("y2", 50)
+      .attr("stroke-width", 2)
+      .attr("stroke", "rgba(0,0,0,0.1)");
 
+
+graphChangeOverlay
+.selectAll("rect")
+.data(dataset)
+.enter()
+.append("rect")
+.attr("class",function(d){return "graphChangeOverlay_"+d.year})
+.attr("width",barWidth)
+.attr('height', graphChangeHeight-15)
+.attr("y", 160+changeGraphYOffset+15)
+.attr("x", function(d,i){return yAxisPadding+(i)*barWidth;})
+.attr("fill", "rgba(0,0,0,0.04)")
+.style("z-index", 50)
+.on("mouseover", function(d){
+ if(graphSelectedBar==0){
+
+  changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+  changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+  changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+  changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+
+  selectedYear = d.year;
+  sliderChange(selectedYear);
+  totalOrGraph = 1;
+  d3.select(this).attr("filter", "url(#innershadow)");
+  d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
+  yearOver(selectedYear);  
+
+  if(selectedYear!=maxYear){
+    d3.selectAll(".y"+maxYear)
+    .attr("fill", "#222222")
+    .style("font-size", "6px")
+    .style("font-weight", "normal");
+    totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+    totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+  }   
+}  
+
+if(timer) {
+  clearTimeout(timer);
+  timer = null
+}  
+
+})
+.on("mouseout", function(d){
+ if(graphSelectedBar==0){
+  selectedYear = d.year;
+  d3.select(this).attr("filter", "null");
+  d3.select(this).attr("fill", "rgba(0,0,0,0.04)");
+  yearOut(selectedYear);
+  if(timer) {clearTimeout(timer); timer = null;};
+  timer = setTimeout(function() {resetYear();}, 500);
+}})
+.on("click", function(d){
+  if(graphSelectedBar==0){
+    totalOrGraph = 1;
+    graphSelectedBar=1
+    d3.select(this).attr("fill", "rgba(0,0,0,0.2)");
+    selectedYear = d.year;
+    sliderChange(selectedYear);
+  }else{
+
+    graphSelectedBar=0;
+
+    graphTotalOverlay
+    .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
 
     graphChangeOverlay
-          .selectAll("rect")
-          .data(dataset)
-          .enter()
-          .append("rect")
-          .attr("class",function(d){return "graphChangeOverlay_"+d.year})
-          .attr("width",barWidth)
-          .attr('height', graphChangeHeight-15)
-          .attr("y", 160+changeGraphYOffset+15)
-          .attr("x", function(d,i){return yAxisPadding+(i)*barWidth;})
-          .attr("fill", "rgba(0,0,0,0.04)")
-          .style("z-index", 50)
-          .on("mouseover", function(d){
-                 if(graphSelectedBar==0){
+    .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
 
-                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
-                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
-                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+    d3.select(this).attr("filter", "url(#innershadow)");
+    d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
 
-                selectedYear = d.year;
-            sliderChange(selectedYear);
-            totalOrGraph = 1;
-              d3.select(this).attr("filter", "url(#innershadow)");
-              d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
-              yearOver(selectedYear);  
+    d3.selectAll(".y"+selectedYear).attr("fill", "#858585").style("font-size", "8px");
 
-                  if(selectedYear!=maxYear){
-    d3.selectAll(".y"+maxYear)
-                .attr("fill", "#222222")
-                .style("font-size", "6px")
-                .style("font-weight", "normal");
-                             canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
-                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-}   
-              }  
+    d3.selectAll(".yearLabels").transition()
+    .duration(300)
+    .attr("fill", "#222222")
+    .style("font-size", "6px")
+    .style("font-weight", "normal");
+    selectedYear = d.year;
+    sliderChange(selectedYear);
+    yearOver(selectedYear); 
+  }
+});
 
-                        if(timer) {
-      clearTimeout(timer);
-      timer = null
-    }  
-
-              })
-          .on("mouseout", function(d){
-                 if(graphSelectedBar==0){
-              selectedYear = d.year;
-              d3.select(this).attr("filter", "null");
-              d3.select(this).attr("fill", "rgba(0,0,0,0.04)");
-              yearOut(selectedYear);
-              if(timer) {clearTimeout(timer); timer = null;};
-timer = setTimeout(function() {resetYear();}, 500);
-            }})
-          .on("click", function(d){
-                if(graphSelectedBar==0){
-                  totalOrGraph = 1;
-                    graphSelectedBar=1
-                    d3.select(this).attr("fill", "rgba(0,0,0,0.2)");
-                    selectedYear = d.year;
-                    sliderChange(selectedYear);
-                }else{
-                  
-                    graphSelectedBar=0;
-
-                    graphTotalOverlay
-                      .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
-
-                    graphChangeOverlay
-                      .selectAll("rect").attr("fill", "rgba(0,0,0,0.04)");
-
-                    d3.select(this).attr("filter", "url(#innershadow)");
-                    d3.select(this).attr("fill", "rgba(20,20,30,0.15)");
-       
-                    d3.selectAll(".y"+selectedYear).attr("fill", "#858585").style("font-size", "8px");
-                  
-                    d3.selectAll(".yearLabels").transition()
-                      .duration(300)
-                      .attr("fill", "#222222")
-                      .style("font-size", "6px")
-                      .style("font-weight", "normal");
-                    selectedYear = d.year;
-                    sliderChange(selectedYear);
-                    yearOver(selectedYear); 
-                }
-          });
-          
 
 
 
      // CHANGE BAR GRAPH Y AXIS
 
      //Define Y axis
-            var yAxisChange = d3.svg.axis()
-                  .scale(scaleYChangeAxis)
-                  .orient("left")
-                  .ticks(0)
-                  .tickFormat(function (d) {
-                    var label;
-                      var label;
-                    if(d==0){label = 0}
+     var yAxisChange = d3.svg.axis()
+     .scale(scaleYChangeAxis)
+     .orient("left")
+     .ticks(0)
+     .tickFormat(function (d) {
+      var label;
+      var label;
+      if(d==0){label = 0}
 
-                     if ((d / 100) >= 1) {
-                        label = d;
-                      }
-                      if ((d / 1000) >= 1) {
-                        label = d / 1000 + " K";
-                      }
-                      if ((d / 1000000) >= 1) {
-                        label = d / 1000000 + "m";
-                      }       
+       if ((d / 100) >= 1) {
+        label = d;
+      }
+      if ((d / 1000) >= 1) {
+        label = d / 1000 + " K";
+      }
+      if ((d / 1000000) >= 1) {
+        label = d / 1000000 + "m";
+      }       
 
-                  return d;});
+      return d;});
 
            // Create Y axis
            // canvas.append("g")
@@ -624,12 +630,12 @@ timer = setTimeout(function() {resetYear();}, 500);
 
 // GRAPH YEAR LABELS
 
-graphTotal.selectAll("text")
-    .data(dataset)
-  .enter().append("text")
-  .attr("class",function (d,i){return "yearLabels y"+d.year})
-    .attr("x", function(d,i){return yAxisPadding+0+(i)*barWidth;})
-    .attr("y", 107)
+totalChart.selectAll("text")
+.data(dataset)
+.enter().append("text")
+.attr("class",function (d,i){return "yearLabels y"+d.year})
+.attr("x", function(d,i){return yAxisPadding+0+(i)*barWidth;})
+.attr("y", 107)
     .attr("dx", 8) // padding-right
     .attr("dy", ".35em") // vertical-align: middle
     .attr("text-anchor", "middle") // text-align: right
@@ -638,35 +644,35 @@ graphTotal.selectAll("text")
     .text(function(d,i){ return d.year});
 
 
-selectedYear = maxYear;
-sliderTotal(selectedYear);
-yearOver(selectedYear); 
-  canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "url(#innershadow)");
-  canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
+    selectedYear = maxYear;
+    sliderTotal(selectedYear);
+    yearOver(selectedYear); 
+    canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "url(#innershadow)");
+    canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
 
-$('#type').val("ASY");
-changeType();
+    $('#type').val("ASY");
+    changeType();
 
-});
+  });
 
 
 function yearOver(selectedYear){
 
-d3.selectAll(".y"+selectedYear)
-                  .attr("y", 107)
-                  .attr("fill", "#c4c4c4")
-                  .style("font-size", "12px")
-                  .style("font-weight", "bold");  
+  d3.selectAll(".y"+selectedYear)
+  .attr("y", 107)
+  .attr("fill", "#c4c4c4")
+  .style("font-size", "12px")
+  .style("font-weight", "bold");  
 
 }
 
 function yearOut(selectedYear){
-d3.selectAll(".y"+selectedYear).attr("fill", "#858585").style("font-size", "8px");
-              d3.selectAll(".y"+selectedYear)
-                .attr("y", 107)
-                .attr("fill", "#222222")
-                .style("font-size", "6px")
-                .style("font-weight", "normal");
+  d3.selectAll(".y"+selectedYear).attr("fill", "#858585").style("font-size", "8px");
+  d3.selectAll(".y"+selectedYear)
+  .attr("y", 107)
+  .attr("fill", "#222222")
+  .style("font-size", "6px")
+  .style("font-weight", "normal");
 
 }
 
@@ -680,28 +686,28 @@ function mapMouseOver(d){
 
   var refASYTotal = (dataset[year].ASY[0][countryCode]);
   if(refASYTotal>0){refASYTotal = numberWithCommas(refASYTotal)}else{refASYTotal="n/a"};
- if(year>0){var refASYChange = (dataset[year].ASY[0][countryCode]-dataset[year-1].ASY[0][countryCode]);} else { var refASYChange = "n/a";}
-if (refASYChange>0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallUp"); $('#refASYChangeYear').text(" increase since "+(selectedYear-1));}; 
-if (refASYChange<0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallDown"); $('#refASYChangeYear').text(" decrease since "+(selectedYear-1));};
-if (refASYChange==0){refASYChange = "n/a"; $('#refASYChangeIcon').attr("class","changeSmallNone"); $('#refASYChangeYear').text(" no change since "+(selectedYear-1))}; 
+  if(year>0){var refASYChange = (dataset[year].ASY[0][countryCode]-dataset[year-1].ASY[0][countryCode]);} else { var refASYChange = "n/a";}
+  if (refASYChange>0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallUp"); $('#refASYChangeYear').text(" increase since "+(selectedYear-1));}; 
+  if (refASYChange<0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallDown"); $('#refASYChangeYear').text(" decrease since "+(selectedYear-1));};
+  if (refASYChange==0){refASYChange = "n/a"; $('#refASYChangeIcon').attr("class","changeSmallNone"); $('#refASYChangeYear').text(" no change since "+(selectedYear-1))}; 
 
-$('#Country').text(countryName);
-$('#refASYTitle').text("Refugees in "+countryName);
-$('#refASYTotal').text(refASYTotal);
-$('#refASYChange').text(refASYChange);
+  $('#Country').text(countryName);
+  $('#refASYTitle').text("Refugees in "+countryName);
+  $('#refASYTotal').text(refASYTotal);
+  $('#refASYChange').text(refASYChange);
 
   var refORITotal = (dataset[year].ORI[0][countryCode]);
   if(refORITotal>0){refORITotal = numberWithCommas(refORITotal)}else{refORITotal="n/a"};
- if(year>0){var refORIChange = (dataset[year].ORI[0][countryCode]-dataset[year-1].ORI[0][countryCode]);} else { var refORIChange = "n/a";}
-if (refORIChange>0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallUp"); $('#refORIChangeYear').text(" increase since "+(selectedYear-1));}; 
-if (refORIChange<0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallDown"); $('#refORIChangeYear').text(" decrease since "+(selectedYear-1));};
-if (refORIChange==0){refORIChange = "n/a"; $('#refORIChangeIcon').attr("class","changeSmallNone"); $('#refORIChangeYear').text(" no change since "+(selectedYear-1))}; 
+  if(year>0){var refORIChange = (dataset[year].ORI[0][countryCode]-dataset[year-1].ORI[0][countryCode]);} else { var refORIChange = "n/a";}
+  if (refORIChange>0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallUp"); $('#refORIChangeYear').text(" increase since "+(selectedYear-1));}; 
+  if (refORIChange<0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallDown"); $('#refORIChangeYear').text(" decrease since "+(selectedYear-1));};
+  if (refORIChange==0){refORIChange = "n/a"; $('#refORIChangeIcon').attr("class","changeSmallNone"); $('#refORIChangeYear').text(" no change since "+(selectedYear-1))}; 
 
-$('#refORITitle').html("Refugees from "+countryName);
-$('#refORITotal').text(refORITotal);
-$('#refORIChange').text(refORIChange);
+  $('#refORITitle').html("Refugees from "+countryName);
+  $('#refORITotal').text(refORITotal);
+  $('#refORIChange').text(refORIChange);
 
-$('#thisYear').text(selectedYear);
+  $('#thisYear').text(selectedYear);
   //console.log(dataset[year][type][0][countryCode]);
   if(dataset[year][type][0][countryCode]){var populationAsylum = numberWithCommas(dataset[year].ASY[0][countryCode])}else{var populationAsylum = "n/a"};
   $('#map_tooltip').html();
@@ -711,10 +717,10 @@ $('#thisYear').text(selectedYear);
    // $('#map_info').html("<span style='font-size: 10px; font-weight: normal;'>Number of Refugees <b>from</b> "+d.properties.CNTRY_NAME+":</span><span style='font-size: 12px; font-weight: normal;'>"+(populationAsylum)+"</span>");
 
 
-$('#mapinfo_text').css("display","block");
+   $('#mapinfo_text').css("display","block");
 
 
-}
+ }
 
 // MOUSE OUT COUNTRY
 function mapMouseOut(d){
@@ -726,241 +732,241 @@ function mapMouseOut(d){
 // MOUSE CLICK COUNTRY
 function mapMouseClick(d){
 
-var type = $('#type').val();
-var countryCode = d.properties.ISO1AL3;
-$('#countryBox').text(d.properties.CNTRY_NAME);
+  var type = $('#type').val();
+  var countryCode = d.properties.ISO1AL3;
+  $('#countryBox').text(d.properties.CNTRY_NAME);
 
-countrySelectedName = d.properties.CNTRY_NAME;
+  countrySelectedName = d.properties.CNTRY_NAME;
 
-var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
-var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
+  var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
+  var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
   var scaleYTotalCountry = d3.scale.linear()
-              .domain([0,max])
-              .range([0,graphHeight-10]);
+  .domain([0,max])
+  .range([0,graphHeight-10]);
 
   var scaleYChangeCountry = d3.scale.linear()
-              .domain([0,maxChange])
-              .range([0,graphHeight/2-10]);
+  .domain([0,maxChange])
+  .range([0,graphHeight/2-10]);
 
   var scaleYTotalAxis = d3.scale.linear()
-              .domain([0,max])
-              .range([graphHeight-10, 0]);
+  .domain([0,max])
+  .range([graphHeight-10, 0]);
 
 
 
      //Define Y axis
-            var yAxis = d3.svg.axis()
-                  .scale(scaleYTotalAxis)
-                  .orient("left")
-                  .ticks(4)
-                  .tickFormat(function (d) {
-                    var label;
-                    if(d==0){label = 0}
+     var yAxis = d3.svg.axis()
+     .scale(scaleYTotalAxis)
+     .orient("left")
+     .ticks(4)
+     .tickFormat(function (d) {
+      var label;
+      if(d==0){label = 0}
 
-                     if ((d / 100) >= 1) {
-                        label = d;
-                      }
-                      if ((d / 1000) >= 1) {
-                        label = d / 1000 + "k";
-                      }
-                      if ((d / 1000000) >= 1) {
-                        label = d / 1000000 + "m";
-                      }                 
-                  return label;});
+       if ((d / 100) >= 1) {
+        label = d;
+      }
+      if ((d / 1000) >= 1) {
+        label = d / 1000 + "k";
+      }
+      if ((d / 1000000) >= 1) {
+        label = d / 1000000 + "m";
+      }                 
+      return label;});
 
             //Create Y axis
-            canvas.selectAll(".totalYAxis")
-                .transition().duration(1000).call(yAxis);
+            totalChart.selectAll(".totalYAxis")
+            .transition().duration(1000).call(yAxis);
 
-   canvas.selectAll(".graphTotal rect")
-          .data(dataset)
-         .transition()
-          .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
-          .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])-20})
+            totalChart.selectAll(".graphTotal rect")
+            .data(dataset)
+            .transition()
+            .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
+            .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])-20})
 
-            canvas.selectAll(".graphChangeIncreases rect")
-          .data(dataset)
-         .transition()
-         .duration(700)
-                .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
-            return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
-          })
-          .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
+            changeChart.selectAll(".graphChangeIncreases rect")
+            .data(dataset)
+            .transition()
+            .duration(700)
+            .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
+              return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
+            })
+            .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
               var change = (d[type][0][countryCode])-prevValue;
               var changeAbs;
               if(change>=0){changeAbs=1;}else{changeAbs=-1};
-             var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
+              var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
              if(changeAbs==1){return 210-height+changeGraphYOffset+5;}; // if a positive value
             if(changeAbs==-1){return 213+changeGraphYOffset+5;}; // if a positive value
           })
-          .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
-            else{return "#91CF60";}}); 
-countrySelected = countryCode;
+            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
+              else{return "#91CF60";}}); 
+            countrySelected = countryCode;
 
-canvas.selectAll(".graphChangeDecreases rect")
-          .data(dataset)
-         .transition()
-         .duration(700)
-                .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
-            return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
-          })
-          .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
+            changeChart.selectAll(".graphChangeDecreases rect")
+            .data(dataset)
+            .transition()
+            .duration(700)
+            .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
+              return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
+            })
+            .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
               var change = (d[type][0][countryCode])-prevValue;
               var changeAbs;
               if(change>=0){changeAbs=1;}else{changeAbs=-1};
-             var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
+              var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
              if(changeAbs==1){return 210-height+changeGraphYOffset+5;}; // if a positive value
             if(changeAbs==-1){return 213+changeGraphYOffset+5;}; // if a positive value
           })
-          .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
-            else{return "#91CF60";}}); 
-countrySelected = countryCode;
+            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
+              else{return "#91CF60";}}); 
+            countrySelected = countryCode;
 
-}
+          }
 
-function yearUp(){
-if(selectedYear<maxYear){
-  if(totalOrGraph==1){var t = ".graphChangeOverlay_";}else{var t = ".graphTotalOverlay_";};
-  canvas.selectAll(t+selectedYear).attr("filter", "null");
-  canvas.selectAll(t+selectedYear).attr("fill", "rgba(20,20,30,0.04)");
-  canvas.selectAll(t+(selectedYear+1)).attr("filter", "url(#innershadow)");
-  canvas.selectAll(t+(selectedYear+1)).attr("fill", "rgba(20,20,30,0.15)");
-  graphSelectedBar = 1;
-  yearOver(selectedYear+1);
-  yearOut(selectedYear);
-selectedYear = selectedYear + 1;
-changeType();
+          function yearUp(){
+            if(selectedYear<maxYear){
+              if(totalOrGraph==1){var t = ".graphChangeOverlay_";}else{var t = ".graphTotalOverlay_";};
+              canvas.selectAll(t+selectedYear).attr("filter", "null");
+              canvas.selectAll(t+selectedYear).attr("fill", "rgba(20,20,30,0.04)");
+              canvas.selectAll(t+(selectedYear+1)).attr("filter", "url(#innershadow)");
+              canvas.selectAll(t+(selectedYear+1)).attr("fill", "rgba(20,20,30,0.15)");
+              graphSelectedBar = 1;
+              yearOver(selectedYear+1);
+              yearOut(selectedYear);
+              selectedYear = selectedYear + 1;
+              changeType();
 
-}
-}
+            }
+          }
 
-function yearDown(){
+          function yearDown(){
 
-  if(selectedYear>minYear){
-      if(totalOrGraph==1){var t = ".graphChangeOverlay_";}else{var t = ".graphTotalOverlay_";};
-  canvas.selectAll(t+selectedYear).attr("filter", "null");
-  canvas.selectAll(t+selectedYear).attr("fill", "rgba(20,20,30,0.04)");
-  canvas.selectAll(t+(selectedYear-1)).attr("filter", "url(#innershadow)");
-  canvas.selectAll(t+(selectedYear-1)).attr("fill", "rgba(20,20,30,0.15)");
-    graphSelectedBar = 1;
-      yearOver(selectedYear-1);
-  yearOut(selectedYear);
-  selectedYear = selectedYear - 1;
-  changeType();
-}
-}
+            if(selectedYear>minYear){
+              if(totalOrGraph==1){var t = ".graphChangeOverlay_";}else{var t = ".graphTotalOverlay_";};
+              canvas.selectAll(t+selectedYear).attr("filter", "null");
+              canvas.selectAll(t+selectedYear).attr("fill", "rgba(20,20,30,0.04)");
+              canvas.selectAll(t+(selectedYear-1)).attr("filter", "url(#innershadow)");
+              canvas.selectAll(t+(selectedYear-1)).attr("fill", "rgba(20,20,30,0.15)");
+              graphSelectedBar = 1;
+              yearOver(selectedYear-1);
+              yearOut(selectedYear);
+              selectedYear = selectedYear - 1;
+              changeType();
+            }
+          }
 
-              function resetYear() {
-                selectedYear = maxYear;
-                yearOver(maxYear);
-                 if(totalOrGraph==1)
-                  {
-                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "url(#innershadow)");
-                canvas.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
-                       sliderChange(maxYear);
-                 }else{
+          function resetYear() {
+            selectedYear = maxYear;
+            yearOver(maxYear);
+            if(totalOrGraph==1)
+            {
+              changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "url(#innershadow)");
+              changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
+              sliderChange(maxYear);
+            }else{
 
-                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "url(#innershadow)");
-                canvas.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
-                       sliderTotal(maxYear);
-              }
-              }
+              totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "url(#innershadow)");
+              totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.15)");
+              sliderTotal(maxYear);
+            }
+          }
 
 // SLIDER TOTAL FUNCTION
 function sliderTotal(year){
   var year = selectedYear-minYear;
   var type = $('#type').val();
 
-sliderAll(selectedYear);
-    canvas.selectAll(".country")    
-    .style("display","block")                                  
+  sliderAll(selectedYear);
+  canvas.selectAll(".country")    
+  .style("display","block")                                  
         .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR + 1 <= selectedYear)})        // <== This line
-            .style("display", "none");   
+        .style("display", "none");   
 
 
-    if(type=="ASY"){
-        $('#totalASYkey').css('display',"block");
-        $('#totalORIkey').css('display',"none");
-        $('#changekey').css('display',"none");
-
-          var state = d3.selectAll('.country')
-          .style('fill', function(d){
-                var countryCode = d.id;              
-var result1 = dataset[year][type][0][countryCode];
-
-                                if(countryCode!=countrySelected){
-                                  if(result1==0){return "lightgrey" }else { return colorTotalASY(result1)};
-              } else { return selectedCountryColor;}
-
-                });
-    }
-
- if(type=="ORI"){
-        $('#totalASYkey').css('display',"none");
-        $('#totalORIkey').css('display',"block");
-        $('#changekey').css('display',"none");
+        if(type=="ASY"){
+          $('#totalASYkey').css('display',"block");
+          $('#totalORIkey').css('display',"none");
+          $('#changekey').css('display',"none");
 
           var state = d3.selectAll('.country')
           .style('fill', function(d){
-                            var countryCode = d.id;              
-var result1 = dataset[year][type][0][countryCode];
-                
+            var countryCode = d.id;              
+            var result1 = dataset[year][type][0][countryCode];
 
-                                if(countryCode!=countrySelected){
-            if(result1==0){return "lightgrey";}else { return colorTotalORI(result1);};
-              } else { return selectedCountryColor;}
+            if(countryCode!=countrySelected){
+              if(result1==0){return "lightgrey" }else { return colorTotalASY(result1)};
+            } else { return selectedCountryColor;}
 
-                });
-    }
-}
+          });
+        }
 
-  canvas.append("text").text(maxYear);
+        if(type=="ORI"){
+          $('#totalASYkey').css('display',"none");
+          $('#totalORIkey').css('display',"block");
+          $('#changekey').css('display',"none");
 
-function sliderActiveYear(year){
-  var activeYear = year + minYear;
-}
+          var state = d3.selectAll('.country')
+          .style('fill', function(d){
+            var countryCode = d.id;              
+            var result1 = dataset[year][type][0][countryCode];
+
+
+            if(countryCode!=countrySelected){
+              if(result1==0){return "lightgrey";}else { return colorTotalORI(result1);};
+            } else { return selectedCountryColor;}
+
+          });
+        }
+      }
+
+      canvas.append("text").text(maxYear);
+
+      function sliderActiveYear(year){
+        var activeYear = year + minYear;
+      }
 
 // SLIDER CHANGE FUNCTION
 function sliderChange(year){
   var year = selectedYear-minYear;
   var type = $('#type').val();
-sliderAll(selectedYear);
-sliderActiveYear(year);
+  sliderAll(selectedYear);
+  sliderActiveYear(year);
 
 
-    canvas.selectAll(".country")    
-    .style("display","block")                                  
+  canvas.selectAll(".country")    
+  .style("display","block")                                  
         .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
-            .style("display", "none");  
+        .style("display", "none");  
 
-   $('#totalASYkey').css('display',"none");
+        $('#totalASYkey').css('display',"none");
         $('#totalORIkey').css('display',"none");
         $('#changekey').css('display',"block");
 
-    if(type=="ASY"){
+        if(type=="ASY"){
           var state = d3.selectAll('.country')
           .style('fill', function(d,i){
-                var countryCode = d.id;
-                var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
-                if(countryCode!=countrySelected){
-if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
+            var countryCode = d.id;
+            var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
+            if(countryCode!=countrySelected){
+              if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
 
-              } else { return selectedCountryColor;}
-                });
-    }
+            } else { return selectedCountryColor;}
+          });
+        }
 
- if(type=="ORI"){
+        if(type=="ORI"){
           var state = d3.selectAll('.country')
           .style('fill', function(d){
-                var countryCode = d.id;
-                 var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
-                 if(countryCode!=countrySelected){
-               if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
-              }
-               else { return selectedCountryColor;}
-                });
-    }
-}
+            var countryCode = d.id;
+            var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
+            if(countryCode!=countrySelected){
+             if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
+           }
+           else { return selectedCountryColor;}
+         });
+        }
+      }
 
 // SLIDER ALL FUNCTION
 function sliderAll(year){
@@ -968,62 +974,62 @@ function sliderAll(year){
   var type = $('#type').val();
   if(countrySelected!=0){var q = countrySelected} else {var q = "Total";};
 
-var totalValue = numberWithCommas(dataset[year][type][0][q]);
-if(totalValue == 0){totalValue = "n/a"};
+  var totalValue = numberWithCommas(dataset[year][type][0][q]);
+  if(totalValue == 0){totalValue = "n/a"};
 
-if(selectedYear==maxYear){$("#yearUp").css("opacity", "0.2");}else{$("#yearUp").css("opacity", "1");};
-if(selectedYear==minYear){$("#yearDown").css("opacity", "0.2");}else{$("#yearDown").css("opacity", "1");};
+  if(selectedYear==maxYear){$("#yearUp").css("opacity", "0.2");}else{$("#yearUp").css("opacity", "1");};
+  if(selectedYear==minYear){$("#yearDown").css("opacity", "0.2");}else{$("#yearDown").css("opacity", "1");};
 
-if(q=="Total"){
-if(year>0){
-  var increases = (dataset[year][type][0]["Increases"]); 
-    var decreases = (dataset[year][type][0]["Decreases"]);
-  }else{
-    var decreases = "n/a";var increases = "n/a";
-  };
+  if(q=="Total"){
+    if(year>0){
+      var increases = (dataset[year][type][0]["Increases"]); 
+      var decreases = (dataset[year][type][0]["Decreases"]);
+    }else{
+      var decreases = "n/a";var increases = "n/a";
+    };
 
-increases = numberWithCommas(Math.abs(increases));
-if(increases == 0){increases = "n/a"}
+    increases = numberWithCommas(Math.abs(increases));
+    if(increases == 0){increases = "n/a"}
 
-decreases = numberWithCommas(Math.abs(decreases));
-if(decreases == 0){decreases = "n/a"}
+      decreases = numberWithCommas(Math.abs(decreases));
+    if(decreases == 0){decreases = "n/a"}
 
-if(selectedYear>minYear){$('#increaseValue').text(increases);}else{$('#increaseValue').text("n/a");}
-if(selectedYear>minYear){$('#decreaseValue').text(decreases);}else{$('#decreaseValue').text("n/a");}
+      if(selectedYear>minYear){$('#increaseValue').text(increases);}else{$('#increaseValue').text("n/a");}
+    if(selectedYear>minYear){$('#decreaseValue').text(decreases);}else{$('#decreaseValue').text("n/a");}
 
-}
+  }
 
-else {
+  else {
 
-if(year>0){
-  var increases = (dataset[year][type][0]["Increases"]); 
-    var decreases = (dataset[year][type][0]["Decreases"]);
-  }else{
-    var decreases = "n/a";var increases = "n/a";
-  };
+    if(year>0){
+      var increases = (dataset[year][type][0]["Increases"]); 
+      var decreases = (dataset[year][type][0]["Decreases"]);
+    }else{
+      var decreases = "n/a";var increases = "n/a";
+    };
 
-var changeValue = dataset[year][type][0][q]-dataset[year-1][type][0][q];
+    var changeValue = dataset[year][type][0][q]-dataset[year-1][type][0][q];
 
-if (changeValue < 0){
-if(selectedYear>minYear){$('#decreaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#increaseValue').text("n/a");}else{$('#decreaseValue').text("n/a");$('#increaseValue').text("n/a");}
-}
+    if (changeValue < 0){
+      if(selectedYear>minYear){$('#decreaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#increaseValue').text("n/a");}else{$('#decreaseValue').text("n/a");$('#increaseValue').text("n/a");}
+    }
 
-if (changeValue > 0){
-if(selectedYear>minYear){$('#increaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#decreaseValue').text("n/a");}else{$('#increaseValue').text("n/a");$('#decreaseValue').text("n/a");}
-}
+    if (changeValue > 0){
+      if(selectedYear>minYear){$('#increaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#decreaseValue').text("n/a");}else{$('#increaseValue').text("n/a");$('#decreaseValue').text("n/a");}
+    }
 
-}
-
-
-$('#totalValue').text(totalValue);
+  }
 
 
+  $('#totalValue').text(totalValue);
 
 
-$('#yearBox').text(selectedYear);
 
 
- var year = selectedYear-minYear;
+  $('#yearBox').text(selectedYear);
+
+
+  var year = selectedYear-minYear;
   var type = $('#type').val();
   var countryCode = countrySelected;
   var countryName = countrySelectedName;
@@ -1032,79 +1038,79 @@ $('#yearBox').text(selectedYear);
   
   var refASYTotal = (dataset[year].ASY[0][countryCode]);
   if(refASYTotal>0){refASYTotal = numberWithCommas(refASYTotal)}else{refASYTotal="n/a"};
- if(year>0){var refASYChange = (dataset[year].ASY[0][countryCode]-dataset[year-1].ASY[0][countryCode]);} else { var refASYChange = "n/a";}
-if (refASYChange>0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallUp"); $('#refASYChangeYear').text(" increase since "+(selectedYear-1));}; 
-if (refASYChange<0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallDown"); $('#refASYChangeYear').text(" decrease since "+(selectedYear-1));};
-if (refASYChange==0){refASYChange = "n/a"; $('#refASYChangeIcon').attr("class","changeSmallNone"); $('#refASYChangeYear').text(" no change since "+(selectedYear-1))}; 
+  if(year>0){var refASYChange = (dataset[year].ASY[0][countryCode]-dataset[year-1].ASY[0][countryCode]);} else { var refASYChange = "n/a";}
+  if (refASYChange>0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallUp"); $('#refASYChangeYear').text(" increase since "+(selectedYear-1));}; 
+  if (refASYChange<0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallDown"); $('#refASYChangeYear').text(" decrease since "+(selectedYear-1));};
+  if (refASYChange==0){refASYChange = "n/a"; $('#refASYChangeIcon').attr("class","changeSmallNone"); $('#refASYChangeYear').text(" no change since "+(selectedYear-1))}; 
 
-$('#Country').text(countryName);
-$('#refASYTitle').text("Refugees in "+countryName);
-$('#refASYTotal').text(refASYTotal);
-$('#refASYChange').text(refASYChange);
+  $('#Country').text(countryName);
+  $('#refASYTitle').text("Refugees in "+countryName);
+  $('#refASYTotal').text(refASYTotal);
+  $('#refASYChange').text(refASYChange);
 
   var refORITotal = (dataset[year].ORI[0][countryCode]);
   if(refORITotal>0){refORITotal = numberWithCommas(refORITotal)}else{refORITotal="n/a"};
- if(year>0){var refORIChange = (dataset[year].ORI[0][countryCode]-dataset[year-1].ORI[0][countryCode]);} else { var refORIChange = "n/a";}
-if (refORIChange>0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallUp"); $('#refORIChangeYear').text(" increase since "+(selectedYear-1));}; 
-if (refORIChange<0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallDown"); $('#refORIChangeYear').text(" decrease since "+(selectedYear-1));};
-if (refORIChange==0){refORIChange = "n/a"; $('#refORIChangeIcon').attr("class","changeSmallNone"); $('#refORIChangeYear').text(" no change since "+(selectedYear-1))}; 
+  if(year>0){var refORIChange = (dataset[year].ORI[0][countryCode]-dataset[year-1].ORI[0][countryCode]);} else { var refORIChange = "n/a";}
+  if (refORIChange>0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallUp"); $('#refORIChangeYear').text(" increase since "+(selectedYear-1));}; 
+  if (refORIChange<0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallDown"); $('#refORIChangeYear').text(" decrease since "+(selectedYear-1));};
+  if (refORIChange==0){refORIChange = "n/a"; $('#refORIChangeIcon').attr("class","changeSmallNone"); $('#refORIChangeYear').text(" no change since "+(selectedYear-1))}; 
 
-$('#refORITitle').html("Refugees from "+countryName);
-$('#refORITotal').text(refORITotal);
-$('#refORIChange').text(refORIChange);
+  $('#refORITitle').html("Refugees from "+countryName);
+  $('#refORITotal').text(refORITotal);
+  $('#refORIChange').text(refORIChange);
 
 
 }
 
 function switchChange() {
 
-var getwidth = 0;
-var getx =0;
-var dur = 200;
+  var getwidth = 0;
+  var getx =0;
+  var dur = 200;
 
-if($('#type').val()=="ORI")
+  if($('#type').val()=="ORI")
   {
 
-     canvas.selectAll(".graphTotal rect")
-.attr("transform", "scale(0.5,1,1)");
+   canvas.selectAll(".graphTotal rect")
+   .attr("transform", "scale(0.5,1,1)");
 
-      canvas.selectAll(".graphTotal rect")
-      .transition()
-      .duration(dur)
-      .delay(function(d, i) { return i * 2; })
-      .attr("width", function(){getwidth = Number(d3.select(this).attr("width")); return 0});
+   canvas.selectAll(".graphTotal rect")
+   .transition()
+   .duration(dur)
+   .delay(function(d, i) { return i * 2; })
+   .attr("width", function(){getwidth = Number(d3.select(this).attr("width")); return 0});
 
- canvas.selectAll(".graphTotal rect").transition()
- .duration(0)
- .delay(dur)
-.attr("fill", asylumColor);
+   canvas.selectAll(".graphTotal rect").transition()
+   .duration(0)
+   .delay(dur)
+   .attr("fill", asylumColor);
 
-        canvas.selectAll(".graphTotal rect")
-      .transition()
-      .delay(function(d, i) { return dur+ (i * 2); })
-      .duration(200)
-      .attr("width", getwidth);
+   canvas.selectAll(".graphTotal rect")
+   .transition()
+   .delay(function(d, i) { return dur+ (i * 2); })
+   .duration(200)
+   .attr("width", getwidth);
 
-    $('#type').val("ASY");
-    $('#switch').attr("class","switchASY");
-$('#switchORI').attr("class","switchInactive");
-$('#switchASY').attr("class","switchActive");
-  }else{
+   $('#type').val("ASY");
+   $('#switch').attr("class","switchASY");
+   $('#switchORI').attr("class","switchInactive");
+   $('#switchASY').attr("class","switchActive");
+ }else{
 
-  
 
-        canvas.selectAll(".graphTotal rect")
-      .transition()
-      .delay(function(d, i) { return dur+ (i * 9); })
-      .duration(0)
-      .attr("fill", originColor);
 
-       canvas.selectAll(".graphTotal rect")
-    $('#type').val("ORI");
-$('#switch').attr("class","switchORI");
-$('#switchORI').attr("class","switchActive");
-$('#switchASY').attr("class","switchInactive");
-  };
+  canvas.selectAll(".graphTotal rect")
+  .transition()
+  .delay(function(d, i) { return dur+ (i * 9); })
+  .duration(0)
+  .attr("fill", originColor);
+
+  canvas.selectAll(".graphTotal rect")
+  $('#type').val("ORI");
+  $('#switch').attr("class","switchORI");
+  $('#switchORI').attr("class","switchActive");
+  $('#switchASY').attr("class","switchInactive");
+};
 changeType();
 }
 
@@ -1114,62 +1120,62 @@ function changeType(handler){
 
   var type = $('#type').val();
   if(countrySelected!=0){
-var countryCode = countrySelected;
-var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
-var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
-  var scaleYTotalCountry = d3.scale.linear()
-              .domain([0,max])
-              .range([0,graphHeight-10]);
+    var countryCode = countrySelected;
+    var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
+    var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
+    var scaleYTotalCountry = d3.scale.linear()
+    .domain([0,max])
+    .range([0,graphHeight-10]);
 
-  var scaleYChangeCountry = d3.scale.linear()
-              .domain([0,maxChange])
-              .range([0,graphHeight/2-10]);
+    var scaleYChangeCountry = d3.scale.linear()
+    .domain([0,maxChange])
+    .range([0,graphHeight/2-10]);
 
 
-   canvas.selectAll(".graphTotal rect")
-          .data(dataset)
-         .transition()
-         .duration(700)
+    canvas.selectAll(".graphTotal rect")
+    .data(dataset)
+    .transition()
+    .duration(700)
       // .delay(function(d, i) { return i * 50; })
-          .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
-          .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])+10})
+      .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
+      .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])+10})
 
-            canvas.selectAll(".graphChange rect")
-          .data(dataset)
-         .transition()
-.duration(1600)
-                .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
-            return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
-          })
-          .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
-              var change = (d[type][0][countryCode])-prevValue;
-              var changeAbs;
-              if(change>=0){changeAbs=1;}else{changeAbs=-1};
-             var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
+      canvas.selectAll(".graphChange rect")
+      .data(dataset)
+      .transition()
+      .duration(1600)
+      .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
+        return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
+      })
+      .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
+        var change = (d[type][0][countryCode])-prevValue;
+        var changeAbs;
+        if(change>=0){changeAbs=1;}else{changeAbs=-1};
+        var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
              if(changeAbs==1){return 220-height+changeGraphYOffset-2;}; // if a positive value
             if(changeAbs==-1){return 223+changeGraphYOffset-2;}; // if a positive value
           })
-          .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
-            else{return "#91CF60";}})
+      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#FC8D59";}
+        else{return "#91CF60";}})
 
-    ; 
-
-
-}
+      ; 
 
 
-}
+    }
+
+
+  }
 
 // COUNTRY MAP TOOLTIP FUNCTION
 $("#map").mousemove(function(e) {
-    var x_offset = -220;
-    var y_offset = -310;
-    $('#map_tooltip').css('left', e.pageX + x_offset).css('top', e.pageY + y_offset);
+  var x_offset = -220;
+  var y_offset = -310;
+  $('#map_tooltip').css('left', e.pageX + x_offset).css('top', e.pageY + y_offset);
 });
 
 
 function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 
