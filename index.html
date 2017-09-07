@@ -14,14 +14,14 @@
   <link href="js/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,900" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/dataviz-styleguide/semantic/dist/semantic.min.css?cache=321">
-  <link rel="stylesheet/less" type="text/css" href="css/style.less" />
+  <link rel="stylesheet/less" type="text/css" href="css/style.less?cache=321" />
 
   <script src="js/jquery.js"></script>
   <script src="https://unpkg.com/dataviz-styleguide/semantic/dist/semantic.min.js?cache=321"></script>  <!-- bootstrap.js -->
   <script type="text/javascript" charset="utf-8" src="js/d3.v3.min.js"></script>
   <script src="js/topojson.v0.min.js"></script>
   <script src="js/colorbrewer.js"></script>
-  <script src="data.js"></script>
+  <script src="data.js?cache=321"></script>
   <script src="js/less.js"></script>
 
   <!-- Start of Facebook Meta Tags  -->
@@ -243,7 +243,7 @@
 
     <div id="map">
 
-      <div id="map_tooltip"></div>
+      <div id="map_tooltip" class='dc-tooltip'><span class='dc-tooltip-title'>" + monthNameFormat(date) + "</span> | <span class='dc-tooltip-value'>" + numberFormat(d.y) +"</span></div>
 
       <!-- legend -->
       <div id="totalORIkey" class="maplegend">
@@ -535,8 +535,8 @@
 
     </div>
 
-    <div class="text footer"><br/>
-      Developed by the UNHCR Field Information and Coordination Support Section (FICSS) 
+    <div class="text footer">
+      Developed by the UNHCR Dataviz Team, Field Information and Coordination Support Section (FICSS) 
       <a href="mailto:stats@unhcr.org?subject=data.unhcr.org/dataviz">Email FICSS</a> -- 
       <span class="disclaimer1">DISCLAIMER -- The borders and country names on this map do not imply official endorsement by the United Nations. Data may be unavailable for some locations during certain time periods.</span>
       <span class="disclaimer2">The historical country borders were adapted from CShapes - Weidmann, Nils B., Doreen Kuse, and Kristian Skrede Gleditsch. 2010. The Geography of the International System: The CShapes Dataset. International Interactions 36 (1). </span><br/><br/>
@@ -549,7 +549,7 @@
     <option value="ORI">Origin</option>
   </select>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?cache=321"></script>
 
 </body>
 </html>
