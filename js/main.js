@@ -150,6 +150,8 @@ d3.json("js/worldtopo.json", function(error, map) {
     .attr("fill", "rgba(0,0,0,0.0)")
     .on("click",function(d,i){
 
+      $('.mapbglayer').css('cursor', 'default');
+
       $('#countrySelectorMobile select').val(0);
 
       countrySelectedName = "";
@@ -372,7 +374,7 @@ d3.json("js/worldtopo.json", function(error, map) {
         if(!detectmob()){
           timer = setTimeout(function() {resetYear();}, 500);
         }
-        
+
         if(selectedYear!=maxYear){
           yearOut(selectedYear); }}
         })
@@ -525,7 +527,9 @@ if(timer) {
   selectedYear = d.year;
   yearOut(selectedYear);
   if(timer) {clearTimeout(timer); timer = null;};
-  timer = setTimeout(function() {resetYear();}, 500);
+  if(!detectmob()){
+    timer = setTimeout(function() {resetYear();}, 500);
+  }
 }})
 .on("click", function(d){
   if(graphSelectedBar==0){
@@ -697,6 +701,8 @@ function mapMouseClick(d){
   $('#countryBox').text(d.properties.CNTRY_NAME);
 
   $('#countrySelectorMobile select').val(countryCode);
+
+  $('.mapbglayer').css('cursor', 'pointer');
 
   countrySelectedName = d.properties.CNTRY_NAME;
 
@@ -1076,9 +1082,43 @@ function changeType(handler){
       .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
       .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])+totalGraphYOffset+9})
 
-      var scaleYChangeCountry = d3.scale.linear()
-      .domain([0,maxChange])
-      .range([0,graphHeight/2-10]);
+  var scaleYTotalCountry = d3.scale.linear()
+  .domain([0,max])
+  .range([0,graphHeight-10]);
+
+  var scaleYChangeCountry = d3.scale.linear()
+  .domain([0,maxChange])
+  .range([0,graphHeight/2-10]);
+
+  var scaleYTotalAxis = d3.scale.linear()
+  .domain([0,max])
+  .range([graphHeight-10, 0]);
+
+   //Define Y axis
+   var yAxis = d3.svg.axis()
+   .scale(scaleYTotalAxis)
+   .orient("left")
+   .ticks(4)
+   .tickFormat(function (d) {
+      var label;
+      if(d==0){label = 0}
+
+      if ((d / 100) >= 1) {
+      label = d;
+      }
+      if ((d / 1000) >= 1) {
+      label = d / 1000 + "k";
+      }
+      if ((d / 1000000) >= 1) {
+      label = d / 1000000 + "m";
+      }                 
+      return label;
+    });
+
+            //Create Y axis
+            totalChart.selectAll(".totalYAxis")
+            .transition().duration(1000).call(yAxis);
+
 
       changeChart.selectAll(".graphChangeIncreases rect")
       .data(dataset)
