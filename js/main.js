@@ -126,7 +126,7 @@ d3.json("js/worldtopo.json", function(error, map) {
   .attr("class","map");
 
     // MAP BACKGROUND LAYER -- clickable to capture mouse off events
-    mapsvg
+    var mapbg = mapsvg
     .append("rect")
     .attr("class","mapbglayer")
     .attr("width",width-yAxisPadding)
@@ -228,11 +228,25 @@ d3.json("js/worldtopo.json", function(error, map) {
 
     var countries = map.objects.world.geometries;
 
+    // invoke d3 click
+    jQuery.fn.d3Click = function () {
+      this.each(function (i, e) {
+        var evt = new MouseEvent("click");
+        e.dispatchEvent(evt);
+      });
+    };
+
     countrySelect.on('change', function(d){
       var v = $(this).val();
-      var opt = d3.select('option[value='+v+']')[0][0];
-      var data = opt.__data__;
-      mapMouseClick(data);
+      if(v!=0){
+       var opt = d3.select('option[value='+v+']')[0][0];
+        var data = opt.__data__;
+        mapMouseClick(data);   
+      } else {
+        mapbg.on('click')();
+
+      }
+
     });
 
     countrySelect.selectAll('option')
