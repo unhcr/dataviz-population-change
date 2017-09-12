@@ -67,6 +67,20 @@ var totalOrGraph = 0; // 0 = total, 1 = change graphs
 var countryHovered = 0;
 var countrySelectedName;
 
+function detectmob() {
+   if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+     return true;
+   } else {
+     return false;
+   }
+}
+
+var barSpacing = 3;
+
+if(detectmob()){
+  barSpacing = 1;
+}
+
 // PROJECTION AND SCALE            
 
 var projection = d3.geo.equirectangular()
@@ -302,7 +316,7 @@ d3.json("js/worldtopo.json", function(error, map) {
     .data(dataset)
     .enter()
     .append("rect")
-    .attr("width",barWidth-3)
+    .attr("width",barWidth-barSpacing)
     .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotal(d[type][0].Total)})
     .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotal(d[type][0].Total)+totalGraphYOffset+9})
     .attr("x", function(d,i){return yAxisPadding+(i)*barWidth+2;})
@@ -355,8 +369,10 @@ d3.json("js/worldtopo.json", function(error, map) {
         selectedYear = d.year;
 
         if(timer) {clearTimeout(timer); timer = null;};
-        timer = setTimeout(function() {resetYear();}, 500);
-
+        if(!detectmob()){
+          timer = setTimeout(function() {resetYear();}, 500);
+        }
+        
         if(selectedYear!=maxYear){
           yearOut(selectedYear); }}
         })
@@ -423,7 +439,7 @@ d3.json("js/worldtopo.json", function(error, map) {
     .data(dataset)
     .enter()
     .append("rect")
-    .attr("width",barWidth-3)
+    .attr("width",barWidth-barSpacing)
     .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
     .attr("y", function(d,i){
       return 50;
@@ -441,7 +457,7 @@ d3.json("js/worldtopo.json", function(error, map) {
     .data(dataset)
     .enter()
     .append("rect")
-    .attr("width",barWidth-3)
+    .attr("width",barWidth-barSpacing)
     .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Increases));  })
     .attr("y", function(d,i){
       return 50-scaleYChange(Math.abs(d[type][0].Increases));;
