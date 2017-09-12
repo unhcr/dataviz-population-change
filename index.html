@@ -89,87 +89,63 @@
   </div>
 </div>
 
-        <div id="topRow" class="ui grid">
+        <div id="topRow" class="ui grid stackable">
           
           
           <div id="totalPopBox" class="four wide column">
-            <table>
-              <tr>
-                <td>
-                  <div class="label_main1">
-                    Total Population
-                  </div>
-                </td>
-                <td>
-                  <div class="figure_box">
-                    <div class="figure_text text" id="totalValue" style="font-size: 22px; padding-top: 1px; line-height: 160%; color: #0072BC;">1,000,000</div>
-                  </div>
-                </td>
-              </tr>
-            </table>
+            <div class="figure_label">
+              <div class="label_main1">
+                Total Population
+              </div>
+            </div>
+            <div class="figure_box">
+              <div class="figure_text text" id="totalValue" style="font-size: 22px; padding-top: 1px; line-height: 160%; color: #0072BC;">1,000,000</div>
+            </div>
           </div>
 
           <div id="popIncreasesBox" class="four wide column">
-
-            <table> <tr>
-              <td valign="middle">
-                <div class="label_main2" style="">
-                  Population Increases
-                </div>
-                <div class="text" style="font-size: 9px; white-space: nowrap">
-                  Compared to previous year
-                </div>
-              </td>
-              <td>
-                <div class="figure_box">
-                  <div class="figure_text text" id="increaseValue" style="padding-left: 10px; color: #EF4A60">1,000,000</div>
-                  <div style="position: relative; top: -22px; left: 8px;" class="changeUp">
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <div id="popDecreasesBox" class="five wide column">
-          <table style="float: right"><tr>
-            <td valign="middle">
-              <div class="label_main2" style=" ">
-                Population Decreases
+            <div class="figure_label">
+              <div class="label_main2" style="">
+                Population Increases
               </div>
               <div class="text" style="font-size: 9px; white-space: nowrap">
                 Compared to previous year
               </div>
-            </td>
-            <td>
-              <div class="figure_box">
-                <div class="figure_text text" id="decreaseValue" style="padding-left: 10px; color: #00B398">1,000,000</div>
-                <div style="position: relative; top: -30px; left: 8px;" class="changeDown">
-                </div>
-              </div>
-            </td>
-          </tr>
-        </table>
+            </div>
+            <div class="figure_box">
+              <div class="figure_text text" id="increaseValue" style="padding-left: 10px; color: #EF4A60">1,000,000</div>
+              <div style="position: relative; top: -22px; left: 8px;" class="changeUp"></div>
+            </div>
+        </div>
+
+        <div id="popDecreasesBox" class="five wide column">
+          <div class="figure_label">
+            <div class="label_main2" style=" ">
+              Population Decreases
+            </div>
+            <div class="text" style="font-size: 9px; white-space: nowrap">
+              Compared to previous year
+            </div>
+          </div>
+          <div class="figure_box">
+            <div class="figure_text text" id="decreaseValue" style="padding-left: 10px; color: #00B398">1,000,000</div>
+            <div style="position: relative; top: -30px; left: 8px;" class="changeDown"></div>
+          </div>
       </div>
 
-      <div id="yearSelectorBox" class="three wide column right aligned ">
-        <table style="float: right">
-          <tr>
-            <td style="">
-              <div class="label_main1">
-                Year
-              </div>
-            </td>
-            <td>
-              <div class="figure_box" style="width: 100px;">
-                <div class="prev" id="yearDown" onclick="yearDown();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                <div class="figure_text text" id="yearBox" style="color: #000">2016</div>
-                <div class="next" id="yearUp" onclick="yearUp();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-              </div>
-            </td>
-          </tr>
-        </table>
+      <div id="yearSelectorBox" class="three wide column ">
+        <div class="figure_label">
+          <div class="label_main1">
+            Year
+          </div>
+        </div>
+        <div class="figure_box" style="width: 100px;">
+          <div class="prev" id="yearDown" onclick="yearDown();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+          <div class="figure_text text" id="yearBox" style="color: #000">2016</div>
+          <div class="next" id="yearUp" onclick="yearUp();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
       </div>
+        
 
     </div>
 
@@ -215,32 +191,29 @@
           </tr>
         </table>
       </div>
+
+
+
+
       <div id="countrySelector">
-        <table>
-          <tr>
-            <td>
-              <div class="label_main1" style="display: inline; font-size: 12px">
-                Selected Country
-              </div>
-            </td>
+        <div class="figure_label">
+          <div class="label_main1">
+            Selected Country
+          </div>
+        </div>
 
-            <td align="right" style="float: right">
-              <div class="figure_box" style="width: 280px;">
-                <table width="100%"><tr>
-                  <td width="100%" class="figure_text text" id="countryBox" style="color: #424242">World</td>
-                </tr></table>
-              </div>
-            </td>
+        <div class="figure_box" style="width: 280px;">
+            <span class="figure_text text" id="countryBox" style="color: #424242">World</span>
+        </div>
 
-          </tr>
-        </table>
       </div>
     </div>
 
     <!-- MAP SECTION -->
-    <h4 class="ui blue header">World Map</h4>
-    <div class="text changeGraphSubTitle" style="font-size: 10px;">Click on a country to select and filter graphs.</div>
-
+    <div>
+      <h4 class="ui blue header">World Map</h4>
+      <div class="text changeGraphSubTitle" style="font-size: 10px;">Click on a country to select and filter graphs.</div>
+    </div>
     <div id="map">
 
       <div id="map_tooltip" class='dc-tooltip'><span class='dc-tooltip-title'>" + monthNameFormat(date) + "</span> | <span class='dc-tooltip-value'>" + numberFormat(d.y) +"</span></div>

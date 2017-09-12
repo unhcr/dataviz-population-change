@@ -49,25 +49,8 @@ h4 {
 /* top row container */
 #topRow {
   text-align: right;
-  height: 80px;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
   margin-top: 0px;
-}
-
-.label_main1 {
-  display: inline;
-  color: #000;
-  font-size: 12px;
-  font-weight: bold;  /* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
-}
-.label_main2 {
-  display: inline;
-  color: @t3;
-  font-size: 11px;
-  line-height: 0.5;
-  display: block;
-  padding-top: 7px;
-  font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
 }
 
 .yearSelected {
@@ -96,7 +79,6 @@ h4 {
 .middleRow {
   width: 100%;
   z-index: 999999;
-  height: 38px;
 }
 
 /* country of origin/asylum toggle button */
@@ -394,12 +376,38 @@ h4 {
   -moz-border-radius: 5px;
   border-radius: 5px;/* Firefox v3.5+ */
   margin-left: 10px;
+  float: right;
+  display: inline-block;
+
 }
 .figure_text {
   padding-top: 0px;
   font-size: 18px;
   color: @tFigure;
 }
+
+.figure_label {
+  text-align: right;
+  display: inline-block;
+}
+
+.label_main1 {
+  display: inline;
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;  /* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
+  padding-top: 5px;
+}
+.label_main2 {
+  display: inline;
+  color: @t3;
+  font-size: 11px;
+  line-height: 0.5;
+  display: block;
+  padding-top: 7px;
+  font-weight: bold;/* Firefox v4.0+ , Safari v5.1+ , Chrome v10.0+, IE v10+ and by Opera v10.5+ */
+}
+
 .next {
   background-color: green;
   width: 10px;
@@ -433,7 +441,6 @@ h4 {
   cursor: pointer;
 }
 .totalGraphDiv {
-  width: 1100px;
   height: 110px;/* Firefox v1.0+ */
 }
 .map_info_title {
@@ -557,4 +564,68 @@ h4 {
   float: left;
   width: 100%;
   z-index: 999999;
+}
+
+@media (max-width: 1200px) { 
+
+  .figure_box {
+    margin-left: 0px;
+    float: left;
+    display: block;
+
+  }
+
+  .figure_label {
+    display: block;
+    text-align: left;
+  }
+
+}
+
+@media (max-width: 920px) { 
+
+  .yearLabels {
+    display: none;
+  }
+
+}
+
+@media (max-width: 768px) { 
+
+  .unhcr-header h1, .unhcr-header h2 {
+    font-size: 18px !important;
+  }
+
+  .unhcr-header h3 {
+    font-size: 12px !important;
+  }
+
+  .unhcr-header-logo  
+  {
+    height: 40px;
+  }
+
+
+  .figure_box {
+    margin-left: 0px;
+    float: right;
+    display: inline-block;
+
+  }
+
+  .figure_label {
+    display: inline-block;
+    text-align: left;
+    float: left;
+  }
+
+  #countrySelector {
+    display: block;
+  }
+
+  #switchContainer {
+    display: block;
+  }
+
+
 }
