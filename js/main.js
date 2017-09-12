@@ -251,7 +251,7 @@ d3.json("js/worldtopo.json", function(error, map) {
 
     countrySelect.selectAll('option')
     .data(countries.filter(function(d){
-      return d.properties.COWEYEAR == 2016 && d.properties.CNTRY_NAME != 'Taiwan' && d.properties.CNTRY_NAME != 'Kosovo'
+      return d.properties.COWEYEAR == 2016 && d.properties.CNTRY_NAME != 'Taiwan' && d.properties.CNTRY_NAME != 'Kosovo' && d.properties.CNTRY_NAME != 'Western Sahara' 
     }))
     .enter()
     .append('option')
