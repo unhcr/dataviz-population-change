@@ -13,15 +13,15 @@
   <!-- Le styles -->
   <link href="js/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,900" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/dataviz-styleguide/semantic/dist/semantic.min.css?cache=9321">
-  <link rel="stylesheet/less" type="text/css" href="css/style.less?cache=9321" />
+  <link rel="stylesheet" href="https://unpkg.com/dataviz-styleguide/semantic/dist/semantic.min.css?cache=002">
+  <link rel="stylesheet/less" type="text/css" href="css/style.less?cache=002" />
 
   <script src="js/jquery.js"></script>
-  <script src="https://unpkg.com/dataviz-styleguide/semantic/dist/semantic.min.js?cache=9321"></script>  <!-- bootstrap.js -->
+  <script src="https://unpkg.com/dataviz-styleguide/semantic/dist/semantic.min.js?cache=002"></script>  <!-- bootstrap.js -->
   <script type="text/javascript" charset="utf-8" src="js/d3.v3.min.js"></script>
   <script src="js/topojson.v0.min.js"></script>
   <script src="js/colorbrewer.js"></script>
-  <script src="data.js?cache=9321"></script>
+  <script src="data.js?cache=002"></script>
   <script src="js/less.js"></script>
 
   <!-- Start of Facebook Meta Tags  -->
@@ -87,6 +87,12 @@
     <a href="#" target="_blank" title="Share on Facebook"><i class="facebook square icon"></i></a>
     <a href="#" target="_blank" title="Share on Twitter"><i class="twitter square icon"></i></a> 
   </div>
+</div>
+
+
+<div id="mobilemessage" class="ui warning message">
+  <i class="icon info"></i>
+  This visualisation is best viewed on desktop.
 </div>
 
         <div id="topRow" class="ui grid stackable">
@@ -163,8 +169,8 @@
       <div class="changeSmallDown" style="position: absolute; top: 77px; left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
     </div>
 
-    <div class="middleRow">
-      <div id="switchContainer">
+    <div class="middleRow ui grid stackable">
+      <div id="switchContainer" class="eight wide column">
         <table>
           <tr>
             <td style="padding-left: 0px;">
@@ -177,9 +183,9 @@
 
 
               <div class="ui toggle checkbox">
-  <input type="checkbox" name="public" id="switch" class="switchASY" onclick="switchChange();">
-  <label></label>
-</div>
+                <input type="checkbox" name="public" id="switch" class="switchASY" onclick="switchChange();">
+                <label></label>
+              </div>
 
             </td>
 
@@ -193,24 +199,25 @@
       </div>
 
 
-
-
-      <div id="countrySelector">
+      <div id="countrySelector" class="eight wide column">
         <div class="figure_label">
           <div class="label_main1">
             Selected Country
           </div>
         </div>
 
-        <div class="figure_box" style="width: 280px;">
-            <span class="figure_text text" id="countryBox" style="color: #424242">World</span>
+        <div id="countrySelectorMobile">
         </div>
+
+<!--         <div class="figure_box" style="width: 280px;">
+            <span class="figure_text text" id="countryBox" style="color: #424242">World</span>
+        </div> -->
 
       </div>
     </div>
 
     <!-- MAP SECTION -->
-    <div>
+    <div class="map_header">
       <h4 class="ui blue header">World Map</h4>
       <div class="text changeGraphSubTitle" style="font-size: 10px;">Click on a country to select and filter graphs.</div>
     </div>
@@ -522,7 +529,7 @@
     <option value="ORI">Origin</option>
   </select>
 
-  <script src="js/main.js?cache=9321"></script>
+  <script src="js/main.js?cache=002"></script>
 
 </body>
 </html>

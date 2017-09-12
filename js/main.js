@@ -126,7 +126,7 @@ d3.json("js/worldtopo.json", function(error, map) {
   .attr("class","map");
 
     // MAP BACKGROUND LAYER -- clickable to capture mouse off events
-    mapsvg
+    var mapbg = mapsvg
     .append("rect")
     .attr("class","mapbglayer")
     .attr("width",width-yAxisPadding)
@@ -135,6 +135,9 @@ d3.json("js/worldtopo.json", function(error, map) {
     .attr("x", yAxisPadding)
     .attr("fill", "rgba(0,0,0,0.0)")
     .on("click",function(d,i){
+
+      $('#countrySelectorMobile select').val(0);
+
       countrySelectedName = "";
       $('#countryBox').text("World");
 
@@ -218,6 +221,56 @@ d3.json("js/worldtopo.json", function(error, map) {
       mapMouseOut(d);
       d3.select(this).attr("filter", "");
     });
+
+    var countrySelect = d3.select('#countrySelectorMobile').append('select');
+
+    countrySelect.append('option').text('World').attr('value', 0);
+
+    var countries = map.objects.world.geometries;
+
+    // invoke d3 click
+    jQuery.fn.d3Click = function () {
+      this.each(function (i, e) {
+        var evt = new MouseEvent("click");
+        e.dispatchEvent(evt);
+      });
+    };
+
+    countrySelect.on('change', function(d){
+      var v = $(this).val();
+      if(v!=0){
+       var opt = d3.select('option[value='+v+']')[0][0];
+        var data = opt.__data__;
+        mapMouseClick(data);   
+      } else {
+        mapbg.on('click')();
+
+      }
+
+    });
+
+    countrySelect.selectAll('option')
+    .data(countries.filter(function(d){
+      return d.properties.COWEYEAR == 2016
+    }))
+    .enter()
+    .append('option')
+    .text(function(d){
+      return d.properties.CNTRY_NAME
+    })
+    .attr('value', function(d){
+      return d.properties.ISO1AL3
+    });
+
+
+
+    // order country dropdown
+    var sel = $('#countrySelectorMobile select');
+    var selected = sel.val(); // cache selected value, before reordering
+    var opts_list = sel.find('option');
+    opts_list.sort(function(a, b) { return $(a).text() > $(b).text() ? 1 : -1; });
+    sel.html('').append(opts_list);
+    sel.val(selected); // set cached selected value
 
 
     var barWidth = (width-yAxisPadding)/dataset.length;
@@ -627,6 +680,8 @@ function mapMouseClick(d){
   var countryCode = d.properties.ISO1AL3;
   $('#countryBox').text(d.properties.CNTRY_NAME);
 
+  $('#countrySelectorMobile select').val(countryCode);
+
   countrySelectedName = d.properties.CNTRY_NAME;
 
   var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
@@ -760,7 +815,6 @@ function sliderTotal(year){
   .style("display","block")                                  
         .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR + 1 <= selectedYear)})        // <== This line
         .style("display", "none");   
-
 
         if(type=="ASY"){
           $('#totalASYkey').css('display',"block");

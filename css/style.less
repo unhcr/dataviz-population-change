@@ -16,6 +16,10 @@ h4 {
   padding-right: 5px !important;
 }
 
+#mobilemessage {
+  display: none;
+}
+
 #country_name_popup {
   color: black;
   border-radius: 5px;
@@ -79,6 +83,12 @@ h4 {
 .middleRow {
   width: 100%;
   z-index: 999999;
+  margin-bottom: 15px;
+}
+
+.map_header {
+  padding-top: 12px;
+  padding-bottom: 5px;
 }
 
 /* country of origin/asylum toggle button */
@@ -127,11 +137,7 @@ h4 {
 
 
 
-/* select country box */
-#countrySelector {
-  z-index: 99909;
-  float: right;
-}
+
 .country {
   fill: lightgrey;
   stroke: black;
@@ -566,6 +572,34 @@ h4 {
   z-index: 999999;
 }
 
+/* select country box */
+#countrySelector {
+  z-index: 99909;
+  text-align: right;
+}
+
+  #countrySelectorMobile select {
+    width: 280px;
+    background-color: #f2f2f2;
+    height: 33px;
+    text-align: center;
+  }
+
+    #countrySelectorMobile {
+  display: inline-block;
+  }
+
+  #switchContainer {
+    display: inline-block;
+  }
+
+  #countrySelector .figure_label {
+    padding-right: 5px;
+    display: inline-block;
+  }
+
+
+
 @media (max-width: 1200px) { 
 
   .figure_box {
@@ -591,6 +625,7 @@ h4 {
 }
 
 @media (max-width: 768px) { 
+
 
   .unhcr-header h1, .unhcr-header h2 {
     font-size: 18px !important;
@@ -620,12 +655,25 @@ h4 {
   }
 
   #countrySelector {
-    display: block;
   }
 
-  #switchContainer {
-    display: block;
+  #switchContainer table {
+
+    margin: 5px auto;
   }
 
+  #map_info {
+    display: none;
+  }
+
+  .maplegend table {
+    background-color: rgba(255,255,255,1);
+    padding: 8px;
+    left: 0px;
+  }
+
+  #mobilemessage {
+    display: block;
+  }
 
 }
