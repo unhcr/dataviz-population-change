@@ -262,7 +262,7 @@ d3.json("js/worldtopo.json", function(error, map) {
         mapbg.on('click')();
 
       }
-
+      changeType();
     });
 
     countrySelect.selectAll('option')
