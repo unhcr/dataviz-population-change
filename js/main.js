@@ -82,26 +82,24 @@ if(detectmob()){
 }
 
 // PROJECTION AND SCALE            
+var mapFixedWidth = 1127;
 
 var projection = d3.geo.equirectangular()
 .center([0, 0])
 .scale(mapScale)
-.translate([width/2 + mapOffsetX, height/2 + mapOffsetY]);
+.translate([mapFixedWidth/2 + mapOffsetX, height/2 + mapOffsetY]);
 
 var path = d3.geo.path()
 .projection(projection);
 
 // CREATE SVG
-var canvas = d3.select("#map").append("svg")
-    .attr("width", "100%") // Add 6px to show latest year label.
+var canvas = d3.select("#map").append("svg") 
+    .attr("width", "100%")
     .attr("height", height)
-    .style('position', 'absolute')
-    .style('top', '0px')
-
-    // .attr("viewBox", "0 0 100 1000")
-     //   .call(d3.behavior.zoom()
-    //.on("zoom", redraw))
-     //   .append("g");
+    .attr("viewBox", "0 0 " + mapFixedWidth + " 400")
+    .attr("preserveAspectRatio", "xMinYMin")
+    .style("position", "absolute")
+    .style("top", "0px");
 
 var totalChart = d3.select('.totalGraphDiv').append("svg")
     .attr("width", width) // Add 6px to show latest year label.
