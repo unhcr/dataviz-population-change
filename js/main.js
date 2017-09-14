@@ -82,11 +82,12 @@ if(detectmob()){
 }
 
 // PROJECTION AND SCALE            
+var mapFixedWidth = 1127;
 
 var projection = d3.geo.equirectangular()
 .center([0, 0])
 .scale(mapScale)
-.translate([width/2 + mapOffsetX, height/2 + mapOffsetY]);
+.translate([mapFixedWidth/2 + mapOffsetX, height/2 + mapOffsetY]);
 
 var path = d3.geo.path()
 .projection(projection);
@@ -95,7 +96,7 @@ var path = d3.geo.path()
 var canvas = d3.select("#map").append("svg") 
     .attr("width", "100%")
     .attr("height", height)
-    .attr("viewBox", "0 0 1127 400")
+    .attr("viewBox", "0 0 " + mapFixedWidth + " 400")
     .attr("preserveAspectRatio", "xMinYMin")
     .style("position", "absolute")
     .style("top", "0px");
