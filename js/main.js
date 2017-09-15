@@ -23,10 +23,10 @@ var hoverColor = "lightblue";
 var normalColor = "lightgrey";
 var disabledColor = "lightgrey";
 var selectedCountryColor = "white";
-var asylumColor = "#338EC9";
-var originColor = "#EF4A60";
+var asylumColor = "#465F7F";
+var originColor = "#74879F";
 var graphUpColor = "#F26E80";
-var graphDownColor = "#3DC5B1";
+var graphDownColor = "#338EC9";
 var graphUpStrokeColor = "#F26E80";
 var graphDownStrokeColor = "#3DC5B1";
 
@@ -36,17 +36,17 @@ var type="ASY";
 // COLOR BREWER - TOTAL ASYLUM
 var colorTotalASY = d3.scale.threshold()
 .domain([0, 25000, 100000, 500000, 1000000, 2500000, 7000000])
-.range(['#CCE3F2','#99C7E4','#66AAD7','#338EC9','#0072BC','#00568D']);
+.range(['#D1D7DF','#A3AFBF','#74879F','#465F7F','#18375F','#122947']);
 
 // COLOR BREWER - TOTAL ORIGIN
 var colorTotalORI = d3.scale.threshold()
 .domain([0, 25000, 100000, 500000, 1000000, 2500000, 7000000])
-.range(['#FCDBDF','#F9B7BF','#F592A0','#F26E80','#EF4A60','#B33848']);
+.range(['#D1D7DF','#A3AFBF','#74879F','#465F7F','#18375F','#122947']);
 
 // COLOR BREWER - CHANGE ASYLUM
 var colorChangeASY = d3.scale.threshold()
 .domain([-2000000, -500000, -100000, -1000, -1, 0, 1, 1000, 100000, 500000, 7000000])
-.range(['#EF4A60','#B33848','#F26E80','#F592A0','#F592A0','#F592A0','grey','#BFECE5','#7FD9CB','#40C6B2','#00B398']);
+.range(['#EF4A60','#B33848','#F26E80','#F592A0','#F592A0','#F592A0','grey','#99C7E4','#66AAD7','#338EC9','#0072BC']);
 
 // COLOR BREWER - CHANGE ORIGIN
 var colorChangeORI = d3.scale.threshold()
