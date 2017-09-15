@@ -1200,7 +1200,7 @@ function changeType(handler){
 $("#map").mousemove(function(e) {
   var x_offset = 20;
   var y_offset = -5;
-  $('#map_tooltip').css('left', e.pageX + x_offset).css('top', e.pageY + y_offset);
+  $('#map_tooltip').css('left', e.clientX + x_offset).css('top', e.clientY + y_offset);
 });
 
 
