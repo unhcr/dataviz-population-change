@@ -68,7 +68,7 @@ var countryHovered = 0;
 var countrySelectedName;
 
 function detectmob() {
-   if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+   if(window.innerWidth <= 700 || window.innerHeight <= 600) {
      return true;
    } else {
      return false;
@@ -81,8 +81,11 @@ if(detectmob()){
   barSpacing = 1;
 }
 
+  console.log(barSpacing);
+
+
 // PROJECTION AND SCALE            
-var mapFixedWidth = 1127;
+var mapFixedWidth = 1027;
 
 var projection = d3.geo.equirectangular()
 .center([0, 0])
@@ -92,25 +95,28 @@ var projection = d3.geo.equirectangular()
 var path = d3.geo.path()
 .projection(projection);
 
+var ratio = 0.4;
+var width = $('#map').width();
+
+// $('#map').height(width*ratio);
+
 // CREATE SVG
 var canvas = d3.select("#map").append("svg") 
     .attr("width", "100%")
-    .attr("height", height)
-    .attr("viewBox", "0 0 " + mapFixedWidth + " 400")
-    .attr("preserveAspectRatio", "xMinYMin")
-    .style("position", "absolute")
-    .style("top", "0px");
+    // .attr("height", width*ratio)
+    .attr("viewBox", "0 0 " + mapFixedWidth + " " + (mapFixedWidth*ratio))
+    // .attr("preserveAspectRatio", "xMinYMin")
+    // .style("position", "absolute")
+    // .style("top", "0px");
 
 var totalChart = d3.select('.totalGraphDiv').append("svg")
-    .attr("width", width) // Add 6px to show latest year label.
-    .attr("height", 120)
-    // .attr("viewBox", "0 0 1000 110")
+    .attr("width", "100%") // Add 6px to show latest year label.
+    .attr("viewBox", "0 0 "+width+" 120")
+
 
 var changeChart = d3.select('.changeGraphDiv').append("svg")
-    .attr("width", width) // Add 6px to show latest year label.
-    .attr("height", 110)
-    .style('position', 'absolute')
-    .style('left', '0px')
+    .attr("width", "100%") // Add 6px to show latest year label.
+    .attr("viewBox", "0 0 "+width+" 120")
 
 width = width - 10;
 

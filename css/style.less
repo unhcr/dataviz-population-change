@@ -147,7 +147,11 @@ h4 {
   top: 10px;
 }
 
-
+  .maplegend table {
+    background-color: rgba(255,255,255,1);
+    padding: 8px;
+    left: 0px;
+  }
 
 
 .country {
@@ -160,7 +164,7 @@ h4 {
 
 #map {
   position: relative;
-  height: 400px;
+  height: auto;
 }
 
 .overlayBar,
@@ -280,13 +284,12 @@ h4 {
   left: 3px;
 }
 
-
 .axisLabel.dec {
- top: 58px;
+ bottom: 37px;
 }
 
 .axisLabel.inc {
-  top: 27px;
+  top: 22px;
 }
 
 .axisTitle {
@@ -459,7 +462,6 @@ h4 {
   cursor: pointer;
 }
 .totalGraphDiv {
-  height: 110px;/* Firefox v1.0+ */
 }
 .map_info_title {
   background-color: rgba(255, 255, 255, 0.1);
@@ -507,7 +509,6 @@ h4 {
 }
 .changeGraphDiv {
   position: relative;
-  height: 115px;
   margin-top: 10px;
   padding-top: 3px;
 }
@@ -649,6 +650,14 @@ h4 {
 
 }
 
+
+@media (max-width: 1000px) { 
+
+  #map_info {
+    display: none;
+  }
+}
+
 @media (max-width: 920px) { 
 
   .yearLabels {
@@ -663,13 +672,13 @@ h4 {
     width: 100%;
   }
 
+
+
 }
 
 @media (max-width: 768px) { 
 
-
   .totalGraphDiv {
-    height: 94px;
   }
 
   .unhcr-header h1, .unhcr-header h2 {
@@ -713,15 +722,9 @@ h4 {
     margin: 5px auto;
   }
 
-  #map_info {
-    display: none;
-  }
 
-  .maplegend table {
-    background-color: rgba(255,255,255,1);
-    padding: 8px;
-    left: 0px;
-  }
+
+
 
   #countrySelectorMobile {
     width: 100%;
@@ -739,4 +742,14 @@ h4 {
   .map_header {
       padding-top: 14px;
   }
+
+
 }
+
+  @media (max-width: 568px) { 
+
+    .maplegend {
+      display: none !important;
+    }
+
+  }
