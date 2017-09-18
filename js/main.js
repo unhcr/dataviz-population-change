@@ -269,6 +269,24 @@ d3.json("js/worldtopo.json", function(error, map) {
       changeType();
     });
 
+    //**************************
+    // country select dropdown next/prev buttons
+    //**************************
+    $("#next, #prev").click(function() {
+        $("#countrySelector select :selected")[this.id]().prop("selected", true);
+
+          var v = $("#countrySelector select").val();
+          if(v!=0){
+           var opt = d3.select('option[value='+v+']')[0][0];
+            var data = opt.__data__;
+            mapMouseClick(data);   
+          } else {
+            mapbg.on('click')();
+          }
+          changeType();
+    });
+
+
     countrySelect.selectAll('option')
     .data(countries.filter(function(d){
       return d.properties.COWEYEAR == 2016 && d.properties.CNTRY_NAME != 'Taiwan' && d.properties.CNTRY_NAME != 'Kosovo' && d.properties.CNTRY_NAME != 'Western Sahara' 
@@ -1190,10 +1208,6 @@ function changeType(handler){
       .attr("fill", function(d,i){return graphDownColor;});
 
     }
-
-
-
-
   }
 
 // COUNTRY MAP TOOLTIP FUNCTION
@@ -1202,7 +1216,6 @@ $("#map").mousemove(function(e) {
   var y_offset = -5;
   $('#map_tooltip').css('left', e.clientX + x_offset).css('top', e.clientY + y_offset);
 });
-
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
