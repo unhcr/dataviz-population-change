@@ -772,8 +772,8 @@ function mapMouseClick(d){
               if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
               if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
             })
-            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
-              else{return "#3DC5B1";}}); 
+            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
+              else{return graphDownColor;}}); 
             countrySelected = countryCode;
 
             changeChart.selectAll(".graphChangeDecreases rect")
@@ -791,8 +791,8 @@ function mapMouseClick(d){
               if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
               if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
             })
-            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
-              else{return "#3DC5B1";}
+            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
+              else{return graphDownColor;}
             }); 
 
             countrySelected = countryCode;
@@ -1140,8 +1140,8 @@ function changeType(handler){
         if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
         if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
       })
-      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
-        else{return "#3DC5B1";}}); 
+      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
+        else{return graphDownColor;}}); 
       countrySelected = countryCode;
 
       changeChart.selectAll(".graphChangeDecreases rect")
@@ -1159,8 +1159,8 @@ function changeType(handler){
         if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
         if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
       })
-      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return "#F26E80";}
-        else{return "#3DC5B1";}
+      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
+        else{return graphDownColor;}
       }); 
 
     } else {
