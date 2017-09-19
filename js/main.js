@@ -404,79 +404,76 @@ d3.json("js/worldtopo.json", function(error, map) {
          }
        })
        .on("click", function(d){
-        if(graphSelectedBar==0){
-          graphSelectedBar=1
-          selectedYear = d.year;
-          sliderTotal(selectedYear);
-          totalOrGraph = 0;
-        }else{
+         if(graphSelectedBar==0){
+           graphSelectedBar=1
+           selectedYear = d.year;
+           sliderTotal(selectedYear);
+           totalOrGraph = 0;
+         } else {
+           graphSelectedBar=0;
 
-          graphSelectedBar=0;
+           d3.selectAll(".y"+selectedYear).attr("fill", "#000").style("font-size", "8px");
 
-          d3.selectAll(".y"+selectedYear).attr("fill", "#000").style("font-size", "8px");
+           d3.selectAll(".yearLabels")
+             .attr("fill", "#9B9B9B")
+             .style("font-size", "6px")
+             .style("font-weight", "normal");
 
-          d3.selectAll(".yearLabels")
-          .attr("fill", "#9B9B9B")
-          .style("font-size", "6px")
-          .style("font-weight", "normal");
-
-          selectedYear = d.year;
-          sliderTotal(selectedYear);
-          yearOver(selectedYear);
-        }
-      });
-
+           selectedYear = d.year;
+           sliderTotal(selectedYear);
+           yearOver(selectedYear);
+         }
+       });
 
 
      // TOTAL BAR GRAPH Y AXIS
 
      //Define Y axis
      var yAxis = d3.svg.axis()
-     .scale(scaleYTotalAxis)
-     .orient("left")
-     .ticks(4)
-     .tickFormat(function (d) {
-      var label;
-      if(d==0){label = 0}
+       .scale(scaleYTotalAxis)
+       .orient("left")
+       .ticks(4)
+       .tickFormat(function (d) {
+         var label;
+         if(d==0){label = 0}
 
-       if ((d / 100) >= 1) {
-        label = d;
-      }
-      if ((d / 1000) >= 1) {
-        label = d / 1000 + " K";
-      }
-      if ((d / 1000000) >= 1) {
-        label = d / 1000000 + "m";
-      }       
-      return label;});
+          if ((d / 100) >= 1) {
+           label = d;
+         }
+         if ((d / 1000) >= 1) {
+           label = d / 1000 + " K";
+         }
+         if ((d / 1000000) >= 1) {
+           label = d / 1000000 + "m";
+         }       
+         return label;
+       });
 
     //Create Y axis
     totalChart.append("g")
-    .attr("class", "totalYAxis")
-    .attr("transform", "translate(" + yAxisPadding + ",9)")
-    .call(yAxis);
+        .attr("class", "totalYAxis")
+        .attr("transform", "translate(" + yAxisPadding + ",9)")
+        .call(yAxis);
 
     // CHANGE BAR GRAPH SVG GROUP
     var graphChangeDecreases = changeChart.append("g")
-    .attr("class","graphChange graphChangeDecreases");
+        .attr("class","graphChange graphChangeDecreases");
 
     // ADD CHANGE GRAPH BARS
     graphChangeDecreases
-    .selectAll("rect")
-    .data(dataset)
-    .enter()
-    .append("rect")
-    .attr("width",barWidth-barSpacing)
-    .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
-    .attr("y", function(d,i){
-      return 50;
-    })
-    .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+3;})
-    .attr("fill", function(d,i){return graphDownColor;}) 
+      .selectAll("rect")
+      .data(dataset)
+      .enter()
+      .append("rect")
+        .attr("width",barWidth-barSpacing)
+        .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
+        .attr("y", 50)
+        .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+3;})
+        .attr("fill", function(d,i){return graphDownColor;});
 
     // CHANGE BAR GRAPH SVG GROUP
     var graphChangeIncreases = changeChart.append("g")
-    .attr("class","graphChange graphChangeIncreases");
+        .attr("class","graphChange graphChangeIncreases");
 
     // ADD CHANGE GRAPH BARS
     graphChangeIncreases
@@ -506,106 +503,105 @@ d3.json("js/worldtopo.json", function(error, map) {
 
 
       graphChangeOverlay
-      .selectAll("rect")
-      .data(dataset)
-      .enter()
-      .append("rect")
-      .attr("class",function(d){return "overlayBar graphChangeOverlay_"+d.year})
-      .attr("width",barWidth)
-      .attr('height', graphChangeHeight+7)
-      .attr("y", changeGraphYOffset+32)
-      .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+2;})
-      .attr("fill", "rgba(0,0,0,0.05)")
-      .style("z-index", 50)
-      .on("mouseover", function(d){
-       if(graphSelectedBar==0){
+        .selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+          .attr("class",function(d){return "overlayBar graphChangeOverlay_"+d.year})
+          .attr("width",barWidth)
+          .attr('height', graphChangeHeight+7)
+          .attr("y", changeGraphYOffset+32)
+          .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+2;})
+          .attr("fill", "rgba(0,0,0,0.05)")
+          .style("z-index", 50)
+          .on("mouseover", function(d){
+            if(graphSelectedBar==0){
 
-  changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
-  changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-  changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
-  changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+              changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+              changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+              changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+              changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
 
-  selectedYear = d.year;
-  sliderChange(selectedYear);
-  totalOrGraph = 1;
-  
-  yearOver(selectedYear);
+              selectedYear = d.year;
+              sliderChange(selectedYear);
+              totalOrGraph = 1;
+              
+              yearOver(selectedYear);
 
-  if(selectedYear!=maxYear){
-    d3.selectAll(".y"+maxYear)
-    .attr("fill", "#9B9B9B")
-    // .style("font-size", "6px")
-    .style("font-weight", "normal");
-    totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
-    totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-  }   
-}  
+              if(selectedYear!=maxYear){
+                d3.selectAll(".y"+maxYear)
+                    .attr("fill", "#9B9B9B")
+                    // .style("font-size", "6px")
+                    .style("font-weight", "normal");
+                totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+                totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+              }
+            }
+            if(timer) {
+              clearTimeout(timer);
+              timer = null
+            }
+          })
+          .on("mouseout", function(d){
+            if(graphSelectedBar==0){
+              selectedYear = d.year;
+              yearOut(selectedYear);
+              if(timer) {clearTimeout(timer); timer = null;};
+              if(!detectmob()){
+                timer = setTimeout(function() {resetYear();}, 500);
+              }
+            }
+          })
+          .on("click", function(d){
+            if(graphSelectedBar==0){
+              totalOrGraph = 1;
+              graphSelectedBar=1
+              selectedYear = d.year;
+              sliderChange(selectedYear);
+            } else {
 
-if(timer) {
-  clearTimeout(timer);
-  timer = null
-}
+              graphSelectedBar=0;
 
-})
-.on("mouseout", function(d){
- if(graphSelectedBar==0){
-  selectedYear = d.year;
-  yearOut(selectedYear);
-  if(timer) {clearTimeout(timer); timer = null;};
-  if(!detectmob()){
-    timer = setTimeout(function() {resetYear();}, 500);
-  }
-}})
-.on("click", function(d){
-  if(graphSelectedBar==0){
-    totalOrGraph = 1;
-    graphSelectedBar=1
-    selectedYear = d.year;
-    sliderChange(selectedYear);
-  }else{
+              d3.selectAll(".yearLabels").transition()
+                .duration(300)
+                  .attr("fill", "#9B9B9B")
+                  .style("font-size", "6px")
+                  .style("font-weight", "normal");
+              selectedYear = d.year;
+              sliderChange(selectedYear);
+              yearOver(selectedYear);
+            }
+          });
 
-    graphSelectedBar=0;
+      // CHANGE BAR GRAPH Y AXIS
+ 
+      //Define Y axis
+      var yAxisChange = d3.svg.axis()
+        .scale(scaleYChangeAxis)
+        .orient("left")
+        .ticks(0)
+        .tickFormat(function (d) {
+          var label;
+          var label;
+          if(d==0){label = 0}
+          if ((d / 100) >= 1) {
+            label = d;
+          }
+          if ((d / 1000) >= 1) {
+            label = d / 1000 + " K";
+          }
+          if ((d / 1000000) >= 1) {
+            label = d / 1000000 + "m";
+          }
+   
+          return d;
+        });
 
-    d3.selectAll(".yearLabels").transition()
-    .duration(300)
-    .attr("fill", "#9B9B9B")
-    .style("font-size", "6px")
-    .style("font-weight", "normal");
-    selectedYear = d.year;
-    sliderChange(selectedYear);
-    yearOver(selectedYear);
-  }
-});
-
-     // CHANGE BAR GRAPH Y AXIS
-
-     //Define Y axis
-     var yAxisChange = d3.svg.axis()
-     .scale(scaleYChangeAxis)
-     .orient("left")
-     .ticks(0)
-     .tickFormat(function (d) {
-      var label;
-      var label;
-      if(d==0){label = 0}
-
-       if ((d / 100) >= 1) {
-        label = d;
-      }
-      if ((d / 1000) >= 1) {
-        label = d / 1000 + " K";
-      }
-      if ((d / 1000000) >= 1) {
-        label = d / 1000000 + "m";
-      }       
-
-      return d;});
-
-           // Create Y axis
-           // canvas.append("g")
-             //   .attr("class", "axis")
-            //   .attr("transform", "translate(" + yAxisPadding + ",165)")
-             //  .call(yAxisChange);
+    // Create Y axis
+    // canvas.append("g")
+    //   .attr("class", "axis")
+    //   .attr("transform", "translate(" + yAxisPadding + ",165)")
+    //  .call(yAxisChange);
 
     // TOTAL CHART YEAR LABELS
     totalChart.selectAll(".yearLabels")
