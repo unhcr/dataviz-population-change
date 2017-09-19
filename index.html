@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,155 +62,150 @@
       <script src="bootstrap/js/html5shiv.js"></script>
       <![endif]-->
 
-      <!-- Fav and touch icons -->
-      <link rel="apple-touch-icon-precomposed" sizes="144x144" href="bootstrap/ico/apple-touch-icon-144-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
-      <link rel="shortcut icon" href="bootstrap/ico/favicon.png">
+  <!-- Fav and touch icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="bootstrap/ico/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="bootstrap/ico/favicon.png">
 
-    </head>
+</head>
 
-    <body>
+<body>
 
-      <div id="container" class="ui container">
+  <div id="container" class="ui container">
 
-<br/>
-<div class="ui grid unhcr-header unhcr-header-style3">
-  <img class="unhcr-header-logo" src="images/unhcr-logo-horizontal.svg">
-  <div class="unhcr-header-title">
-    <h1>Dataviz</h1>
-    <h2>Population Change</h2>  
-    <h3>Evolution of refugee populations overtime showing increases and decreases from year to year</h3>
+  <br/>
+  <div class="ui grid unhcr-header unhcr-header-style3">
+    <img class="unhcr-header-logo" src="images/unhcr-logo-horizontal.svg">
+    <div class="unhcr-header-title">
+      <h1>Dataviz</h1>
+      <h2>Population Change</h2>  
+      <h3>Evolution of refugee populations overtime showing increases and decreases from year to year</h3>
+    </div>
+    <div class="unhcr-header-social">
+      <a href="#" target="_blank" title="Share on Facebook"><i class="facebook square icon"></i></a>
+      <a href="#" target="_blank" title="Share on Twitter"><i class="twitter square icon"></i></a> 
+    </div>
   </div>
-  <div class="unhcr-header-social">
-    <a href="#" target="_blank" title="Share on Facebook"><i class="facebook square icon"></i></a>
-    <a href="#" target="_blank" title="Share on Twitter"><i class="twitter square icon"></i></a> 
+
+
+  <div id="mobilemessage" class="ui warning message">
+    <i class="icon tv"></i>
+    This visualisation is best viewed on desktop.
   </div>
-</div>
 
-
-<div id="mobilemessage" class="ui warning message">
-  <i class="icon tv"></i>
-  This visualisation is best viewed on desktop.
-</div>
-
-        <div id="topRow" class="ui grid stackable">
-          
-          <div id="totalPopBox" class="four wide column">
-            <div class="figure_label">
-              <div class="label_main1">
-                Refugee Population
-              </div>
-            </div>
-            <div class="figure_box">
-              <div class="figure_text text" id="totalValue" style="font-size: 22px; padding-top: 1px; line-height: 160%; color: #465F7F;"></div>
-            </div>
-          </div>
-
-          <div id="popIncreasesBox" class="four wide column">
-            <div class="figure_label">
-              <div class="label_main2" style="">
-                Population Increases
-              </div>
-              <div class="text" style="font-size: 9px; white-space: nowrap">
-                Compared to previous year
-              </div>
-            </div>
-            <div class="figure_box">
-              <div class="figure_text text" id="increaseValue" style="padding-left: 10px; color: #EF4A60"></div>
-              <div style="position: relative; top: -22px; left: 8px;" class="changeUp"></div>
-            </div>
-        </div>
-
-        <div id="popDecreasesBox" class="five wide column">
-          <div class="figure_label">
-            <div class="label_main2" style=" ">
-              Population Decreases
-            </div>
-            <div class="text" style="font-size: 9px; white-space: nowrap">
-              Compared to previous year
-            </div>
-          </div>
-          <div class="figure_box">
-            <div class="figure_text text" id="decreaseValue" style="padding-left: 10px; color: #338EC9"></div>
-            <div style="position: relative; top: -30px; left: 8px;" class="changeDown"></div>
-          </div>
-      </div>
-
-      <div id="yearSelectorBox" class="three wide column ">
-        <div class="figure_label">
-          <div class="label_main1">
-            Year
-          </div>
-        </div>
-        <div class="figure_box" style="width: 100px;">
-          <div class="prev" id="yearDown" onclick="yearDown();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-          <div class="figure_text text" id="yearBox" style="color: #000">2016</div>
-          <div class="next" id="yearUp" onclick="yearUp();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  <div id="topRow" class="ui grid stackable">
+    
+    <div id="totalPopBox" class="four wide column">
+      <div class="figure_label">
+        <div class="label_main1">
+          Refugee Population
         </div>
       </div>
-        
-
+      <div class="figure_box">
+        <div class="figure_text text" id="totalValue" style="font-size: 22px; padding-top: 1px; line-height: 160%; color: #465F7F;"></div>
+      </div>
     </div>
 
-    <h4 class="ui blue header">Refugee Population by Year</h4>
-    <div class="text changeGraphSubTitle" style="font-size: 10px;">Click on the graphs to select a year.</div>
-    <div class="totalGraphDiv"></div>
-
-    <h4 class="ui blue header">Refugee Population Change</h4>
-    <div class="text changeGraphSubTitle" style="font-size: 10px">Compared to previous year.</div>
-    <div class="changeGraphDiv">
-      <div class="changeSmallUp" style="position: absolute; top: 10px; left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-      <span class="axisLabel inc">Increase</span>
-      <span class="axisLabel dec">Decrease</span>
-      <div class="changeSmallDown" style="position: absolute; bottom: 20px; left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <div id="popIncreasesBox" class="four wide column">
+      <div class="figure_label">
+        <div class="label_main2" style="">
+          Population Increases
+        </div>
+        <div class="text" style="font-size: 9px; white-space: nowrap">
+          Compared to previous year
+        </div>
+      </div>
+      <div class="figure_box">
+        <div class="figure_text text" id="increaseValue" style="padding-left: 10px; color: #EF4A60"></div>
+        <div style="position: relative; top: -22px; left: 8px;" class="changeUp"></div>
+      </div>
     </div>
 
-    <div class="middleRow ui grid stackable">
-      <div id="switchContainer" class="eight wide column">
-        <table>
-          <tr>
-            <td style="padding-left: 0px;">
-              <div id="switchASY" class="switchActive" selected="selected" style="display: inline; padding-right: 10px; font-size: 11px;">
-                Country of Asylum
-              </div>
-            </td>
+    <div id="popDecreasesBox" class="five wide column">
+      <div class="figure_label">
+        <div class="label_main2" style=" ">
+          Population Decreases
+        </div>
+        <div class="text" style="font-size: 9px; white-space: nowrap">
+          Compared to previous year
+        </div>
+      </div>
+      <div class="figure_box">
+        <div class="figure_text text" id="decreaseValue" style="padding-left: 10px; color: #338EC9"></div>
+        <div style="position: relative; top: -30px; left: 8px;" class="changeDown"></div>
+      </div>
+    </div>
 
-            <td style="padding-left: 0px;">
+    <div id="yearSelectorBox" class="three wide column ">
+      <div class="figure_label">
+        <div class="label_main1">
+          Year
+        </div>
+      </div>
+      <div class="figure_box" style="width: 100px;">
+        <div class="prev" id="yearDown" onclick="yearDown();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="figure_text text" id="yearBox" style="color: #000">2016</div>
+        <div class="next" id="yearUp" onclick="yearUp();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+      </div>
+    </div>
 
+  </div>
 
-              <div class="ui toggle checkbox">
-                <input type="checkbox" name="public" id="switch" class="switchASY" onclick="switchChange();">
-                <label></label>
-              </div>
+  <h4 class="ui blue header">Refugee Population by Year</h4>
+  <div class="text changeGraphSubTitle" style="font-size: 10px;">Click on the graphs to select a year.</div>
+  <div class="totalGraphDiv"></div>
 
-            </td>
+  <h4 class="ui blue header">Refugee Population Change</h4>
+  <div class="text changeGraphSubTitle" style="font-size: 10px">Compared to previous year.</div>
+  <div class="changeGraphDiv">
+    <div class="changeSmallUp" style="position: absolute; top: 10px; left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <span class="axisLabel inc">Increase</span>
+    <span class="axisLabel dec">Decrease</span>
+    <div class="changeSmallDown" style="position: absolute; bottom: 20px; left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  </div>
 
-            <td style="padding-left: 10px;">
-              <div  id="switchORI"  class="switchInactive" style="display: inline; padding-right: 10px; font-size: 11px">
-                Country of Origin
-              </div>
-            </td>
-          </tr>
-        </table>
+  <div class="middleRow ui grid stackable">
+    <div id="switchContainer" class="eight wide column">
+      <table>
+        <tr>
+          <td style="padding-left: 0px;">
+            <div id="switchASY" class="switchActive" selected="selected" style="display: inline; padding-right: 10px; font-size: 11px;">
+              Country of Asylum
+            </div>
+          </td>
+
+          <td style="padding-left: 0px;">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="public" id="switch" class="switchASY" onclick="switchChange();">
+              <label></label>
+            </div>
+          </td>
+
+          <td style="padding-left: 10px;">
+            <div  id="switchORI"  class="switchInactive" style="display: inline; padding-right: 10px; font-size: 11px">
+              Country of Origin
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="countrySelector" class="eight wide column">
+      <div class="figure_label">
+        <div class="label_main1">
+          Selected Country
+        </div>
       </div>
 
-
-      <div id="countrySelector" class="eight wide column">
-        <div class="figure_label">
-          <div class="label_main1">
-            Selected Country
-          </div>
-        </div>
-
-        <div id="countrySelectorMobile">
+      <div id="countrySelectorMobile">
         <div id="countrySelectorMobileIcon"></div>
         <div id="prev"></div>
         <div id="next"></div>
         </div>
 
-<!--         <div class="figure_box" style="width: 280px;">
+  <!--         <div class="figure_box" style="width: 280px;">
             <span class="figure_text text" id="countryBox" style="color: #424242">World</span>
         </div> -->
 
