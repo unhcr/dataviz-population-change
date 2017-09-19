@@ -699,11 +699,10 @@ function mapMouseOver(d){
   $('#map_tooltip').text(d.properties.CNTRY_NAME);
   $('#map_tooltip').css("display","inline");
 
-   // $('#map_info').html("<span style='font-size: 10px; font-weight: normal;'>Number of Refugees <b>from</b> "+d.properties.CNTRY_NAME+":</span><span style='font-size: 12px; font-weight: normal;'>"+(populationAsylum)+"</span>");
+  // $('#map_info').html("<span style='font-size: 10px; font-weight: normal;'>Number of Refugees <b>from</b> "+d.properties.CNTRY_NAME+":</span><span style='font-size: 12px; font-weight: normal;'>"+(populationAsylum)+"</span>");
 
-   $('#mapinfo_text').css("display","block");
-
- }
+  $('#mapinfo_text').css("display","block");
+}
 
 // MOUSE OUT COUNTRY
 function mapMouseOut(d){
@@ -727,123 +726,129 @@ function mapMouseClick(d){
   var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
   var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
   var scaleYTotalCountry = d3.scale.linear()
-  .domain([0,max])
-  .range([0,graphHeight-10]);
+    .domain([0,max])
+    .range([0,graphHeight-10]);
 
   var scaleYChangeCountry = d3.scale.linear()
-  .domain([0,maxChange])
-  .range([0,graphHeight/2-10]);
+    .domain([0,maxChange])
+    .range([0,graphHeight/2-10]);
 
   var scaleYTotalAxis = d3.scale.linear()
-  .domain([0,max])
-  .range([graphHeight-10, 0]);
+    .domain([0,max])
+    .range([graphHeight-10, 0]);
 
-   //Define Y axis
-   var yAxis = d3.svg.axis()
-   .scale(scaleYTotalAxis)
-   .orient("left")
-   .ticks(4)
-   .tickFormat(function (d) {
+  //Define Y axis
+  var yAxis = d3.svg.axis()
+    .scale(scaleYTotalAxis)
+    .orient("left")
+    .ticks(4)
+    .tickFormat(function (d) {
       var label;
       if(d==0){label = 0}
 
       if ((d / 100) >= 1) {
-      label = d;
+        label = d;
       }
       if ((d / 1000) >= 1) {
-      label = d / 1000 + "k";
+        label = d / 1000 + "k";
       }
       if ((d / 1000000) >= 1) {
-      label = d / 1000000 + "m";
-      }                 
+        label = d / 1000000 + "m";
+      }
       return label;
     });
 
-            //Create Y axis
-            totalChart.selectAll(".totalYAxis")
-            .transition().duration(1000).call(yAxis);
+  //Create Y axis
+  totalChart.selectAll(".totalYAxis")
+    .transition().duration(1000).call(yAxis);
 
-            // update total chart
-            totalChart.selectAll(".graphTotal rect")
-            .data(dataset)
-            .transition()
-            .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
-            .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])})
+  // update total chart
+  totalChart.selectAll(".graphTotal rect")
+    .data(dataset)
+    .transition()
+      .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
+      .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])})
 
-            changeChart.selectAll(".graphChangeIncreases rect")
-            .data(dataset)
-            .transition()
-            .duration(700)
-            .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
-              return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
-            })
-            .attr("y", function(d,i){
-              var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
-              var change = (d[type][0][countryCode])-prevValue;
-              var changeAbs;
-              if(change>=0){changeAbs=1;}else{changeAbs=-1};
-              var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
-              if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
-              if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
-            })
-            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
-              else{return graphDownColor;}}); 
-            countrySelected = countryCode;
+  changeChart.selectAll(".graphChangeIncreases rect")
+    .data(dataset)
+    .transition()
+    .duration(700)
+      .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
+        return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
+      })
+      .attr("y", function(d,i){
+        var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
+        var change = (d[type][0][countryCode])-prevValue;
+        var changeAbs;
+        if(change>=0){changeAbs=1;}else{changeAbs=-1};
+        var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
+        if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
+        if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
+      })
+      .attr("fill", function(d,i){
+        var type = $('#type').val();
+        if(i>=1){
+          prevValue=(dataset[i-1][type][0][countryCode]);
+        } if(((d[type][0][countryCode])-prevValue)>=0){
+          return graphUpColor;
+        }
+        else{
+          return graphDownColor;
+        }
+      }); 
+  countrySelected = countryCode;
 
-            changeChart.selectAll(".graphChangeDecreases rect")
-            .data(dataset)
-            .transition()
-            .duration(700)
-            .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
-              return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
-            })
-            .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
-              var change = (d[type][0][countryCode])-prevValue;
-              var changeAbs;
-              if(change>=0){changeAbs=1;}else{changeAbs=-1};
-              var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
-              if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
-              if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
-            })
-            .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
-              else{return graphDownColor;}
-            }); 
+  changeChart.selectAll(".graphChangeDecreases rect")
+    .data(dataset)
+    .transition()
+    .duration(700)
+      .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
+        return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }      
+      })
+      .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
+        var change = (d[type][0][countryCode])-prevValue;
+        var changeAbs;
+        if(change>=0){changeAbs=1;}else{changeAbs=-1};
+        var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
+        if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
+        if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
+      })
+      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
+        else{return graphDownColor;}
+      }); 
 
-            countrySelected = countryCode;
-          }
+  countrySelected = countryCode;
+}
 
-          function yearUp(){
-            if(selectedYear<maxYear){
-              graphSelectedBar = 1;
-              yearOver(selectedYear+1);
-              yearOut(selectedYear);
-              selectedYear = selectedYear + 1;
-              changeType();
-            }
-          }
+function yearUp(){
+  if(selectedYear<maxYear){
+    graphSelectedBar = 1;
+    yearOver(selectedYear+1);
+    yearOut(selectedYear);
+    selectedYear = selectedYear + 1;
+    changeType();
+  }
+}
 
-          function yearDown(){
+function yearDown(){
+  if(selectedYear>minYear){
+    graphSelectedBar = 1;
+    yearOver(selectedYear-1);
+    yearOut(selectedYear);
+    selectedYear = selectedYear - 1;
+    changeType();
+  }
+}
 
-            if(selectedYear>minYear){
-
-              graphSelectedBar = 1;
-              yearOver(selectedYear-1);
-              yearOut(selectedYear);
-              selectedYear = selectedYear - 1;
-              changeType();
-            }
-          }
-
-          function resetYear() {
-            selectedYear = maxYear;
-            yearOver(maxYear);
-            if(totalOrGraph==1)
-            {
-              sliderChange(maxYear);
-            }else{
-              sliderTotal(maxYear);
-            }
-          }
+function resetYear() {
+  selectedYear = maxYear;
+  yearOver(maxYear);
+  if(totalOrGraph==1){
+    sliderChange(maxYear);
+  } else {
+    sliderTotal(maxYear);
+  }
+}
 
 // SLIDER TOTAL FUNCTION
 function sliderTotal(year){
@@ -852,53 +857,53 @@ function sliderTotal(year){
 
   sliderAll(selectedYear);
   canvas.selectAll(".country")    
-  .style("display","block")                                  
-        .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR + 1 <= selectedYear)})        // <== This line
-        .style("display", "none");   
+      .style("display", "block")                                  
+    .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR + 1 <= selectedYear)})        // <== This line
+      .style("display", "none");   
 
-        if(type=="ASY"){
-          $('#totalASYkey').css('display',"block");
-          $('#totalORIkey').css('display',"none");
-          $('#changekey').css('display',"none");
+  if(type=="ASY"){
+    $('#totalASYkey').css('display',"block");
+    $('#totalORIkey').css('display',"none");
+    $('#changekey').css('display',"none");
 
-          var state = d3.selectAll('.country')
-          .style('fill', function(d){
-            var countryCode = d.id;              
-            var result1 = dataset[year][type][0][countryCode];
+    var state = d3.selectAll('.country')
+    .style('fill', function(d){
+      var countryCode = d.id;              
+      var result1 = dataset[year][type][0][countryCode];
 
-            if(countryCode!=countrySelected){
-              if((result1==0)||(!result1)){return "lightgrey" }else { return colorTotalASY(result1)};
-            } else { 
-              return selectedCountryColor;
-            }
-
-          });
-        }
-
-        if(type=="ORI"){
-          $('#totalASYkey').css('display',"none");
-          $('#totalORIkey').css('display',"block");
-          $('#changekey').css('display',"none");
-
-          var state = d3.selectAll('.country')
-          .style('fill', function(d){
-            var countryCode = d.id;              
-            var result1 = dataset[year][type][0][countryCode];
-
-
-            if(countryCode!=countrySelected){
-              if(result1==0){return "lightgrey";}else { return colorTotalORI(result1);};
-            } else { return selectedCountryColor;}
-
-          });
-        }
+      if(countryCode!=countrySelected){
+        if((result1==0)||(!result1)){return "lightgrey" }else { return colorTotalASY(result1)};
+      } else { 
+        return selectedCountryColor;
       }
 
-      canvas.append("text").text(maxYear);
+    });
+  }
 
-      function sliderActiveYear(year){
-        var activeYear = year + minYear;
-      }
+  if(type=="ORI"){
+    $('#totalASYkey').css('display',"none");
+    $('#totalORIkey').css('display',"block");
+    $('#changekey').css('display',"none");
+
+    var state = d3.selectAll('.country')
+    .style('fill', function(d){
+      var countryCode = d.id;              
+      var result1 = dataset[year][type][0][countryCode];
+
+
+      if(countryCode!=countrySelected){
+        if(result1==0){return "lightgrey";}else { return colorTotalORI(result1);};
+      } else { return selectedCountryColor;}
+
+    });
+  }
+}
+
+canvas.append("text").text(maxYear);
+
+function sliderActiveYear(year){
+  var activeYear = year + minYear;
+}
 
 // SLIDER CHANGE FUNCTION
 function sliderChange(year){
@@ -908,17 +913,16 @@ function sliderChange(year){
   sliderActiveYear(year);
 
   canvas.selectAll(".country")    
-  .style("display","block")                                  
-  .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
-  .style("display", "none");  
+      .style("display","block")                                  
+    .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
+      .style("display", "none");  
 
   $('#totalASYkey').css('display',"none");
   $('#totalORIkey').css('display',"none");
   $('#changekey').css('display',"block");
 
   if(type=="ASY"){
-    var state = d3.selectAll('.country')
-    .style('fill', function(d,i){
+    var state = d3.selectAll('.country').style('fill', function(d,i){
       var countryCode = d.id;
       var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
       if(countryCode!=countrySelected){
@@ -930,16 +934,19 @@ function sliderChange(year){
   }
 
   if(type=="ORI"){
-    var state = d3.selectAll('.country')
-    .style('fill', function(d){
+    var state = d3.selectAll('.country').style('fill', function(d){
       var countryCode = d.id;
       var result = dataset[year][type][0][countryCode] - dataset[year-1][type][0][countryCode];
       if(countryCode!=countrySelected){
-       if(result==0){return "lightgrey"}else { return colorChangeASY(-result);}
+        if(result==0){
+          return "lightgrey";
+        } else {
+          return colorChangeASY(-result);
+        }
       } else { 
         return selectedCountryColor;
       }
-   });
+    });
   }
 }
 
