@@ -966,19 +966,18 @@ function sliderAll(year){
     if(year>0){
       var increases = (dataset[year][type][0]["Increases"]);
       var decreases = (dataset[year][type][0]["Decreases"]);
-    }else{
+    } else {
       var decreases = "n/a";var increases = "n/a";
-    };
+    }
 
     increases = numberWithCommas(Math.abs(increases));
     if(increases == 0){increases = "n/a"}
 
-      decreases = numberWithCommas(Math.abs(decreases));
+    decreases = numberWithCommas(Math.abs(decreases));
     if(decreases == 0){decreases = "n/a"}
 
-      if(selectedYear>minYear){$('#increaseValue').text(increases);}else{$('#increaseValue').text("n/a");}
+    if(selectedYear>minYear){$('#increaseValue').text(increases);}else{$('#increaseValue').text("n/a");}
     if(selectedYear>minYear){$('#decreaseValue').text(decreases);}else{$('#decreaseValue').text("n/a");}
-
   }
 
   else {
@@ -1014,8 +1013,8 @@ function sliderAll(year){
   if(countrySelected==0){ countryName = 'No Country Selected'; $('#mapinfo_text').css("display","none");} else {$('#mapinfo_text').css("display","block");};
 
   var refASYTotal = (dataset[year].ASY[0][countryCode]);
-  if(refASYTotal>0){refASYTotal = numberWithCommas(refASYTotal)}else{refASYTotal="n/a"};
-  if(year>0){var refASYChange = (dataset[year].ASY[0][countryCode]-dataset[year-1].ASY[0][countryCode]);} else { var refASYChange = "n/a";}
+  if (refASYTotal>0){refASYTotal = numberWithCommas(refASYTotal)}else{refASYTotal="n/a"};
+  if (year>0){var refASYChange = (dataset[year].ASY[0][countryCode]-dataset[year-1].ASY[0][countryCode]);} else { var refASYChange = "n/a";}
   if (refASYChange>0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallUp"); $('#refASYChangeYear').text(" increase since "+(selectedYear-1));};
   if (refASYChange<0){refASYChange = numberWithCommas(Math.abs(refASYChange)); $('#refASYChangeIcon').attr("class","changeSmallDown"); $('#refASYChangeYear').text(" decrease since "+(selectedYear-1));};
   if (refASYChange==0){refASYChange = "n/a"; $('#refASYChangeIcon').attr("class","changeSmallNone"); $('#refASYChangeYear').text(" no change since "+(selectedYear-1))};
@@ -1026,8 +1025,8 @@ function sliderAll(year){
   $('#refASYChange').text(refASYChange);
 
   var refORITotal = (dataset[year].ORI[0][countryCode]);
-  if(refORITotal>0){refORITotal = numberWithCommas(refORITotal)}else{refORITotal="n/a"};
-  if(year>0){var refORIChange = (dataset[year].ORI[0][countryCode]-dataset[year-1].ORI[0][countryCode]);} else { var refORIChange = "n/a";}
+  if (refORITotal>0){refORITotal = numberWithCommas(refORITotal)}else{refORITotal="n/a"};
+  if (year>0){var refORIChange = (dataset[year].ORI[0][countryCode]-dataset[year-1].ORI[0][countryCode]);} else { var refORIChange = "n/a";}
   if (refORIChange>0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallUp"); $('#refORIChangeYear').text(" increase since "+(selectedYear-1));};
   if (refORIChange<0){refORIChange = numberWithCommas(Math.abs(refORIChange)); $('#refORIChangeIcon').attr("class","changeSmallDown"); $('#refORIChangeYear').text(" decrease since "+(selectedYear-1));};
   if (refORIChange==0){refORIChange = "n/a"; $('#refORIChangeIcon').attr("class","changeSmallNone"); $('#refORIChangeYear').text(" no change since "+(selectedYear-1))};
@@ -1035,8 +1034,6 @@ function sliderAll(year){
   $('#refORITitle').html("Refugees from "+countryName);
   $('#refORITotal').text(refORITotal);
   $('#refORIChange').text(refORIChange);
-
-
 }
 
 function switchChange() {
@@ -1047,42 +1044,42 @@ function switchChange() {
 
   var graphTotal = d3.select('svg .graphTotal');
 
-  if($('#type').val()=="ORI")
-  {
-
-   graphTotal.selectAll(".graphTotal rect")
-   .attr("width", function(){getwidth = Number(d3.select(this).attr("width")); return 0});
-
-   graphTotal.selectAll(".graphTotal rect").transition()
-   .duration(200)
-   .attr("fill", asylumColor);
-
-   graphTotal.selectAll(".graphTotal rect")
-   .attr("width", getwidth);
-
-   $('#type').val("ASY");
-   $('#switch').attr("class","switchASY");
-   $('#switchORI').attr("class","switchInactive");
-   $('#switchASY').attr("class","switchActive");
-
- }else{
-   graphTotal.selectAll(".graphTotal rect")
-   .attr("width", function(){getwidth = Number(d3.select(this).attr("width")); return 0});
-
-   graphTotal.selectAll(".graphTotal rect").transition()
-   .duration(200)
-   .attr("fill", originColor);
-
-   graphTotal.selectAll(".graphTotal rect")
-   .attr("width", getwidth);
+  if($('#type').val()=="ORI") {
 
     graphTotal.selectAll(".graphTotal rect")
+        .attr("width", function(){getwidth = Number(d3.select(this).attr("width")); return 0});
+
+    graphTotal.selectAll(".graphTotal rect").transition()
+      .duration(200)
+        .attr("fill", asylumColor);
+
+    graphTotal.selectAll(".graphTotal rect")
+        .attr("width", getwidth);
+
+    $('#type').val("ASY");
+    $('#switch').attr("class","switchASY");
+    $('#switchORI').attr("class","switchInactive");
+    $('#switchASY').attr("class","switchActive");
+
+  } else {
+    graphTotal.selectAll(".graphTotal rect")
+        .attr("width", function(){getwidth = Number(d3.select(this).attr("width")); return 0});
+
+    graphTotal.selectAll(".graphTotal rect").transition()
+      .duration(200)
+        .attr("fill", originColor);
+
+    graphTotal.selectAll(".graphTotal rect")
+      .attr("width", getwidth);
+
+    graphTotal.selectAll(".graphTotal rect");
+
     $('#type').val("ORI");
     $('#switch').attr("class","switchORI");
     $('#switchORI').attr("class","switchActive");
     $('#switchASY').attr("class","switchInactive");
-  };
-changeType();
+  }
+  changeType();
 }
 
 function changeType(handler){
@@ -1097,121 +1094,128 @@ function changeType(handler){
     var max = d3.max(dataset.map(function(d) {return d[type][0][countryCode];} ));
     var maxChange = d3.max(dataset.map(function(d,i) {if(i>=1){return Math.abs(dataset[i][type][0][countryCode]-dataset[i-1][type][0][countryCode]);}} ));
     var scaleYTotalCountry = d3.scale.linear()
-    .domain([0,max])
-    .range([0,graphHeight-10]);
+      .domain([0,max])
+      .range([0,graphHeight-10]);
 
-      graphTotal
+    graphTotal
       .selectAll("rect")
       .transition()
       .duration(700)
-      .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
-      .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])+totalGraphYOffset+9})
+        .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotalCountry(d[type][0][countryCode])})
+        .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotalCountry(d[type][0][countryCode])+totalGraphYOffset+9})
 
-  var scaleYTotalCountry = d3.scale.linear()
-  .domain([0,max])
-  .range([0,graphHeight-10]);
+    var scaleYTotalCountry = d3.scale.linear()
+      .domain([0,max])
+      .range([0,graphHeight-10]);
 
-  var scaleYChangeCountry = d3.scale.linear()
-  .domain([0,maxChange])
-  .range([0,graphHeight/2-10]);
+    var scaleYChangeCountry = d3.scale.linear()
+      .domain([0,maxChange])
+      .range([0,graphHeight/2-10]);
 
-  var scaleYTotalAxis = d3.scale.linear()
-  .domain([0,max])
-  .range([graphHeight-10, 0]);
+    var scaleYTotalAxis = d3.scale.linear()
+      .domain([0,max])
+      .range([graphHeight-10, 0]);
 
-   //Define Y axis
-   var yAxis = d3.svg.axis()
-   .scale(scaleYTotalAxis)
-   .orient("left")
-   .ticks(4)
-   .tickFormat(function (d) {
-      var label;
-      if(d==0){label = 0}
+    //Define Y axis
+    var yAxis = d3.svg.axis()
+      .scale(scaleYTotalAxis)
+      .orient("left")
+      .ticks(4)
+      .tickFormat(function (d) {
+        var label;
+        if(d==0){label = 0}
 
-      if ((d / 100) >= 1) {
-      label = d;
-      }
-      if ((d / 1000) >= 1) {
-      label = d / 1000 + "k";
-      }
-      if ((d / 1000000) >= 1) {
-      label = d / 1000000 + "m";
-      }
-      return label;
-    });
-
-            //Create Y axis
-            totalChart.selectAll(".totalYAxis")
-            .transition().duration(1000).call(yAxis);
-
-
-      changeChart.selectAll(".graphChangeIncreases rect")
-      .data(dataset)
-      .transition()
-      .duration(700)
-      .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
-        return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }
-      })
-      .attr("y", function(d,i){
-        var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
-        var change = (d[type][0][countryCode])-prevValue;
-        var changeAbs;
-        if(change>=0){changeAbs=1;}else{changeAbs=-1};
-        var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
-        if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
-        if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
-      })
-      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
-        else{return graphDownColor;}});
-      countrySelected = countryCode;
-
-      changeChart.selectAll(".graphChangeDecreases rect")
-      .data(dataset)
-      .transition()
-      .duration(700)
-      .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
-        return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }
-      })
-      .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
-        var change = (d[type][0][countryCode])-prevValue;
-        var changeAbs;
-        if(change>=0){changeAbs=1;}else{changeAbs=-1};
-        var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
-        if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
-        if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
-      })
-      .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
-        else{return graphDownColor;}
+        if ((d / 100) >= 1) {
+          label = d;
+        }
+        if ((d / 1000) >= 1) {
+          label = d / 1000 + "k";
+        }
+        if ((d / 1000000) >= 1) {
+          label = d / 1000000 + "m";
+        }
+        return label;
       });
 
-    } else {
+    //Create Y axis
+    totalChart.selectAll(".totalYAxis")
+      .transition().duration(1000).call(yAxis);
 
-      var scaleYChange = d3.scale.linear()
+    changeChart.selectAll(".graphChangeIncreases rect")
+      .data(dataset)
+      .transition()
+      .duration(700)
+        .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
+          return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }
+        })
+        .attr("y", function(d,i){
+          var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
+          var change = (d[type][0][countryCode])-prevValue;
+          var changeAbs;
+          if(change>=0){changeAbs=1;}else{changeAbs=-1};
+          var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
+          if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
+          if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
+        })
+        .attr("fill", function(d,i){
+          var type = $('#type').val();
+          if(i>=1){
+            prevValue=(dataset[i-1][type][0][countryCode]);
+          }
+          if(((d[type][0][countryCode])-prevValue)>=0){
+            return graphUpColor;
+          } else {
+            return graphDownColor;
+          }
+        });
+    countrySelected = countryCode;
+
+    changeChart.selectAll(".graphChangeDecreases rect")
+      .data(dataset)
+      .transition()
+      .duration(700)
+        .attr('height', function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);
+          return scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));  }
+        })
+        .attr("y", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);}
+          var change = (d[type][0][countryCode])-prevValue;
+          var changeAbs;
+          if(change>=0){changeAbs=1;}else{changeAbs=-1};
+          var height = scaleYChangeCountry(Math.abs((d[type][0][countryCode])-prevValue));
+          if(changeAbs==1){return 77-height+changeGraphYOffset+5;}; // if a positive value
+          if(changeAbs==-1){return 79+changeGraphYOffset+5;}; // if a positive value
+        })
+        .attr("fill", function(d,i){var type = $('#type').val(); if(i>=1){prevValue=(dataset[i-1][type][0][countryCode]);} if(((d[type][0][countryCode])-prevValue)>=0){return graphUpColor;}
+          else{return graphDownColor;}
+        });
+
+  } else {
+
+    var scaleYChange = d3.scale.linear()
       .domain([0,2663045])
       .range([0,graphHeight/2-10]);
 
-      changeChart.selectAll(".graphChangeIncreases rect")
+    changeChart.selectAll(".graphChangeIncreases rect")
       .data(dataset)
       .transition()
       .duration(700)
-      .attr('height', function(d,i){return scaleYChange(Math.abs(d['ASY'][0].Increases));  })
-      .attr("y", function(d,i){
-        return 50-scaleYChange(Math.abs(d['ASY'][0].Increases));;
-      })
-      .attr("fill", function(d,i){return graphUpColor;});
+        .attr('height', function(d,i){return scaleYChange(Math.abs(d['ASY'][0].Increases));  })
+        .attr("y", function(d,i){
+          return 50-scaleYChange(Math.abs(d['ASY'][0].Increases));;
+        })
+        .attr("fill", function(d,i){return graphUpColor;});
 
-      changeChart.selectAll(".graphChangeDecreases rect")
+    changeChart.selectAll(".graphChangeDecreases rect")
       .data(dataset)
       .transition()
       .duration(700)
-      .attr('height', function(d,i){return scaleYChange(Math.abs(d['ASY'][0].Decreases));  })
-      .attr("y", function(d,i){
-        return 50;
-      })
-      .attr("fill", function(d,i){return graphDownColor;});
-
-    }
+        .attr('height', function(d,i){return scaleYChange(Math.abs(d['ASY'][0].Decreases));  })
+        .attr("y", function(d,i){
+          return 50;
+        })
+        .attr("fill", function(d,i){return graphDownColor;});
   }
+}
 
 // COUNTRY MAP TOOLTIP FUNCTION
 $("#map").mousemove(function(e) {
@@ -1223,7 +1227,6 @@ $("#map").mousemove(function(e) {
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
 
 
 /*
