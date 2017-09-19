@@ -211,424 +211,421 @@ d3.json("js/worldtopo.json", function(error, map) {
         });
     });
 
-    //BACKGROUND MAP
-    mapsvg.append("g")
-      .attr("class","background")
-      .append("path")
-      .datum(topojson.object(map, map.objects.world))
-      .attr("d", path)
-      .style("fill",disabledColor)
-      .style("z-index", "1");
+  //BACKGROUND MAP
+  mapsvg.append("g")
+    .attr("class","background")
+    .append("path")
+    .datum(topojson.object(map, map.objects.world))
+    .attr("d", path)
+    .style("fill",disabledColor)
+    .style("z-index", "1");
 
-    // ACTIVE COUNTRY MAP
-    mapsvg.append("g").attr("class","countrymap")
-      .selectAll(".country")
-      .data(topojson.object(map, map.objects.world).geometries)
-      .enter().append("path")
-      .attr("class", function(d) { return "country " + d.id; })
-      .attr("d", path)
-      // .attr("filter", "url(#innershadow2)")
-      .style("z-index", "10")
-      .on("click", function(d){
-        d3.select(this).transition().style("fill", selectedCountryColor);
-        mapMouseClick(d);
-        changeType();
-      })
-      .on("mouseover", function(d){
-        mapMouseOver(d);
-      })
-      .on("mouseout", function(d){
-        mapMouseOut(d);
-        d3.select(this).attr("filter", "");
-      });
+  // ACTIVE COUNTRY MAP
+  mapsvg.append("g").attr("class","countrymap")
+    .selectAll(".country")
+    .data(topojson.object(map, map.objects.world).geometries)
+    .enter().append("path")
+    .attr("class", function(d) { return "country " + d.id; })
+    .attr("d", path)
+    // .attr("filter", "url(#innershadow2)")
+    .style("z-index", "10")
+    .on("click", function(d){
+      d3.select(this).transition().style("fill", selectedCountryColor);
+      mapMouseClick(d);
+      changeType();
+    })
+    .on("mouseover", function(d){
+      mapMouseOver(d);
+    })
+    .on("mouseout", function(d){
+      mapMouseOut(d);
+      d3.select(this).attr("filter", "");
+    });
 
-    var countrySelect = d3.select('#countrySelectorMobile').append('select');
+  var countrySelect = d3.select('#countrySelectorMobile').append('select');
 
-    countrySelect.append('option').text('World').attr('value', 0);
+  countrySelect.append('option').text('World').attr('value', 0);
 
-    var countries = map.objects.world.geometries;
+  var countries = map.objects.world.geometries;
 
-    // invoke d3 click
-    jQuery.fn.d3Click = function () {
-      this.each(function (i, e) {
-        var evt = new MouseEvent("click");
-        e.dispatchEvent(evt);
-      });
-    };
+  // invoke d3 click
+  jQuery.fn.d3Click = function () {
+    this.each(function (i, e) {
+      var evt = new MouseEvent("click");
+      e.dispatchEvent(evt);
+    });
+  };
 
-    countrySelect.on('change', function(d){
-      var v = $(this).val();
+  countrySelect.on('change', function(d){
+    var v = $(this).val();
+    if(v!=0){
+     var opt = d3.select('option[value='+v+']')[0][0];
+      var data = opt.__data__;
+      mapMouseClick(data);
+    } else {
+      mapbg.on('click')();
+    }
+    changeType();
+  });
+
+  //**************************
+  // country select dropdown next/prev buttons
+  //**************************
+  $("#next, #prev").click(function() {
+    $("#countrySelector select :selected")[this.id]().prop("selected", true);
+      var v = $("#countrySelector select").val();
       if(v!=0){
-       var opt = d3.select('option[value='+v+']')[0][0];
+        var opt = d3.select('option[value='+v+']')[0][0];
         var data = opt.__data__;
-        mapMouseClick(data);
+        mapMouseClick(data);   
       } else {
         mapbg.on('click')();
       }
       changeType();
+  });
+
+  countrySelect.selectAll('option')
+    .data(countries.filter(function(d){
+      return d.properties.COWEYEAR == 2016 && d.properties.CNTRY_NAME != 'Taiwan' && d.properties.CNTRY_NAME != 'Kosovo' && d.properties.CNTRY_NAME != 'Western Sahara'
+    }))
+    .enter()
+    .append('option')
+    .text(function(d){
+      return d.properties.CNTRY_NAME
+    })
+    .attr('value', function(d){
+      return d.properties.ISO1AL3
     });
 
-    //**************************
-    // country select dropdown next/prev buttons
-    //**************************
-    $("#next, #prev").click(function() {
-      $("#countrySelector select :selected")[this.id]().prop("selected", true);
-        var v = $("#countrySelector select").val();
-        if(v!=0){
-          var opt = d3.select('option[value='+v+']')[0][0];
-          var data = opt.__data__;
-          mapMouseClick(data);   
-        } else {
-          mapbg.on('click')();
+
+  // order country dropdown
+  var sel = $('#countrySelectorMobile select');
+  var selected = sel.val(); // cache selected value, before reordering
+  var opts_list = sel.find('option');
+  opts_list.sort(function(a, b) { return $(a).text() > $(b).text() ? 1 : -1; });
+  sel.html('').append(opts_list);
+  sel.val(selected); // set cached selected value
+
+  var barWidth = (width-yAxisPadding)/dataset.length;
+
+  var scaleYTotal = d3.scale.linear()
+    .domain([0,20000000])
+    .range([0,graphHeight]);
+
+  var scaleYTotalAxis = d3.scale.linear()
+    .domain([0,20000000])
+    .range([graphHeight-10, 0]);
+
+  var scaleYChange = d3.scale.linear()
+    .domain([0,2663045])
+    .range([0,graphHeight/2-10]);
+
+  var scaleYChangeAxis = d3.scale.linear()
+    .domain([-2664045,2664045])
+    .range([graphHeight-20, 0]);
+
+  // TOTAL BAR GRAPH SVG GROUP
+  var graphTotal = totalChart.append("g")
+    .attr("class","graphTotal");
+
+  // ADD TOTAL GRAPH BARS
+  graphTotal
+    .selectAll("rect")
+    .attr('class','totalBars')
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("width",barWidth-barSpacing)
+    .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotal(d[type][0].Total)})
+    .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotal(d[type][0].Total)+totalGraphYOffset+9})
+    .attr("x", function(d,i){return yAxisPadding+(i)*barWidth+2;})
+    .attr("fill", asylumColor)
+    .on("mouseover", function(d){
+      if(graphSelectedBar==0){
+        totalOrGraph = 0;
+        selectedYear = d.year;
+        sliderTotal(selectedYear);
+        yearOver(selectedYear);
+      }
+      if(timer) {
+        clearTimeout(timer);
+        timer = null
+      }
+    });
+  // .style("stroke",function(){return "rgba(124,255,255,0.5)";})
+  // .style("stroke-width", 1);
+
+  // TOTAL BAR GRAPH OVERLAY - slide function
+  var graphTotalOverlay = totalChart.append("g")
+    .attr("class","graphOverlay");
+
+  var timer;
+
+  graphTotalOverlay
+    .selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("width",barWidth+1)
+    .attr("class",function(d){return "overlayBar graphTotalOverlay_"+d.year})
+    .attr('height', graphHeight-6)
+    .attr("y", totalGraphYOffset+18)
+    .attr("x", function(d,i){return yAxisPadding+(i)*barWidth;})
+    .attr("fill", "rgba(0,0,0,0.05)")
+    .style("z-index", 50)
+    .on("mouseover", function(d){
+      if(graphSelectedBar==0){
+        totalOrGraph = 0;
+        selectedYear = d.year;
+        sliderTotal(selectedYear);
+        yearOver(selectedYear);
+      }
+      if(timer) {
+        clearTimeout(timer);
+        timer = null
+      }
+    })
+    .on("mouseout", function(d){
+      if(graphSelectedBar == 0){ 
+        selectedYear = d.year;
+
+        if(timer) {
+          clearTimeout(timer);
+          timer = null;
         }
-        changeType();
+
+        if(!detectmob()){
+          timer = setTimeout(function() {resetYear();}, 500);
+        }
+
+        if(selectedYear!=maxYear){
+          yearOut(selectedYear);
+        }
+      }
+    })
+    .on("click", function(d){
+      if(graphSelectedBar==0){
+        graphSelectedBar=1
+        selectedYear = d.year;
+        sliderTotal(selectedYear);
+        totalOrGraph = 0;
+      } else {
+        graphSelectedBar=0;
+
+        d3.selectAll(".y"+selectedYear).attr("fill", "#000").style("font-size", "8px");
+
+        d3.selectAll(".yearLabels")
+          .attr("fill", "#9B9B9B")
+          .style("font-size", "6px")
+          .style("font-weight", "normal");
+
+        selectedYear = d.year;
+        sliderTotal(selectedYear);
+        yearOver(selectedYear);
+      }
     });
 
-    countrySelect.selectAll('option')
-      .data(countries.filter(function(d){
-        return d.properties.COWEYEAR == 2016 && d.properties.CNTRY_NAME != 'Taiwan' && d.properties.CNTRY_NAME != 'Kosovo' && d.properties.CNTRY_NAME != 'Western Sahara'
-      }))
-      .enter()
-      .append('option')
-      .text(function(d){
-        return d.properties.CNTRY_NAME
-      })
-      .attr('value', function(d){
-        return d.properties.ISO1AL3
-      });
+  // TOTAL BAR GRAPH Y AXIS
 
+  //Define Y axis
+  var yAxis = d3.svg.axis()
+    .scale(scaleYTotalAxis)
+    .orient("left")
+    .ticks(4)
+    .tickFormat(function (d) {
+      var label;
+      if(d==0){label = 0}
 
-    // order country dropdown
-    var sel = $('#countrySelectorMobile select');
-    var selected = sel.val(); // cache selected value, before reordering
-    var opts_list = sel.find('option');
-    opts_list.sort(function(a, b) { return $(a).text() > $(b).text() ? 1 : -1; });
-    sel.html('').append(opts_list);
-    sel.val(selected); // set cached selected value
+      if ((d / 100) >= 1) {
+        label = d;
+      }
+      if ((d / 1000) >= 1) {
+        label = d / 1000 + " K";
+      }
+      if ((d / 1000000) >= 1) {
+        label = d / 1000000 + "m";
+      }       
+      return label;
+    });
 
-    var barWidth = (width-yAxisPadding)/dataset.length;
+  //Create Y axis
+  totalChart.append("g")
+      .attr("class", "totalYAxis")
+      .attr("transform", "translate(" + yAxisPadding + ",9)")
+      .call(yAxis);
 
-    var scaleYTotal = d3.scale.linear()
-      .domain([0,20000000])
-      .range([0,graphHeight]);
+  // CHANGE BAR GRAPH SVG GROUP
+  var graphChangeDecreases = changeChart.append("g")
+      .attr("class","graphChange graphChangeDecreases");
 
-    var scaleYTotalAxis = d3.scale.linear()
-      .domain([0,20000000])
-      .range([graphHeight-10, 0]);
-
-    var scaleYChange = d3.scale.linear()
-      .domain([0,2663045])
-      .range([0,graphHeight/2-10]);
-
-    var scaleYChangeAxis = d3.scale.linear()
-      .domain([-2664045,2664045])
-      .range([graphHeight-20, 0]);
-
-    // TOTAL BAR GRAPH SVG GROUP
-    var graphTotal = totalChart.append("g")
-      .attr("class","graphTotal");
-
-    // ADD TOTAL GRAPH BARS
-    graphTotal
-      .selectAll("rect")
-      .attr('class','totalBars')
-      .data(dataset)
-      .enter()
-      .append("rect")
+  // ADD CHANGE GRAPH BARS
+  graphChangeDecreases
+    .selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
       .attr("width",barWidth-barSpacing)
-      .attr('height', function(d,i){var type = $('#type').val(); return scaleYTotal(d[type][0].Total)})
-      .attr("y", function(d,i){var type = $('#type').val(); return graphHeight-scaleYTotal(d[type][0].Total)+totalGraphYOffset+9})
-      .attr("x", function(d,i){return yAxisPadding+(i)*barWidth+2;})
-      .attr("fill", asylumColor)
+      .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
+      .attr("y", 50)
+      .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+3;})
+      .attr("fill", function(d,i){return graphDownColor;});
+
+  // CHANGE BAR GRAPH SVG GROUP
+  var graphChangeIncreases = changeChart.append("g")
+      .attr("class","graphChange graphChangeIncreases");
+
+  // ADD CHANGE GRAPH BARS
+  graphChangeIncreases
+    .selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+      .attr("width",barWidth-barSpacing)
+      .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Increases));  })
+      .attr("y", function(d,i){
+        return 50-scaleYChange(Math.abs(d[type][0].Increases));;
+      })
+      .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+3;})
+      .attr("fill", function(d,i){return graphUpColor;});
+
+  // CHANGE BAR GRAPH OVERLAY - slide function
+  var graphChangeOverlay = changeChart.append("g")
+      .attr("class","graphOverlay");
+
+  // CHANGE BAR GRAPH - MIDDLE AXIS
+  graphChangeOverlay
+    .append("line")
+      .attr("x1", 0)
+      .attr("x2",width-15)
+      .attr("y1", 0)
+      .attr("y2", 0);
+
+  graphChangeOverlay
+    .selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+      .attr("class",function(d){return "overlayBar graphChangeOverlay_"+d.year})
+      .attr("width",barWidth)
+      .attr('height', graphChangeHeight+7)
+      .attr("y", changeGraphYOffset+32)
+      .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+2;})
+      .attr("fill", "rgba(0,0,0,0.05)")
+      .style("z-index", 50)
       .on("mouseover", function(d){
         if(graphSelectedBar==0){
-          totalOrGraph = 0;
+
+          changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+          changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+          changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
+          changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+
           selectedYear = d.year;
-          sliderTotal(selectedYear);
+          sliderChange(selectedYear);
+          totalOrGraph = 1;
+          
           yearOver(selectedYear);
+
+          if(selectedYear!=maxYear){
+            d3.selectAll(".y"+maxYear)
+                .attr("fill", "#9B9B9B")
+                // .style("font-size", "6px")
+                .style("font-weight", "normal");
+            totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
+            totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
+          }
         }
         if(timer) {
           clearTimeout(timer);
           timer = null
         }
+      })
+      .on("mouseout", function(d){
+        if(graphSelectedBar==0){
+          selectedYear = d.year;
+          yearOut(selectedYear);
+          if(timer) {clearTimeout(timer); timer = null;};
+          if(!detectmob()){
+            timer = setTimeout(function() {resetYear();}, 500);
+          }
+        }
+      })
+      .on("click", function(d){
+        if(graphSelectedBar==0){
+          totalOrGraph = 1;
+          graphSelectedBar=1
+          selectedYear = d.year;
+          sliderChange(selectedYear);
+        } else {
+
+          graphSelectedBar=0;
+
+          d3.selectAll(".yearLabels").transition()
+            .duration(300)
+              .attr("fill", "#9B9B9B")
+              .style("font-size", "6px")
+              .style("font-weight", "normal");
+          selectedYear = d.year;
+          sliderChange(selectedYear);
+          yearOver(selectedYear);
+        }
       });
-    // .style("stroke",function(){return "rgba(124,255,255,0.5)";})
-    // .style("stroke-width", 1);
 
-     // TOTAL BAR GRAPH OVERLAY - slide function
-     var graphTotalOverlay = totalChart.append("g")
-       .attr("class","graphOverlay");
-
-     var timer;
-
-     graphTotalOverlay
-       .selectAll("rect")
-       .data(dataset)
-       .enter()
-       .append("rect")
-       .attr("width",barWidth+1)
-       .attr("class",function(d){return "overlayBar graphTotalOverlay_"+d.year})
-       .attr('height', graphHeight-6)
-       .attr("y", totalGraphYOffset+18)
-       .attr("x", function(d,i){return yAxisPadding+(i)*barWidth;})
-       .attr("fill", "rgba(0,0,0,0.05)")
-       .style("z-index", 50)
-       .on("mouseover", function(d){
-         if(graphSelectedBar==0){
-           totalOrGraph = 0;
-           selectedYear = d.year;
-           sliderTotal(selectedYear);
-           yearOver(selectedYear);
-         }
-         if(timer) {
-           clearTimeout(timer);
-           timer = null
-         }
-       })
-       .on("mouseout", function(d){
-         if(graphSelectedBar == 0){ 
-           selectedYear = d.year;
-
-           if(timer) {
-             clearTimeout(timer);
-             timer = null;
-           }
-
-           if(!detectmob()){
-             timer = setTimeout(function() {resetYear();}, 500);
-           }
-
-           if(selectedYear!=maxYear){
-             yearOut(selectedYear);
-           }
-         }
-       })
-       .on("click", function(d){
-         if(graphSelectedBar==0){
-           graphSelectedBar=1
-           selectedYear = d.year;
-           sliderTotal(selectedYear);
-           totalOrGraph = 0;
-         } else {
-           graphSelectedBar=0;
-
-           d3.selectAll(".y"+selectedYear).attr("fill", "#000").style("font-size", "8px");
-
-           d3.selectAll(".yearLabels")
-             .attr("fill", "#9B9B9B")
-             .style("font-size", "6px")
-             .style("font-weight", "normal");
-
-           selectedYear = d.year;
-           sliderTotal(selectedYear);
-           yearOver(selectedYear);
-         }
-       });
-
-
-     // TOTAL BAR GRAPH Y AXIS
-
-     //Define Y axis
-     var yAxis = d3.svg.axis()
-       .scale(scaleYTotalAxis)
-       .orient("left")
-       .ticks(4)
-       .tickFormat(function (d) {
-         var label;
-         if(d==0){label = 0}
-
-          if ((d / 100) >= 1) {
-           label = d;
-         }
-         if ((d / 1000) >= 1) {
-           label = d / 1000 + " K";
-         }
-         if ((d / 1000000) >= 1) {
-           label = d / 1000000 + "m";
-         }       
-         return label;
-       });
-
-    //Create Y axis
-    totalChart.append("g")
-        .attr("class", "totalYAxis")
-        .attr("transform", "translate(" + yAxisPadding + ",9)")
-        .call(yAxis);
-
-    // CHANGE BAR GRAPH SVG GROUP
-    var graphChangeDecreases = changeChart.append("g")
-        .attr("class","graphChange graphChangeDecreases");
-
-    // ADD CHANGE GRAPH BARS
-    graphChangeDecreases
-      .selectAll("rect")
-      .data(dataset)
-      .enter()
-      .append("rect")
-        .attr("width",barWidth-barSpacing)
-        .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Decreases));  })
-        .attr("y", 50)
-        .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+3;})
-        .attr("fill", function(d,i){return graphDownColor;});
-
-    // CHANGE BAR GRAPH SVG GROUP
-    var graphChangeIncreases = changeChart.append("g")
-        .attr("class","graphChange graphChangeIncreases");
-
-    // ADD CHANGE GRAPH BARS
-    graphChangeIncreases
-    .selectAll("rect")
-    .data(dataset)
-    .enter()
-    .append("rect")
-    .attr("width",barWidth-barSpacing)
-    .attr('height', function(d,i){ return scaleYChange(Math.abs(d[type][0].Increases));  })
-    .attr("y", function(d,i){
-      return 50-scaleYChange(Math.abs(d[type][0].Increases));;
-    })
-    .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+3;})
-    .attr("fill", function(d,i){return graphUpColor;}) 
-
-     // CHANGE BAR GRAPH OVERLAY - slide function
-     var graphChangeOverlay = changeChart.append("g")
-     .attr("class","graphOverlay");
-
-      // CHANGE BAR GRAPH - MIDDLE AXIS
-      graphChangeOverlay
-      .append("line")
-      .attr("x1", 0)
-      .attr("x2",width-15)
-      .attr("y1", 0)
-      .attr("y2", 0)
-
-
-      graphChangeOverlay
-        .selectAll("rect")
-        .data(dataset)
-        .enter()
-        .append("rect")
-          .attr("class",function(d){return "overlayBar graphChangeOverlay_"+d.year})
-          .attr("width",barWidth)
-          .attr('height', graphChangeHeight+7)
-          .attr("y", changeGraphYOffset+32)
-          .attr("x", function(d,i){return yAxisPadding+(i*barWidth)+2;})
-          .attr("fill", "rgba(0,0,0,0.05)")
-          .style("z-index", 50)
-          .on("mouseover", function(d){
-            if(graphSelectedBar==0){
-
-              changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
-              changeChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-              changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("filter", "null");
-              changeChart.selectAll(".graphChangeOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-
-              selectedYear = d.year;
-              sliderChange(selectedYear);
-              totalOrGraph = 1;
-              
-              yearOver(selectedYear);
-
-              if(selectedYear!=maxYear){
-                d3.selectAll(".y"+maxYear)
-                    .attr("fill", "#9B9B9B")
-                    // .style("font-size", "6px")
-                    .style("font-weight", "normal");
-                totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("filter", "null");
-                totalChart.selectAll(".graphTotalOverlay_" + maxYear).attr("fill", "rgba(20,20,30,0.04)");
-              }
-            }
-            if(timer) {
-              clearTimeout(timer);
-              timer = null
-            }
-          })
-          .on("mouseout", function(d){
-            if(graphSelectedBar==0){
-              selectedYear = d.year;
-              yearOut(selectedYear);
-              if(timer) {clearTimeout(timer); timer = null;};
-              if(!detectmob()){
-                timer = setTimeout(function() {resetYear();}, 500);
-              }
-            }
-          })
-          .on("click", function(d){
-            if(graphSelectedBar==0){
-              totalOrGraph = 1;
-              graphSelectedBar=1
-              selectedYear = d.year;
-              sliderChange(selectedYear);
-            } else {
-
-              graphSelectedBar=0;
-
-              d3.selectAll(".yearLabels").transition()
-                .duration(300)
-                  .attr("fill", "#9B9B9B")
-                  .style("font-size", "6px")
-                  .style("font-weight", "normal");
-              selectedYear = d.year;
-              sliderChange(selectedYear);
-              yearOver(selectedYear);
-            }
-          });
-
-      // CHANGE BAR GRAPH Y AXIS
+  // CHANGE BAR GRAPH Y AXIS
  
-      //Define Y axis
-      var yAxisChange = d3.svg.axis()
-        .scale(scaleYChangeAxis)
-        .orient("left")
-        .ticks(0)
-        .tickFormat(function (d) {
-          var label;
-          var label;
-          if(d==0){label = 0}
-          if ((d / 100) >= 1) {
-            label = d;
-          }
-          if ((d / 1000) >= 1) {
-            label = d / 1000 + " K";
-          }
-          if ((d / 1000000) >= 1) {
-            label = d / 1000000 + "m";
-          }
-   
-          return d;
-        });
-
-    // Create Y axis
-    // canvas.append("g")
-    //   .attr("class", "axis")
-    //   .attr("transform", "translate(" + yAxisPadding + ",165)")
-    //  .call(yAxisChange);
-
-    // TOTAL CHART YEAR LABELS
-    totalChart.selectAll(".yearLabels")
-    .data(dataset)
-    .enter().append("text")
-    .attr("class",function (d,i){return "yearLabels y"+d.year})
-    // .attr("x", function(d,i){return +0+(i)*barWidth;})
-    .attr("x", function(d,i){ return 6+yAxisPadding+(i)*barWidth+2;})
-    .attr("y", 107)
-    .attr("dx", 0) // padding-right
-    .attr("dy", "0") // vertical-align: middle
-    .attr("text-anchor", "middle") // text-align: right
-    .style("font-size", "7px")
-    .attr("fill", "#9B9B9B")
-    .text(function(d,i){ 
-      var y = d.year.toString(); 
-      return "'"+y.substring(2);
+  //Define Y axis
+  var yAxisChange = d3.svg.axis()
+    .scale(scaleYChangeAxis)
+    .orient("left")
+    .ticks(0)
+    .tickFormat(function (d) {
+      var label;
+      var label;
+      if(d==0){label = 0}
+      if ((d / 100) >= 1) {
+        label = d;
+      }
+      if ((d / 1000) >= 1) {
+        label = d / 1000 + " K";
+      }
+      if ((d / 1000000) >= 1) {
+        label = d / 1000000 + "m";
+      }
+  
+      return d;
     });
 
-    selectedYear = maxYear;
-    sliderTotal(selectedYear);
-    yearOver(selectedYear);
+  // Create Y axis
+  // canvas.append("g")
+  //   .attr("class", "axis")
+  //   .attr("transform", "translate(" + yAxisPadding + ",165)")
+  //  .call(yAxisChange);
 
-    $('#type').val("ASY");
-    changeType();
+  // TOTAL CHART YEAR LABELS
+  totalChart.selectAll(".yearLabels")
+    .data(dataset)
+    .enter().append("text")
+      .attr("class",function (d,i){return "yearLabels y"+d.year})
+      // .attr("x", function(d,i){return +0+(i)*barWidth;})
+      .attr("x", function(d,i){ return 6+yAxisPadding+(i)*barWidth+2;})
+      .attr("y", 107)
+      .attr("dx", 0) // padding-right
+      .attr("dy", "0") // vertical-align: middle
+      .attr("text-anchor", "middle") // text-align: right
+      .style("font-size", "7px")
+      .attr("fill", "#9B9B9B")
+      .text(function(d,i){ 
+        var y = d.year.toString(); 
+        return "'"+y.substring(2);
+      });
 
-  });
+  selectedYear = maxYear;
+  sliderTotal(selectedYear);
+  yearOver(selectedYear);
+
+  $('#type').val("ASY");
+  changeType();
+});
 
 
 function yearOver(selectedYear){
