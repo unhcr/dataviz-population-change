@@ -21,6 +21,7 @@
   <script type="text/javascript" charset="utf-8" src="js/d3.v3.min.js"></script>
   <script src="js/topojson.v0.min.js"></script>
   <script src="js/colorbrewer.js"></script>
+  <script src="js/d3.geo.projection.min.js"></script>
   <script src="data.js?cache=009g"></script>
   <script src="js/less.js"></script>
 
@@ -31,8 +32,8 @@
   <meta property="og:image" content="http://data.unhcr.org/uploads/dataviz_thumbnail.jpg"/>
   <meta property="og:site_name" content="Historical Refugee Data"/>
   <meta property="og:description" content="Explore the UNHCR statistical data with this visualization"/>
-  <!-- End of Facebook Meta Tags -->  
-  
+  <!-- End of Facebook Meta Tags -->
+
     <!--[if IE 7]>
         <script type="text/javascript">
             window.location = "notsupported.html";
@@ -80,12 +81,12 @@
     <img class="unhcr-header-logo" src="images/unhcr-logo-horizontal.svg">
     <div class="unhcr-header-title">
       <h1>Dataviz</h1>
-      <h2>Population Change</h2>  
+      <h2>Population Change</h2>
       <h3>Evolution of refugee populations overtime showing increases and decreases from year to year</h3>
     </div>
     <div class="unhcr-header-social">
       <a href="#" target="_blank" title="Share on Facebook"><i class="facebook square icon"></i></a>
-      <a href="#" target="_blank" title="Share on Twitter"><i class="twitter square icon"></i></a> 
+      <a href="#" target="_blank" title="Share on Twitter"><i class="twitter square icon"></i></a>
     </div>
   </div>
 
@@ -96,7 +97,7 @@
   </div>
 
   <div id="topRow" class="ui grid stackable">
-    
+
     <div id="totalPopBox" class="four wide column">
       <div class="figure_label">
         <div class="label_main1">
@@ -487,7 +488,7 @@
 
         </table>
       </div>
-      <!-- / legend -->      
+      <!-- / legend -->
 
       <div id="map_info">
         <div class="map_info">
@@ -512,8 +513,8 @@
     </div>
 
     <div class="text footer">
-      Developed by the UNHCR Dataviz Team, Field Information and Coordination Support Section (FICSS) 
-      <a href="mailto:stats@unhcr.org?subject=data.unhcr.org/dataviz">Email FICSS</a> -- 
+      Developed by the UNHCR Dataviz Team, Field Information and Coordination Support Section (FICSS)
+      <a href="mailto:stats@unhcr.org?subject=data.unhcr.org/dataviz">Email FICSS</a> --
       <span class="disclaimer1">DISCLAIMER -- The borders and country names on this map do not imply official endorsement by the United Nations. Data may be unavailable for some locations during certain time periods.</span>
       <span class="disclaimer2">The historical country borders were adapted from CShapes - Weidmann, Nils B., Doreen Kuse, and Kristian Skrede Gleditsch. 2010. The Geography of the International System: The CShapes Dataset. International Interactions 36 (1). </span><br/><br/>
     </div>
