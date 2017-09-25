@@ -82,7 +82,7 @@ if(detectmob()){
 // PROJECTION AND SCALE
 var mapFixedWidth = 1027;
 
-var projection = d3.geo.equirectangular()
+var projection = d3.geo.robinson()
   .center([0, 0])
   .scale(mapScale)
   .translate([mapFixedWidth/2 + mapOffsetX, height/2 + mapOffsetY]);
