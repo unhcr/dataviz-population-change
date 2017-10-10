@@ -429,7 +429,7 @@ d3.json("js/worldtopo.json", function(error, map) {
     .append("rect")
     .attr("width",barWidth+1)
     .attr("class",function(d){return "overlayBar graphTotalOverlay_"+d.year})
-    .attr('height', graphHeight-6)
+    .attr('height', graphHeight+36)
     .attr("y", totalGraphYOffset+18)
     .attr("x", function(d,i){return yAxisPadding+(i)*barWidth;})
     .attr("fill", "rgba(0,0,0,0.05)")
