@@ -305,8 +305,6 @@ d3.json("js/worldtopo.json", function(error, map) {
       .style('stroke-opacity', 1)
       .style('stroke-dasharray', '2,1');
 
-
-
     });
   });
 
@@ -693,10 +691,10 @@ d3.json("js/worldtopo.json", function(error, map) {
 
 function yearOver(selectedYear){
 
+  // only show disputed boundaries on latest year
   if(selectedYear==maxYear){
     d3.selectAll('.disputed_boundary').attr('opacity', 1);
   } else {
-    console.log('hide');
     d3.selectAll('.disputed_boundary').attr('opacity', 0);
   }
 
