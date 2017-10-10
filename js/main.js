@@ -211,19 +211,22 @@ d3.json("js/worldtopo.json", function(error, map) {
         });
     });
 
-  //BACKGROUND MAP
-  mapsvg.append("g")
-    .attr("class","background")
-    .append("path")
-    .datum(topojson.object(map, map.objects.world))
-    .attr("d", path)
-    .style("fill",disabledColor)
-    .style("z-index", "1");
+  var map_data = topojson.feature(map, map.objects[Object.keys(map.objects)[0]]).features;
 
+  // //BACKGROUND MAP
+  mapsvg.append("g").attr("class","map_bg")
+  .selectAll(".country_bg")
+  .data(map_data)
+  .enter().append("path")
+  .attr('class', 'country_bg')
+  .attr('d', path)
+  .style("fill",disabledColor)
+  .style("z-index", "1");
+  
   // ACTIVE COUNTRY MAP
   mapsvg.append("g").attr("class","countrymap")
     .selectAll(".country")
-    .data(topojson.object(map, map.objects.world).geometries)
+    .data(map_data)
     .enter().append("path")
     .attr("class", function(d) { return "country " + d.id; })
     .attr("d", path)
@@ -247,6 +250,64 @@ d3.json("js/worldtopo.json", function(error, map) {
   countrySelect.append('option').text('World').attr('value', 0);
 
   var countries = map.objects.world.geometries;
+
+  // DISPUTED BOUNDARIES
+  d3.json("js/disputed_boundaries.json", function(error, disputed_boundaries) {
+    d3.json("js/disputed_boundaries_polygons.json", function(error, disputed_boundaries_polygons) {
+
+      var data = topojson.feature(disputed_boundaries, disputed_boundaries.objects[Object.keys(disputed_boundaries.objects)[0]]).features;
+
+      var disputedBoundaries1 = mapsvg.selectAll('.disputed_boundaries1')
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('class', 'disputed_boundary')
+      .append("path")
+      .attr("class", 'disputed_boundaries1')
+      .attr("d", path)
+      .attr("id", function(d) {return d.id;})
+      .style('fill-opacity', 0)
+      .style('stroke', 'lightgrey')
+      .style('stroke-width', 0.2)
+      .style('stroke-opacity', 1);
+
+      var disputedBoundaries2 = mapsvg.selectAll('.disputed_boundaries2')
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('class', 'disputed_boundary')
+      .append("path")
+      .attr("class", 'disputed_boundaries2')
+      .attr("d", path)
+      .attr("id", function(d) {return d.id;})
+      .style('fill-opacity', 0)
+      .style('stroke', 'black')
+      .style('stroke-width', 0.2)
+      .style('stroke-opacity', 1)
+      .style('stroke-dasharray', '2,1');
+
+
+      var data = topojson.feature(disputed_boundaries_polygons, disputed_boundaries_polygons.objects[Object.keys(disputed_boundaries_polygons.objects)[0]]).features;
+
+      var disputedBoundariesPolygons = mapsvg.selectAll('.disputed_boundaries_polygons')
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('class', 'disputed_boundary')
+      .append("path")
+      .attr("class", 'disputed_boundaries_polygons')
+      .attr("d", path)
+      .attr("id", function(d) {return d.id;})
+      .style('fill-opacity', 1)
+      .style('fill', disabledColor)
+      .style('stroke', 'black')
+      .style('stroke-width', 0.2)
+      .style('stroke-opacity', 1)
+      .style('stroke-dasharray', '2,1');
+
+    });
+  });
+
 
   // invoke d3 click
   jQuery.fn.d3Click = function () {
@@ -630,6 +691,13 @@ d3.json("js/worldtopo.json", function(error, map) {
 
 function yearOver(selectedYear){
 
+  // only show disputed boundaries on latest year
+  if(selectedYear==maxYear){
+    d3.selectAll('.disputed_boundary').attr('opacity', 1);
+  } else {
+    d3.selectAll('.disputed_boundary').attr('opacity', 0);
+  }
+
   d3.selectAll(".yearLabels")
     .attr("y", 107)
     .attr("fill", "#9B9B9B")
@@ -913,9 +981,9 @@ function sliderChange(year){
   sliderActiveYear(year);
 
   canvas.selectAll(".country")
-      .style("display","block")
+    .style("display","block")
     .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
-      .style("display", "none");
+    .style("display", "none");
 
   $('#totalASYkey').css('display',"none");
   $('#totalORIkey').css('display',"none");
@@ -997,6 +1065,11 @@ function sliderAll(year){
 
     if (changeValue > 0){
       if(selectedYear>minYear){$('#increaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#decreaseValue').text("n/a");}else{$('#increaseValue').text("n/a");$('#decreaseValue').text("n/a");}
+    }
+
+    if(changeValue == 0){
+      $('#increaseValue').text("n/a");
+      $('#decreaseValue').text("n/a");
     }
 
   }
