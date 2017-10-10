@@ -7,11 +7,11 @@ var graphHeight = 95;
 var graphChangeHeight = 100;
 
 // MAP SIZE
-var mapScale = 150;
+var mapScale = 145;
 
 // OFFSET POSITION ON CANVAS
-var mapOffsetX = 50;
-var mapOffsetY = 30;
+var mapOffsetX = 10;
+var mapOffsetY = 20;
 var changeGraphYOffset = -33;
 var yAxisPadding = 33;
 var totalGraphYOffset = -10;
@@ -57,12 +57,17 @@ var maxYear = 2016;
 var totalYears = maxYear - minYear;
 var selectedYear = maxYear;
 var MaxTotal = 17838074;
-
+var mapFixedWidth = 960;
 var graphSelectedBar = 0;
 var countrySelected = 0;
 var totalOrGraph = 0; // 0 = total, 1 = change graphs
 var countryHovered = 0;
 var countrySelectedName;
+var barSpacing = 3;
+var ratio = 0.4;
+var width = $('#map').width();
+
+// DETECT MOBILE 
 
 function detectmob() {
   if(window.innerWidth <= 700 || window.innerHeight <= 600) {
@@ -72,15 +77,11 @@ function detectmob() {
   }
 }
 
-var barSpacing = 3;
-
 if(detectmob()){
   barSpacing = 1;
 }
 
-
 // PROJECTION AND SCALE
-var mapFixedWidth = 1027;
 
 var projection = d3.geo.robinson()
   .center([0, 0])
@@ -90,12 +91,8 @@ var projection = d3.geo.robinson()
 var path = d3.geo.path()
   .projection(projection);
 
-var ratio = 0.4;
-var width = $('#map').width();
-
-// $('#map').height(width*ratio);
-
-// CREATE SVG
+// CREATE SVGS
+// map svg
 var canvas = d3.select("#map").append("svg")
     .attr("width", "100%")
     // .attr("height", width*ratio)
@@ -104,11 +101,13 @@ var canvas = d3.select("#map").append("svg")
     // .style("position", "absolute")
     // .style("top", "0px");
 
+// total chart svg
 var totalChart = d3.select('.totalGraphDiv').append("svg")
     .attr("width", "100%") // Add 6px to show latest year label.
     .attr("viewBox", "0 0 "+width+" 120")
 
 
+// change chart svg
 var changeChart = d3.select('.changeGraphDiv').append("svg")
     .attr("width", "100%") // Add 6px to show latest year label.
     .attr("viewBox", "0 0 "+width+" 120")
