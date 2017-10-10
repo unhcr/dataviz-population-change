@@ -981,9 +981,9 @@ function sliderChange(year){
   sliderActiveYear(year);
 
   canvas.selectAll(".country")
-      .style("display","block")
+    .style("display","block")
     .filter(function(d) { return (d.properties.COWSYEAR > selectedYear)||(d.properties.COWEYEAR +1 <= selectedYear)})        // <== This line
-      .style("display", "none");
+    .style("display", "none");
 
   $('#totalASYkey').css('display',"none");
   $('#totalORIkey').css('display',"none");
@@ -1065,6 +1065,11 @@ function sliderAll(year){
 
     if (changeValue > 0){
       if(selectedYear>minYear){$('#increaseValue').text(numberWithCommas(Math.abs(changeValue))); $('#decreaseValue').text("n/a");}else{$('#increaseValue').text("n/a");$('#decreaseValue').text("n/a");}
+    }
+
+    if(changeValue == 0){
+      $('#increaseValue').text("n/a");
+      $('#decreaseValue').text("n/a");
     }
 
   }
