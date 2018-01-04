@@ -254,6 +254,24 @@ d3.json("js/worldtopo.json", function(error, map) {
   d3.json("js/disputed_boundaries.json", function(error, disputed_boundaries) {
     d3.json("js/disputed_boundaries_polygons.json", function(error, disputed_boundaries_polygons) {
 
+      var data = topojson.feature(disputed_boundaries_polygons, disputed_boundaries_polygons.objects[Object.keys(disputed_boundaries_polygons.objects)[0]]).features;
+
+      var disputedBoundariesPolygons = mapsvg.selectAll('.disputed_boundaries_polygons')
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('class', 'disputed_boundary')
+      .append("path")
+      .attr("class", 'disputed_boundaries_polygons')
+      .attr("d", path)
+      .attr("id", function(d) {return d.id;})
+      .style('fill-opacity', 1)
+      .style('fill', disabledColor)
+      .style('stroke', 'black')
+      .style('stroke-width', 0.2)
+      .style('stroke-opacity', 1)
+      .style('stroke-dasharray', '2,1');
+
       var data = topojson.feature(disputed_boundaries, disputed_boundaries.objects[Object.keys(disputed_boundaries.objects)[0]]).features;
 
       var disputedBoundaries1 = mapsvg.selectAll('.disputed_boundaries1')
@@ -280,25 +298,6 @@ d3.json("js/worldtopo.json", function(error, map) {
       .attr("d", path)
       .attr("id", function(d) {return d.id;})
       .style('fill-opacity', 0)
-      .style('stroke', 'black')
-      .style('stroke-width', 0.2)
-      .style('stroke-opacity', 1)
-      .style('stroke-dasharray', '2,1');
-
-
-      var data = topojson.feature(disputed_boundaries_polygons, disputed_boundaries_polygons.objects[Object.keys(disputed_boundaries_polygons.objects)[0]]).features;
-
-      var disputedBoundariesPolygons = mapsvg.selectAll('.disputed_boundaries_polygons')
-      .data(data)
-      .enter()
-      .append('g')
-      .attr('class', 'disputed_boundary')
-      .append("path")
-      .attr("class", 'disputed_boundaries_polygons')
-      .attr("d", path)
-      .attr("id", function(d) {return d.id;})
-      .style('fill-opacity', 1)
-      .style('fill', disabledColor)
       .style('stroke', 'black')
       .style('stroke-width', 0.2)
       .style('stroke-opacity', 1)
@@ -690,12 +689,22 @@ d3.json("js/worldtopo.json", function(error, map) {
 
 function yearOver(selectedYear){
 
-  // only show disputed boundaries on latest year
-  if(selectedYear==maxYear){
-    d3.selectAll('.disputed_boundary').attr('opacity', 1);
-  } else {
-    d3.selectAll('.disputed_boundary').attr('opacity', 0);
-  }
+    d3.selectAll('.disputed_boundary').attr('opacity', function(d){
+      if(selectedYear>=d.properties.startyear){
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+  // // only show disputed boundaries on latest year
+  // if(selectedYear==maxYear){
+  //   d3.selectAll('.disputed_boundary').attr('opacity', function(d){
+
+  //   });
+  // } else {
+  //   // d3.selectAll('.disputed_boundary').attr('opacity', 0);
+  // }
 
   d3.selectAll(".yearLabels")
     .attr("y", 107)
